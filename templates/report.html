@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Report Health Problem</title>
+
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<nav class="navbar bg-white border-bottom">
+
+    <div class="container">
+
+        <a
+            href="/"
+            class="navbar-brand fw-bold fs-4 text-decoration-none"
+        >
+
+            🐄 Livestock Health
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- MAIN -->
+
+<main class="container py-5">
+
+    <div class="mb-4">
+
+        <a
+            href="/"
+            class="text-decoration-none text-muted"
+        >
+
+            ← Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+    <h1 class="fw-bold">
+
+        Report Health Problem
+
+    </h1>
+
+
+    <p class="text-muted mb-5">
+
+        Tell us what is happening with your animal.
+
+    </p>
+    <form method="POST" action="/report">
+
+
+    <!-- ANIMAL DETAILS -->
+
+    <section class="mb-5">
+
+        <h4 class="fw-bold mb-4">
+
+            Animal Details
+
+        </h4>
+
+
+        <div class="mb-3">
+
+            <label class="form-label fw-semibold">
+
+                Animal Type
+
+            </label>
+
+
+            <select
+    class="form-select"
+    name="animal_type"
+    required
+>
+
+    <option value="" selected disabled>
+        Select animal
+    </option>
+
+    <option value="Cattle">
+        Cattle
+    </option>
+
+    <option value="Buffalo">
+        Buffalo
+    </option>
+
+    <option value="Goat">
+        Goat
+    </option>
+
+    <option value="Sheep">
+        Sheep
+    </option>
+
+    <option value="Poultry">
+        Poultry
+    </option>
+
+</select>
+
+        </div>
+
+
+
+        <div class="mb-3">
+
+            <label class="form-label fw-semibold">
+
+                Age
+
+            </label>
+
+
+           <input
+    type="number"
+    class="form-control"
+    name="age"
+    placeholder="Enter age"
+    min="0"
+    required
+>
+
+        </div>
+
+
+
+        <div class="mb-3">
+
+            <label class="form-label fw-semibold">
+
+                Number of affected animals
+
+            </label>
+
+
+            <input
+    type="number"
+    class="form-control"
+    name="affected"
+    placeholder="Enter number"
+    min="1"
+    required
+>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- SYMPTOMS -->
+
+    <section class="mb-5">
+
+        <h4 class="fw-bold mb-3">
+
+            Symptoms
+
+        </h4>
+
+
+        <p class="text-muted">
+
+            What symptoms are you seeing?
+
+        </p>
+        <div id="selectedSymptoms"></div>
+
+
+        <div class="row g-3">
+
+
+            <div class="col-md-4">
+
+                <button
+                    type="button"
+                    class="symptom-btn w-100"
+                    data-symptom="Fever"
+                    onclick="toggleSymptom(this)"
+                >
+
+                    Fever
+
+                </button>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <button
+                    type="button"
+                    class="symptom-btn w-100"
+                    data-symptom="Coughing"
+                    onclick="toggleSymptom(this)"
+                >
+
+                    Coughing
+
+                </button>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <button
+                    type="button"
+                    class="symptom-btn w-100"
+                    data-symptom="Diarrhea"
+                    onclick="toggleSymptom(this)"
+
+                >
+
+                    Diarrhea
+
+                </button>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <button
+                    type="button"
+                    class="symptom-btn w-100"
+                    data-symptom="Nasal discharge"
+                    onclick="toggleSymptom(this)"
+                >
+
+                    Nasal discharge
+
+                </button>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <button
+                    type="button"
+                    class="symptom-btn w-100"
+                    data-symptom="Difficulty breathing"
+                    onclick="toggleSymptom(this)"
+                >
+
+                    Difficulty breathing
+
+                </button>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <button
+                    type="button"
+                    class="symptom-btn w-100"
+                    data-symptom="Loss of appetite"
+                    onclick="toggleSymptom(this)"
+                >
+
+                    Loss of appetite
+
+                </button>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <button
+                    type="button"
+                    class="symptom-btn w-100"
+                    data-symptom="Weakness"
+                    onclick="toggleSymptom(this)"
+                >
+
+                    Weakness
+
+                </button>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <button
+                    type="button"
+                    class="symptom-btn w-100"
+                    data-symptom="Other"
+                    onclick="toggleSymptom(this)"
+                >
+
+                    Other
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- DURATION -->
+
+    <section class="mb-5">
+
+        <h4 class="fw-bold mb-3">
+
+            Duration
+
+        </h4>
+
+
+        <label class="form-label">
+
+            How long have symptoms been present?
+
+        </label>
+
+
+        <select
+    class="form-select"
+    name="duration"
+    required
+>
+
+    <option value="" selected disabled>
+        Select duration
+    </option>
+
+    <option value="less_than_1_day">
+        Less than 1 day
+    </option>
+
+    <option value="1_to_3_days">
+        1–3 days
+    </option>
+
+    <option value="4_to_7_days">
+        4–7 days
+    </option>
+
+    <option value="more_than_7_days">
+        More than 7 days
+    </option>
+
+</select>
+
+    </section>
+
+
+
+    <!-- CONTINUE -->
+
+    <div class="text-end">
+
+       <button
+    type="submit"
+    class="btn primary-btn"
+>
+    Continue →
+</button>
+
+    </div>
+    </form>
+
+
+</main>
+<script>
+
+function toggleSymptom(button) {
+
+    button.classList.toggle("selected");
+
+    const symptom = button.dataset.symptom;
+
+
+    if (button.classList.contains("selected")) {
+
+        button.innerHTML = "✓ " + symptom;
+
+
+        const input = document.createElement("input");
+
+        input.type = "hidden";
+        input.name = "symptoms";
+        input.value = symptom;
+        input.dataset.symptom = symptom;
+
+
+        document
+            .getElementById("selectedSymptoms")
+            .appendChild(input);
+
+    }
+
+    else {
+
+        button.innerHTML = symptom;
+
+
+        const input = document.querySelector(
+            '#selectedSymptoms input[data-symptom="' + symptom + '"]'
+        );
+
+
+        if (input) {
+
+            input.remove();
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

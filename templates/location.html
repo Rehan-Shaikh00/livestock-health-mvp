@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Animal Location</title>
+
+</head>
+
+
+<body>
+
+    <h1>📍 Animal Location</h1>
+
+    <p>
+        Where is the affected animal located?
+    </p>
+
+
+    <form method="POST" action="/location">
+
+
+        <!-- STATE -->
+
+        <label for="state">
+            State
+        </label>
+
+        <br><br>
+
+        <select
+            id="state"
+            name="state"
+            required
+        >
+
+            <option value="">
+                Select State
+            </option>
+
+            {% for state in states %}
+
+                <option value="{{ state }}">
+                    {{ state }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <br><br>
+
+
+        <!-- DISTRICT -->
+
+        <label for="district">
+            District
+        </label>
+
+        <br><br>
+
+        <select
+            id="district"
+            name="district"
+            required
+            disabled
+        >
+
+            <option value="">
+                Select State First
+            </option>
+
+        </select>
+
+
+        <br><br>
+
+
+        <!-- VILLAGE -->
+
+        <label for="village">
+            Village / Town / Area
+            <small>(optional)</small>
+        </label>
+
+        <br><br>
+
+        <input
+            type="text"
+            id="village"
+            name="village"
+            placeholder="Enter village, town or area"
+        >
+
+
+        <br><br>
+
+
+        <button type="submit">
+            Continue →
+        </button>
+
+
+    </form>
+
+
+    <!-- ================================================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ================================================= -->
+
+    <script>
+
+        const stateSelect =
+            document.getElementById("state");
+
+        const districtSelect =
+            document.getElementById("district");
+
+
+        stateSelect.addEventListener(
+            "change",
+            function () {
+
+                const state =
+                    this.value;
+
+
+                // Reset district dropdown
+
+                districtSelect.innerHTML =
+                    '<option value="">Loading districts...</option>';
+
+                districtSelect.disabled =
+                    true;
+
+
+                // If no state selected
+
+                if (!state) {
+
+                    districtSelect.innerHTML =
+                        '<option value="">Select State First</option>';
+
+                    return;
+
+                }
+
+
+                // Request districts from Flask
+
+                fetch(
+                    "/districts/" +
+                    encodeURIComponent(state)
+                )
+
+                .then(
+                    response => response.json()
+                )
+
+                .then(
+                    districts => {
+
+                        districtSelect.innerHTML =
+                            '<option value="">Select District</option>';
+
+
+                        // Add districts
+
+                        districts.forEach(
+                            function (district) {
+
+                                const option =
+                                    document.createElement("option");
+
+                                option.value =
+                                    district;
+
+                                option.textContent =
+                                    district;
+
+                                districtSelect.appendChild(
+                                    option
+                                );
+
+                            }
+                        );
+
+
+                        districtSelect.disabled =
+                            false;
+
+                    }
+                )
+
+                .catch(
+                    error => {
+
+                        console.error(
+                            "Error loading districts:",
+                            error
+                        );
+
+
+                        districtSelect.innerHTML =
+                            '<option value="">Unable to load districts</option>';
+
+                        districtSelect.disabled =
+                            true;
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

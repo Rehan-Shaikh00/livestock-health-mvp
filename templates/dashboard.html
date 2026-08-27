@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Livestock Health</title>
+
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Our CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<nav class="navbar bg-white border-bottom">
+
+    <div class="container">
+
+        <span class="navbar-brand fw-bold fs-4">
+
+            🐄 Livestock Health
+
+        </span>
+
+
+        <span class="text-muted">
+
+            Farmer
+
+        </span>
+
+    </div>
+
+</nav>
+
+
+
+<!-- MAIN -->
+
+<main class="container py-5">
+
+
+    <!-- HEADER -->
+
+    <section class="mb-5">
+
+        <h1 class="fw-bold">
+
+            Dashboard
+
+        </h1>
+
+
+        <p class="text-muted">
+
+            Monitor your animals' health and report problems early.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- REPORT BUTTON -->
+
+    <section class="mb-5">
+
+        <div class="card border-0 shadow-sm report-card">
+
+            <div class="card-body text-center py-5">
+
+
+                <h2 class="fw-bold mb-3">
+
+                    Report a Health Problem
+
+                </h2>
+
+
+                <p class="text-muted mb-4">
+
+                    Report symptoms and get an early health risk
+                    assessment.
+
+                </p>
+
+
+                <a
+                    href="/report"
+                    class="btn primary-btn"
+                >
+
+                    + Report Health Problem
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- RECENT REPORTS -->
+
+    <section>
+
+        <h3 class="fw-bold section-title mb-4">
+
+            Recent Reports
+
+        </h3>
+
+
+
+        <!-- REPORT 1 -->
+
+        <div class="card border-0 shadow-sm report-item mb-3">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+
+                    <div>
+
+                        <h5 class="fw-bold">
+
+                            🐄 Cattle
+
+                        </h5>
+
+
+                        <p class="text-muted mb-1">
+
+                            Fever, coughing
+
+                        </p>
+
+
+                        <small class="text-muted">
+
+                            25 Aug 2026
+
+                        </small>
+
+                    </div>
+
+
+
+                    <div class="text-end">
+
+                        <span class="badge bg-danger">
+
+                            HIGH RISK
+
+                        </span>
+
+
+                        <div class="mt-2 fw-bold">
+
+                            82%
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- REPORT 2 -->
+
+        <div class="card border-0 shadow-sm report-item mb-3">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+
+                    <div>
+
+                        <h5 class="fw-bold">
+
+                            🐃 Buffalo
+
+                        </h5>
+
+
+                        <p class="text-muted mb-1">
+
+                            Loss of appetite
+
+                        </p>
+
+
+                        <small class="text-muted">
+
+                            24 Aug 2026
+
+                        </small>
+
+                    </div>
+
+
+
+                    <div class="text-end">
+
+                        <span class="badge bg-warning text-dark">
+
+                            MEDIUM RISK
+
+                        </span>
+
+
+                        <div class="mt-2 fw-bold">
+
+                            54%
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- REPORT 3 -->
+
+        <div class="card border-0 shadow-sm report-item">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+
+                    <div>
+
+                        <h5 class="fw-bold">
+
+                            🐄 Cattle
+
+                        </h5>
+
+
+                        <p class="text-muted mb-1">
+
+                            Weakness
+
+                        </p>
+
+
+                        <small class="text-muted">
+
+                            23 Aug 2026
+
+                        </small>
+
+                    </div>
+
+
+
+                    <div class="text-end">
+
+                        <span class="badge bg-success">
+
+                            LOW RISK
+
+                        </span>
+
+
+                        <div class="mt-2 fw-bold">
+
+                            21%
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>

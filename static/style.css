@@ -1,0 +1,61 @@
+body {
+    background-color: #f8faf8;
+    color: #1f2937;
+    font-family: Arial, sans-serif;
+}
+
+.navbar-brand {
+    color: #14532d;
+}
+
+.report-card {
+    border-radius: 16px;
+    background: white;
+}
+
+.report-card:hover {
+    transform: translateY(-2px);
+    transition: 0.2s ease;
+}
+
+.report-item {
+    border-radius: 12px;
+    background: white;
+}
+
+.primary-btn {
+    background-color: #14532d;
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.primary-btn:hover {
+    background-color: #166534;
+    color: white;
+}
+
+.section-title {
+    color: #14532d;
+}
+.symptom-btn {
+    border: 1px solid #d1d5db;
+    background-color: white;
+    color: #374151;
+    border-radius: 10px;
+    padding: 12px;
+    transition: 0.2s ease;
+}
+
+.symptom-btn:hover {
+    border-color: #14532d;
+    color: #14532d;
+}
+
+.symptom-btn.selected {
+    background-color: #14532d;
+    color: white;
+    border-color: #14532d;
+}
