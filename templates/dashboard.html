@@ -1,332 +1,433 @@
 <!DOCTYPE html>
+
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+```
+<title>Livestock Health | Dashboard</title>
 
-    <title>Livestock Health</title>
+<!-- Bootstrap -->
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+>
 
+<!-- Icons -->
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+>
 
-    <!-- Bootstrap -->
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-
-    <!-- Our CSS -->
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
+<!-- Our CSS -->
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+```
 
 </head>
 
-
 <body>
-
 
 <!-- NAVBAR -->
 
-<nav class="navbar bg-white border-bottom">
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+    <div class="container py-2">
 
-    <div class="container">
-
-        <span class="navbar-brand fw-bold fs-4">
-
-            🐄 Livestock Health
-
+```
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+        <span class="brand-icon">🐄</span>
+        <span>
+            <strong>Livestock Health</strong>
+            <small class="d-block text-muted brand-subtitle">
+                AI-Powered Animal Health Surveillance
+            </small>
         </span>
+    </a>
 
+    <div class="d-flex align-items-center gap-3">
+        <div class="location-indicator">
+            <i class="bi bi-geo-alt-fill"></i>
+            <span>India</span>
+        </div>
 
-        <span class="text-muted">
-
+        <span class="user-badge">
+            <i class="bi bi-person-fill"></i>
             Farmer
-
         </span>
-
     </div>
 
+</div>
+```
+
 </nav>
-
-
 
 <!-- MAIN -->
 
 <main class="container py-5">
 
+```
+<!-- HERO -->
+<section class="dashboard-hero mb-4">
+    <div>
+        <span class="status-pill">
+            <span class="status-dot"></span>
+            Health monitoring active
+        </span>
 
-    <!-- HEADER -->
-
-    <section class="mb-5">
-
-        <h1 class="fw-bold">
-
-            Dashboard
-
+        <h1 class="dashboard-title mt-3">
+            Good to see you 👋
         </h1>
 
-
-        <p class="text-muted">
-
-            Monitor your animals' health and report problems early.
-
+        <p class="dashboard-subtitle">
+            Monitor livestock health, report symptoms early,
+            and identify potential disease risks.
         </p>
+    </div>
 
-    </section>
-
-
-
-    <!-- REPORT BUTTON -->
-
-    <section class="mb-5">
-
-        <div class="card border-0 shadow-sm report-card">
-
-            <div class="card-body text-center py-5">
+    <a href="/report" class="btn primary-btn hero-btn">
+        <i class="bi bi-plus-circle"></i>
+        Report Health Problem
+    </a>
+</section>
 
 
-                <h2 class="fw-bold mb-3">
+<!-- QUICK STATS -->
+<section class="row g-3 mb-5">
 
-                    Report a Health Problem
-
-                </h2>
-
-
-                <p class="text-muted mb-4">
-
-                    Report symptoms and get an early health risk
-                    assessment.
-
-                </p>
-
-
-                <a
-                    href="/report"
-                    class="btn primary-btn"
-                >
-
-                    + Report Health Problem
-
-                </a>
-
-
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon reports-icon">
+                <i class="bi bi-clipboard2-pulse"></i>
             </div>
 
+            <div>
+                <p class="stat-label">Health Reports</p>
+                <h3 class="stat-number">3</h3>
+                <span class="stat-description">
+                    Recent reports
+                </span>
+            </div>
         </div>
+    </div>
 
-    </section>
+
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon high-icon">
+                <i class="bi bi-exclamation-triangle"></i>
+            </div>
+
+            <div>
+                <p class="stat-label">High Risk</p>
+                <h3 class="stat-number">1</h3>
+                <span class="stat-description">
+                    Needs attention
+                </span>
+            </div>
+        </div>
+    </div>
 
 
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon animals-icon">
+                <i class="bi bi-heart-pulse"></i>
+            </div>
+
+            <div>
+                <p class="stat-label">Animals Affected</p>
+                <h3 class="stat-number">12</h3>
+                <span class="stat-description">
+                    Across recent reports
+                </span>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- MAIN GRID -->
+<div class="row g-4">
 
     <!-- RECENT REPORTS -->
+    <div class="col-lg-8">
 
-    <section>
+        <div class="section-heading">
+            <div>
+                <h3>Recent Health Reports</h3>
+                <p>Latest livestock health observations</p>
+            </div>
 
-        <h3 class="fw-bold section-title mb-4">
-
-            Recent Reports
-
-        </h3>
-
+            <a href="/report" class="view-link">
+                New report <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
 
 
         <!-- REPORT 1 -->
+        <div class="report-item mb-3">
 
-        <div class="card border-0 shadow-sm report-item mb-3">
+            <div class="animal-icon cattle">
+                🐄
+            </div>
 
-            <div class="card-body">
+            <div class="report-content">
 
-                <div class="d-flex justify-content-between align-items-center">
-
+                <div class="d-flex justify-content-between gap-3">
 
                     <div>
+                        <h5>Cattle</h5>
 
-                        <h5 class="fw-bold">
-
-                            🐄 Cattle
-
-                        </h5>
-
-
-                        <p class="text-muted mb-1">
-
+                        <p>
+                            <i class="bi bi-thermometer-half"></i>
                             Fever, coughing
-
                         </p>
 
-
-                        <small class="text-muted">
-
+                        <small>
+                            <i class="bi bi-calendar3"></i>
                             25 Aug 2026
-
                         </small>
-
                     </div>
-
-
 
                     <div class="text-end">
-
-                        <span class="badge bg-danger">
-
+                        <span class="risk-badge high">
                             HIGH RISK
-
                         </span>
 
-
-                        <div class="mt-2 fw-bold">
-
+                        <div class="risk-score">
                             82%
-
                         </div>
-
                     </div>
-
 
                 </div>
 
             </div>
-
         </div>
-
 
 
         <!-- REPORT 2 -->
+        <div class="report-item mb-3">
 
-        <div class="card border-0 shadow-sm report-item mb-3">
+            <div class="animal-icon buffalo">
+                🐃
+            </div>
 
-            <div class="card-body">
+            <div class="report-content">
 
-                <div class="d-flex justify-content-between align-items-center">
-
+                <div class="d-flex justify-content-between gap-3">
 
                     <div>
+                        <h5>Buffalo</h5>
 
-                        <h5 class="fw-bold">
-
-                            🐃 Buffalo
-
-                        </h5>
-
-
-                        <p class="text-muted mb-1">
-
+                        <p>
+                            <i class="bi bi-heart-pulse"></i>
                             Loss of appetite
-
                         </p>
 
-
-                        <small class="text-muted">
-
+                        <small>
+                            <i class="bi bi-calendar3"></i>
                             24 Aug 2026
-
                         </small>
-
                     </div>
-
-
 
                     <div class="text-end">
-
-                        <span class="badge bg-warning text-dark">
-
+                        <span class="risk-badge medium">
                             MEDIUM RISK
-
                         </span>
 
-
-                        <div class="mt-2 fw-bold">
-
+                        <div class="risk-score">
                             54%
-
                         </div>
-
                     </div>
-
 
                 </div>
 
             </div>
-
         </div>
-
 
 
         <!-- REPORT 3 -->
+        <div class="report-item">
 
-        <div class="card border-0 shadow-sm report-item">
+            <div class="animal-icon cattle">
+                🐄
+            </div>
 
-            <div class="card-body">
+            <div class="report-content">
 
-                <div class="d-flex justify-content-between align-items-center">
-
+                <div class="d-flex justify-content-between gap-3">
 
                     <div>
+                        <h5>Cattle</h5>
 
-                        <h5 class="fw-bold">
-
-                            🐄 Cattle
-
-                        </h5>
-
-
-                        <p class="text-muted mb-1">
-
+                        <p>
+                            <i class="bi bi-activity"></i>
                             Weakness
-
                         </p>
 
-
-                        <small class="text-muted">
-
+                        <small>
+                            <i class="bi bi-calendar3"></i>
                             23 Aug 2026
-
                         </small>
-
                     </div>
-
-
 
                     <div class="text-end">
-
-                        <span class="badge bg-success">
-
+                        <span class="risk-badge low">
                             LOW RISK
-
                         </span>
 
-
-                        <div class="mt-2 fw-bold">
-
+                        <div class="risk-score">
                             21%
-
                         </div>
-
                     </div>
-
 
                 </div>
 
             </div>
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="col-lg-4">
+
+        <!-- QUICK ACTION -->
+        <div class="action-card mb-4">
+
+            <div class="action-icon">
+                <i class="bi bi-shield-check"></i>
+            </div>
+
+            <h4>Early Detection</h4>
+
+            <p>
+                Report unusual symptoms early to help identify
+                potential livestock health risks.
+            </p>
+
+            <a href="/report" class="btn primary-btn w-100">
+                Start Health Report
+            </a>
 
         </div>
 
 
-    </section>
+        <!-- RISK LEGEND -->
+        <div class="info-card">
 
+            <div class="section-heading mb-3">
+                <div>
+                    <h4>Risk Levels</h4>
+                    <p>How our assessment works</p>
+                </div>
+            </div>
+
+            <div class="risk-level">
+                <span class="legend-dot high-dot"></span>
+
+                <div>
+                    <strong>High Risk</strong>
+                    <small>Veterinary attention recommended</small>
+                </div>
+            </div>
+
+            <div class="risk-level">
+                <span class="legend-dot medium-dot"></span>
+
+                <div>
+                    <strong>Medium Risk</strong>
+                    <small>Monitor symptoms closely</small>
+                </div>
+            </div>
+
+            <div class="risk-level">
+                <span class="legend-dot low-dot"></span>
+
+                <div>
+                    <strong>Low Risk</strong>
+                    <small>Continue regular monitoring</small>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FUTURE CAPABILITIES -->
+<section class="future-section mt-5">
+
+    <div class="section-heading mb-4">
+        <div>
+            <h3>Surveillance Capabilities</h3>
+            <p>Building toward a complete animal-health ecosystem</p>
+        </div>
+    </div>
+
+    <div class="row g-3">
+
+        <div class="col-6 col-md-3">
+            <div class="future-card">
+                <i class="bi bi-geo-alt"></i>
+                <strong>Location Risk</strong>
+                <small>District-level monitoring</small>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="future-card">
+                <i class="bi bi-cloud-sun"></i>
+                <strong>Weather Data</strong>
+                <small>Future integration</small>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="future-card">
+                <i class="bi bi-capsule"></i>
+                <strong>Vaccination</strong>
+                <small>Future integration</small>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="future-card">
+                <i class="bi bi-translate"></i>
+                <strong>Multilingual</strong>
+                <small>Future integration</small>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+```
 
 </main>
 
+<!-- FOOTER -->
+
+<footer class="border-top bg-white mt-5">
+    <div class="container py-4 text-center">
+
+```
+    <strong>🐄 Livestock Health</strong>
+
+    <p class="text-muted small mb-0 mt-1">
+        AI-assisted livestock disease risk assessment & early warning
+    </p>
+
+</div>
+```
+
+</footer>
 
 </body>
-
 </html>

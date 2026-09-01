@@ -1,413 +1,527 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+```
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>Report Health Problem</title>
+<title>Report Health Problem | Livestock Health</title>
 
+<!-- Bootstrap -->
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+>
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+<!-- Bootstrap Icons -->
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+>
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
+<!-- Our CSS -->
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+```
 
 </head>
 
-
 <body>
-
 
 <!-- NAVBAR -->
 
 <nav class="navbar bg-white border-bottom">
+    <div class="container py-2">
 
-    <div class="container">
+```
+    <a
+        href="/"
+        class="navbar-brand d-flex align-items-center gap-2 text-decoration-none"
+    >
+        <span class="brand-icon">🐄</span>
 
-        <a
-            href="/"
-            class="navbar-brand fw-bold fs-4 text-decoration-none"
-        >
+        <span>
+            <strong>Livestock Health</strong>
 
-            🐄 Livestock Health
+            <small class="d-block text-muted brand-subtitle">
+                AI-Powered Animal Health Surveillance
+            </small>
+        </span>
+    </a>
 
-        </a>
+    <span class="user-badge">
+        <i class="bi bi-person-fill"></i>
+        Farmer
+    </span>
 
-    </div>
+</div>
+```
 
 </nav>
-
-
 
 <!-- MAIN -->
 
 <main class="container py-5">
 
-    <div class="mb-4">
+```
+<!-- BACK -->
+<div class="mb-4">
 
-        <a
-            href="/"
-            class="text-decoration-none text-muted"
-        >
+    <a
+        href="/"
+        class="back-link"
+    >
+        <i class="bi bi-arrow-left"></i>
+        Back to Dashboard
+    </a>
 
-            ← Back to Dashboard
+</div>
 
-        </a>
+
+<!-- PAGE HEADER -->
+<section class="report-header mb-4">
+
+    <div>
+
+        <span class="status-pill">
+            <span class="status-dot"></span>
+            Health Report
+        </span>
+
+        <h1 class="report-page-title mt-3">
+            Report a Health Problem
+        </h1>
+
+        <p class="report-page-subtitle">
+            Provide information about the affected animals and
+            symptoms. Our system will assess the health risk.
+        </p>
 
     </div>
 
-
-    <h1 class="fw-bold">
-
-        Report Health Problem
-
-    </h1>
+</section>
 
 
-    <p class="text-muted mb-5">
+<!-- PROGRESS -->
+<div class="form-progress mb-4">
 
-        Tell us what is happening with your animal.
+    <div class="progress-step active">
+        <span>1</span>
+        <small>Animal Details</small>
+    </div>
 
-    </p>
-    <form method="POST" action="/report">
+    <div class="progress-line"></div>
+
+    <div class="progress-step">
+        <span>2</span>
+        <small>Symptoms</small>
+    </div>
+
+    <div class="progress-line"></div>
+
+    <div class="progress-step">
+        <span>3</span>
+        <small>Assessment</small>
+    </div>
+
+</div>
+
+
+<!-- FORM -->
+<form method="POST" action="/report">
 
 
     <!-- ANIMAL DETAILS -->
+    <section class="form-card mb-4">
 
-    <section class="mb-5">
+        <div class="form-section-header">
 
-        <h4 class="fw-bold mb-4">
+            <div class="form-section-icon">
+                <i class="bi bi-heart-pulse"></i>
+            </div>
 
-            Animal Details
+            <div>
+                <h4>Animal Details</h4>
 
-        </h4>
-
-
-        <div class="mb-3">
-
-            <label class="form-label fw-semibold">
-
-                Animal Type
-
-            </label>
-
-
-            <select
-    class="form-select"
-    name="animal_type"
-    required
->
-
-    <option value="" selected disabled>
-        Select animal
-    </option>
-
-    <option value="Cattle">
-        Cattle
-    </option>
-
-    <option value="Buffalo">
-        Buffalo
-    </option>
-
-    <option value="Goat">
-        Goat
-    </option>
-
-    <option value="Sheep">
-        Sheep
-    </option>
-
-    <option value="Poultry">
-        Poultry
-    </option>
-
-</select>
+                <p>
+                    Tell us about the affected livestock.
+                </p>
+            </div>
 
         </div>
 
 
+        <div class="row g-4">
 
-        <div class="mb-3">
+            <!-- ANIMAL TYPE -->
+            <div class="col-md-4">
 
-            <label class="form-label fw-semibold">
+                <label class="form-label fw-semibold">
+                    Animal Type
+                </label>
 
-                Age
+                <select
+                    class="form-select custom-input"
+                    name="animal_type"
+                    required
+                >
 
-            </label>
+                    <option value="" selected disabled>
+                        Select animal
+                    </option>
+
+                    <option value="Cattle">
+                        🐄 Cattle
+                    </option>
+
+                    <option value="Buffalo">
+                        🐃 Buffalo
+                    </option>
+
+                    <option value="Goat">
+                        🐐 Goat
+                    </option>
+
+                    <option value="Sheep">
+                        🐑 Sheep
+                    </option>
+
+                    <option value="Poultry">
+                        🐔 Poultry
+                    </option>
+
+                </select>
+
+            </div>
 
 
-           <input
-    type="number"
-    class="form-control"
-    name="age"
-    placeholder="Enter age"
-    min="0"
-    required
->
+            <!-- AGE -->
+            <div class="col-md-4">
 
-        </div>
+                <label class="form-label fw-semibold">
+                    Animal Age
+                </label>
+
+                <div class="input-group">
+
+                    <input
+                        type="number"
+                        class="form-control custom-input"
+                        name="age"
+                        placeholder="Enter age"
+                        min="0"
+                        required
+                    >
+
+                    <span class="input-group-text">
+                        years
+                    </span>
+
+                </div>
+
+            </div>
 
 
+            <!-- AFFECTED -->
+            <div class="col-md-4">
 
-        <div class="mb-3">
+                <label class="form-label fw-semibold">
+                    Affected Animals
+                </label>
 
-            <label class="form-label fw-semibold">
+                <input
+                    type="number"
+                    class="form-control custom-input"
+                    name="affected"
+                    placeholder="Number affected"
+                    min="1"
+                    required
+                >
 
-                Number of affected animals
+                <small class="input-help">
+                    Number of animals currently showing problems
+                </small>
 
-            </label>
-
-
-            <input
-    type="number"
-    class="form-control"
-    name="affected"
-    placeholder="Enter number"
-    min="1"
-    required
->
+            </div>
 
         </div>
 
     </section>
 
 
-
     <!-- SYMPTOMS -->
+    <section class="form-card mb-4">
 
-    <section class="mb-5">
+        <div class="form-section-header">
 
-        <h4 class="fw-bold mb-3">
+            <div class="form-section-icon">
+                <i class="bi bi-clipboard2-pulse"></i>
+            </div>
 
-            Symptoms
+            <div>
+                <h4>Observed Symptoms</h4>
 
-        </h4>
+                <p>
+                    Select all symptoms you are currently observing.
+                </p>
+            </div>
+
+            <span
+                id="symptomCount"
+                class="symptom-count"
+            >
+                0 selected
+            </span>
+
+        </div>
 
 
-        <p class="text-muted">
-
-            What symptoms are you seeing?
-
-        </p>
         <div id="selectedSymptoms"></div>
 
 
         <div class="row g-3">
 
-
-            <div class="col-md-4">
-
+            <div class="col-6 col-md-4">
                 <button
                     type="button"
                     class="symptom-btn w-100"
                     data-symptom="Fever"
                     onclick="toggleSymptom(this)"
                 >
-
+                    <i class="bi bi-thermometer-half"></i>
                     Fever
-
                 </button>
-
             </div>
 
 
-            <div class="col-md-4">
-
+            <div class="col-6 col-md-4">
                 <button
                     type="button"
                     class="symptom-btn w-100"
                     data-symptom="Coughing"
                     onclick="toggleSymptom(this)"
                 >
-
+                    <i class="bi bi-lungs"></i>
                     Coughing
-
                 </button>
-
             </div>
 
 
-            <div class="col-md-4">
-
+            <div class="col-6 col-md-4">
                 <button
                     type="button"
                     class="symptom-btn w-100"
                     data-symptom="Diarrhea"
                     onclick="toggleSymptom(this)"
-
                 >
-
+                    <i class="bi bi-droplet"></i>
                     Diarrhea
-
                 </button>
-
             </div>
 
 
-            <div class="col-md-4">
-
+            <div class="col-6 col-md-4">
                 <button
                     type="button"
                     class="symptom-btn w-100"
                     data-symptom="Nasal discharge"
                     onclick="toggleSymptom(this)"
                 >
-
+                    <i class="bi bi-wind"></i>
                     Nasal discharge
-
                 </button>
-
             </div>
 
 
-            <div class="col-md-4">
-
+            <div class="col-6 col-md-4">
                 <button
                     type="button"
                     class="symptom-btn w-100"
                     data-symptom="Difficulty breathing"
                     onclick="toggleSymptom(this)"
                 >
-
+                    <i class="bi bi-lungs-fill"></i>
                     Difficulty breathing
-
                 </button>
-
             </div>
 
 
-            <div class="col-md-4">
-
+            <div class="col-6 col-md-4">
                 <button
                     type="button"
                     class="symptom-btn w-100"
                     data-symptom="Loss of appetite"
                     onclick="toggleSymptom(this)"
                 >
-
+                    <i class="bi bi-egg-fried"></i>
                     Loss of appetite
-
                 </button>
-
             </div>
 
 
-            <div class="col-md-4">
-
+            <div class="col-6 col-md-4">
                 <button
                     type="button"
                     class="symptom-btn w-100"
                     data-symptom="Weakness"
                     onclick="toggleSymptom(this)"
                 >
-
+                    <i class="bi bi-person-walking"></i>
                     Weakness
-
                 </button>
-
             </div>
 
 
-            <div class="col-md-4">
-
+            <div class="col-6 col-md-4">
                 <button
                     type="button"
                     class="symptom-btn w-100"
                     data-symptom="Other"
                     onclick="toggleSymptom(this)"
                 >
-
+                    <i class="bi bi-three-dots"></i>
                     Other
-
                 </button>
-
             </div>
-
 
         </div>
 
     </section>
 
 
-
     <!-- DURATION -->
+    <section class="form-card mb-4">
 
-    <section class="mb-5">
+        <div class="form-section-header">
 
-        <h4 class="fw-bold mb-3">
+            <div class="form-section-icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
 
-            Duration
+            <div>
+                <h4>Symptom Duration</h4>
 
-        </h4>
+                <p>
+                    When did you first notice these symptoms?
+                </p>
+            </div>
+
+        </div>
 
 
-        <label class="form-label">
+        <div class="row">
 
-            How long have symptoms been present?
+            <div class="col-md-6">
 
-        </label>
+                <label class="form-label fw-semibold">
+                    How long have symptoms been present?
+                </label>
 
+                <select
+                    class="form-select custom-input"
+                    name="duration"
+                    required
+                >
 
-        <select
-    class="form-select"
-    name="duration"
-    required
->
+                    <option value="" selected disabled>
+                        Select duration
+                    </option>
 
-    <option value="" selected disabled>
-        Select duration
-    </option>
+                    <option value="less_than_1_day">
+                        Less than 1 day
+                    </option>
 
-    <option value="less_than_1_day">
-        Less than 1 day
-    </option>
+                    <option value="1_to_3_days">
+                        1–3 days
+                    </option>
 
-    <option value="1_to_3_days">
-        1–3 days
-    </option>
+                    <option value="4_to_7_days">
+                        4–7 days
+                    </option>
 
-    <option value="4_to_7_days">
-        4–7 days
-    </option>
+                    <option value="more_than_7_days">
+                        More than 7 days
+                    </option>
 
-    <option value="more_than_7_days">
-        More than 7 days
-    </option>
+                </select>
 
-</select>
+            </div>
+
+        </div>
 
     </section>
 
 
+    <!-- INFORMATION NOTE -->
+    <div class="report-note mb-4">
 
-    <!-- CONTINUE -->
+        <i class="bi bi-shield-check"></i>
 
-    <div class="text-end">
+        <div>
+            <strong>Your report helps detect risks early.</strong>
 
-       <button
-    type="submit"
-    class="btn primary-btn"
->
-    Continue →
-</button>
+            <p>
+                The information provided will be combined with
+                historical disease data and our risk-assessment
+                model to identify potential health concerns.
+            </p>
+        </div>
 
     </div>
-    </form>
 
+
+    <!-- SUBMIT -->
+    <div class="submit-area">
+
+        <a
+            href="/"
+            class="btn cancel-btn"
+        >
+            Cancel
+        </a>
+
+        <button
+            type="submit"
+            class="btn primary-btn analysis-btn"
+        >
+            <i class="bi bi-activity"></i>
+            Analyze Health Risk
+            <i class="bi bi-arrow-right"></i>
+        </button>
+
+    </div>
+
+</form>
+```
 
 </main>
+
+<!-- FOOTER -->
+
+<footer class="border-top bg-white mt-5">
+
+```
+<div class="container py-4 text-center">
+
+    <strong>🐄 Livestock Health</strong>
+
+    <p class="text-muted small mb-0 mt-1">
+        AI-assisted livestock disease risk assessment & early warning
+    </p>
+
+</div>
+```
+
+</footer>
+
 <script>
 
 function toggleSymptom(button) {
@@ -416,11 +530,10 @@ function toggleSymptom(button) {
 
     const symptom = button.dataset.symptom;
 
-
     if (button.classList.contains("selected")) {
 
-        button.innerHTML = "✓ " + symptom;
-
+        button.innerHTML =
+            '<i class="bi bi-check-circle-fill"></i> ' + symptom;
 
         const input = document.createElement("input");
 
@@ -428,7 +541,6 @@ function toggleSymptom(button) {
         input.name = "symptoms";
         input.value = symptom;
         input.dataset.symptom = symptom;
-
 
         document
             .getElementById("selectedSymptoms")
@@ -438,26 +550,39 @@ function toggleSymptom(button) {
 
     else {
 
-        button.innerHTML = symptom;
-
+        button.innerHTML =
+            '<i class="bi bi-circle"></i> ' + symptom;
 
         const input = document.querySelector(
-            '#selectedSymptoms input[data-symptom="' + symptom + '"]'
+            '#selectedSymptoms input[data-symptom="' +
+            symptom +
+            '"]'
         );
 
-
         if (input) {
-
             input.remove();
-
         }
 
     }
+
+    updateSymptomCount();
+
+}
+
+
+function updateSymptomCount() {
+
+    const count =
+        document.querySelectorAll(
+            '#selectedSymptoms input[name="symptoms"]'
+        ).length;
+
+    document.getElementById("symptomCount").textContent =
+        count + (count === 1 ? " symptom selected" : " symptoms selected");
 
 }
 
 </script>
 
 </body>
-
 </html>
