@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <link rel="manifest" href="/static/manifest.webmanifest">
+    <meta name="theme-color" content="#176b45">
+    <script defer src="/static/js/offline-sync.js"></script>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    Paravet Dashboard | Maharashtra Animal Health
+</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f7f5;
+        color: #26382e;
+    }
+
+    /* ================= HEADER ================= */
+
+    header {
+        background: #176b45;
+        color: white;
+        padding: 18px 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand h1 {
+        font-size: 20px;
+        margin-bottom: 4px;
+    }
+
+    .brand p {
+        font-size: 12px;
+        opacity: 0.85;
+    }
+
+    .user-area {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .user-name {
+        font-size: 13px;
+    }
+
+    .role-badge {
+        background: rgba(255,255,255,0.15);
+        padding: 7px 11px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    .logout {
+        text-decoration: none;
+        color: white;
+        border: 1px solid rgba(255,255,255,0.5);
+        padding: 8px 14px;
+        border-radius: 7px;
+        font-size: 12px;
+    }
+
+    .logout:hover {
+        background: rgba(255,255,255,0.12);
+    }
+
+    /* ================= MAIN ================= */
+
+    .container {
+        max-width: 1250px;
+        margin: 30px auto;
+        padding: 0 22px;
+    }
+
+    .welcome {
+        margin-bottom: 25px;
+    }
+
+    .welcome h2 {
+        font-size: 24px;
+        margin-bottom: 7px;
+    }
+
+    .welcome p {
+        color: #718078;
+        font-size: 14px;
+    }
+
+    /* ================= STAT CARDS ================= */
+
+    .stats {
+        display: grid;
+        grid-template-columns:
+            repeat(auto-fit, minmax(190px, 1fr));
+        gap: 16px;
+        margin-bottom: 28px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 13px;
+        padding: 20px;
+        box-shadow:
+            0 5px 20px rgba(0,0,0,0.06);
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #758179;
+        margin-bottom: 10px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .stat-description {
+        font-size: 11px;
+        color: #8a948e;
+        margin-top: 5px;
+    }
+
+    /* ================= GRID ================= */
+
+    .grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+        margin-bottom: 22px;
+    }
+
+    .panel {
+        background: white;
+        border-radius: 14px;
+        padding: 22px;
+        box-shadow:
+            0 5px 20px rgba(0,0,0,0.06);
+    }
+
+    .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+    }
+
+    .panel-header h3 {
+        font-size: 17px;
+    }
+
+    .panel-header span {
+        font-size: 11px;
+        color: #78847d;
+    }
+
+    /* ================= CASES ================= */
+
+    .case {
+        border: 1px solid #e4e9e6;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 12px;
+    }
+
+    .case:last-child {
+        margin-bottom: 0;
+    }
+
+    .case-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .case-id {
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .status {
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    .pending {
+        background: #fff4d6;
+        color: #8a6200;
+    }
+
+    .urgent {
+        background: #ffe3e3;
+        color: #b42318;
+    }
+
+    .inspected {
+        background: #e7f3ff;
+        color: #155b8a;
+    }
+
+    .case-details {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        font-size: 11px;
+        color: #68746d;
+    }
+
+    .case-details strong {
+        color: #2d3d34;
+    }
+
+    /* ================= ACTION BUTTONS ================= */
+
+    .actions {
+        margin-top: 14px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .button {
+        display: inline-block;
+        text-decoration: none;
+        border: none;
+        padding: 9px 13px;
+        border-radius: 7px;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .button:hover {
+        transform: translateY(-1px);
+    }
+
+    .button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .primary {
+        background: #176b45;
+        color: white;
+    }
+
+    .primary:hover {
+        background: #125637;
+    }
+
+    .secondary {
+        background: #edf3ef;
+        color: #176b45;
+    }
+
+    .secondary:hover {
+        background: #dfeae3;
+    }
+
+    .danger {
+        background: #b42318;
+        color: white;
+    }
+
+    .danger:hover {
+        background: #8f1b12;
+    }
+
+    /* ================= QUICK ACTIONS ================= */
+
+    .quick-action {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px;
+        background: #f7f9f8;
+        border-radius: 9px;
+        margin-bottom: 10px;
+        text-decoration: none;
+        color: #26382e;
+    }
+
+    .quick-action:last-child {
+        margin-bottom: 0;
+    }
+
+    .quick-action:hover {
+        background: #edf4ef;
+    }
+
+    .quick-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        background: #e6f2eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    .quick-text strong {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+
+    .quick-text span {
+        font-size: 10px;
+        color: #7b867f;
+    }
+
+    /* ================= LOCATION ================= */
+
+    .location {
+        background: #f7f9f8;
+        border-radius: 9px;
+        padding: 15px;
+        margin-bottom: 18px;
+    }
+
+    .location-title {
+        font-size: 11px;
+        color: #7b867f;
+        margin-bottom: 7px;
+    }
+
+    .location-value {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    /* ================= ESCALATION ================= */
+
+    .escalation {
+        border-left: 4px solid #176b45;
+        background: #f1f7f3;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 18px;
+    }
+
+    .escalation strong {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .escalation p {
+        font-size: 11px;
+        color: #68746d;
+        line-height: 1.5;
+    }
+
+    /* ================= EMPTY STATE ================= */
+
+    .empty {
+        text-align: center;
+        padding: 35px 15px;
+        color: #7b867f;
+        font-size: 13px;
+    }
+
+    /* ================= REFRESH ================= */
+
+    .refresh-button {
+        border: none;
+        background: #edf3ef;
+        color: #176b45;
+        padding: 7px 11px;
+        border-radius: 7px;
+        font-size: 11px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .refresh-button:hover {
+        background: #dfeae3;
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer {
+        text-align: center;
+        padding: 30px;
+        color: #89938e;
+        font-size: 11px;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 850px) {
+
+        .grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        header {
+            padding: 15px 18px;
+        }
+
+        .user-name {
+            display: none;
+        }
+
+        .container {
+            margin-top: 22px;
+        }
+
+        .welcome h2 {
+            font-size: 21px;
+        }
+
+        .case-details {
+            grid-template-columns: 1fr;
+        }
+
+        .case-top {
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="brand">
+
+    <h1>
+        🐄 Animal Health Surveillance
+    </h1>
+
+    <p>
+        Maharashtra Department of Animal Husbandry
+    </p>
+
+</div>
+
+
+<div class="user-area">
+
+    <span class="user-name">
+
+        {{ session.get(
+            "name",
+            "Village Health Worker"
+        ) }}
+
+    </span>
+
+    <span class="role-badge">
+        PARAVET / PASHU SAKHI
+    </span>
+
+    <a
+        href="/logout"
+        class="logout"
+    >
+        Logout
+    </a>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<!-- ================= WELCOME ================= -->
+
+<div class="welcome">
+
+    <h2>
+        Village Health Worker Dashboard
+    </h2>
+
+    <p>
+        Monitor livestock health reports, perform
+        preliminary field inspections and escalate
+        suspected cases to the Veterinary Officer.
+    </p>
+
+</div>
+
+
+
+<!-- ================= STATISTICS ================= -->
+
+<div class="stats">
+
+    <div class="stat-card">
+
+        <div class="stat-label">
+            Pending Field Visits
+        </div>
+
+        <div
+            class="stat-value"
+            id="pendingCount"
+        >
+            0
+        </div>
+
+        <div class="stat-description">
+            Cases requiring inspection
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-label">
+            Inspected Today
+        </div>
+
+        <div
+            class="stat-value"
+            id="inspectedCount"
+        >
+            0
+        </div>
+
+        <div class="stat-description">
+            Field inspections completed
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-label">
+            Escalated Cases
+        </div>
+
+        <div
+            class="stat-value"
+            id="escalatedCount"
+        >
+            0
+        </div>
+
+        <div class="stat-description">
+            Sent to Veterinary Officer
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-label">
+            Active High-Risk Cases
+        </div>
+
+        <div
+            class="stat-value"
+            id="highRiskCount"
+        >
+            0
+        </div>
+
+        <div class="stat-description">
+            Cases requiring priority attention
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================= MAIN GRID ================= -->
+
+<div class="grid">
+
+
+    <!-- ================= CASE QUEUE ================= -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h3>
+                Field Case Queue
+            </h3>
+
+            <button
+                class="refresh-button"
+                onclick="loadCases()"
+            >
+                ↻ Refresh
+            </button>
+
+        </div>
+
+
+        <div id="caseQueue">
+
+            <div class="empty">
+                Loading cases...
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= QUICK ACTIONS ================= -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h3>
+                Field Actions
+            </h3>
+
+        </div>
+
+
+        <a
+            href="/report"
+            class="quick-action"
+        >
+
+            <div class="quick-icon">
+                📝
+            </div>
+
+            <div class="quick-text">
+
+                <strong>
+                    Create Health Report
+                </strong>
+
+                <span>
+                    Register a new field case
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <a
+            href="/report"
+            class="quick-action"
+        >
+
+            <div class="quick-icon">
+                🔍
+            </div>
+
+            <div class="quick-text">
+
+                <strong>
+                    Field Inspection
+                </strong>
+
+                <span>
+                    Record symptoms and observations
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <a
+            href="#"
+            class="quick-action"
+            onclick="showComingSoon(event)"
+        >
+
+            <div class="quick-icon">
+                📷
+            </div>
+
+            <div class="quick-text">
+
+                <strong>
+                    Collect Evidence
+                </strong>
+
+                <span>
+                    Photos and field observations
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <a
+            href="#"
+            class="quick-action"
+            onclick="showEscalationInfo(event)"
+        >
+
+            <div class="quick-icon">
+                🚨
+            </div>
+
+            <div class="quick-text">
+
+                <strong>
+                    Escalate Case
+                </strong>
+
+                <span>
+                    Notify Veterinary Officer
+                </span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================= LOCATION + WORKFLOW ================= -->
+
+<div class="grid">
+
+
+    <!-- ================= LOCATION ================= -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h3>
+                Assigned Area
+            </h3>
+
+        </div>
+
+
+        <div class="location">
+
+            <div class="location-title">
+                STATE
+            </div>
+
+            <div class="location-value">
+                Maharashtra
+            </div>
+
+        </div>
+
+
+        <div class="location">
+
+            <div class="location-title">
+                DISTRICT
+            </div>
+
+            <div class="location-value">
+
+                {{ session.get(
+                    "district",
+                    "Pune"
+                ) }}
+
+            </div>
+
+        </div>
+
+
+        <div class="location">
+
+            <div class="location-title">
+                TALUKA / BLOCK
+            </div>
+
+            <div class="location-value">
+
+                {{ session.get(
+                    "taluka",
+                    "Mulshi"
+                ) }}
+
+            </div>
+
+        </div>
+
+
+        <div class="location">
+
+            <div class="location-title">
+                VILLAGE
+            </div>
+
+            <div class="location-value">
+
+                {{ session.get(
+                    "village",
+                    "Example Village"
+                ) }}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= ESCALATION WORKFLOW ================= -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h3>
+                Escalation Workflow
+            </h3>
+
+        </div>
+
+
+        <div class="escalation">
+
+            <strong>
+                1. Farmer Report
+            </strong>
+
+            <p>
+                Farmer or livestock owner reports
+                sickness or mortality.
+            </p>
+
+        </div>
+
+
+        <div class="escalation">
+
+            <strong>
+                2. Paravet Inspection
+            </strong>
+
+            <p>
+                Village worker visits the location
+                and records field observations.
+            </p>
+
+        </div>
+
+
+        <div class="escalation">
+
+            <strong>
+                3. Risk Triage
+            </strong>
+
+            <p>
+                Rule-based or AI-assisted triage
+                evaluates the reported case.
+            </p>
+
+        </div>
+
+
+        <div class="escalation">
+
+            <strong>
+                4. Veterinary Escalation
+            </strong>
+
+            <p>
+                High-risk cases are forwarded to
+                the Veterinary Officer for further
+                action and possible sample collection.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<footer>
+
+Maharashtra Animal Health Surveillance &
+Decision Support System · Prototype
+
+</footer>
+
+<script>
+
+
+/* ============================================================
+   LOAD CASES
+============================================================ */
+
+async function loadCases() {
+
+    const queue =
+        document.getElementById(
+            "caseQueue"
+        );
+
+    queue.innerHTML = `
+        <div class="empty">
+            Loading cases...
+        </div>
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/paravet/cases"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load cases"
+            );
+
+        }
+
+
+        const cases =
+            await response.json();
+
+
+
+        /* ====================================================
+           STATISTICS
+        ==================================================== */
+
+        const today =
+            new Date()
+                .toISOString()
+                .slice(0, 10);
+
+
+        const pending =
+            cases.filter(
+                c =>
+                    c.status ===
+                    "Pending Review"
+            ).length;
+
+
+        const inspectedToday =
+            cases.filter(
+                c =>
+                    c.status ===
+                    "Inspected" &&
+                    c.inspected_at &&
+                    c.inspected_at.startsWith(
+                        today
+                    )
+            ).length;
+
+
+        const escalated =
+            cases.filter(
+                c =>
+                    c.status ===
+                    "Escalated"
+            ).length;
+
+
+        const highRisk =
+            cases.filter(
+                c =>
+                    c.risk_level ===
+                    "HIGH" &&
+                    c.status !==
+                    "Escalated"
+            ).length;
+
+
+        document.getElementById(
+            "pendingCount"
+        ).textContent = pending;
+
+
+        document.getElementById(
+            "inspectedCount"
+        ).textContent = inspectedToday;
+
+
+        document.getElementById(
+            "escalatedCount"
+        ).textContent = escalated;
+
+
+        document.getElementById(
+            "highRiskCount"
+        ).textContent = highRisk;
+
+
+
+        /* ====================================================
+           EMPTY STATE
+        ==================================================== */
+
+        if (cases.length === 0) {
+
+            queue.innerHTML = `
+                <div class="empty">
+                    No health reports have been
+                    submitted for your assigned district.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+
+        /* ====================================================
+           CASE CARDS
+        ==================================================== */
+
+        queue.innerHTML = "";
+
+
+        cases.forEach(
+            caseData => {
+
+                let statusClass =
+                    "pending";
+
+
+                if (
+                    caseData.status ===
+                    "Escalated"
+                ) {
+
+                    statusClass =
+                        "urgent";
+
+                }
+
+                else if (
+                    caseData.status ===
+                    "Inspected"
+                ) {
+
+                    statusClass =
+                        "inspected";
+
+                }
+
+
+                const symptoms =
+                    caseData.symptoms &&
+                    caseData.symptoms.length
+                    ? caseData.symptoms.join(
+                        ", "
+                    )
+                    : "Not reported";
+
+
+                const diseaseSignal =
+                    caseData.disease_name &&
+                    !caseData.disease_name.includes(
+                        "No current"
+                    )
+                    ? caseData.disease_name
+                    : "No current signal";
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "case";
+
+
+                const caseId =
+                    escapeHtml(
+                        caseData.case_id
+                    );
+
+
+                const status =
+                    escapeHtml(
+                        caseData.status
+                    );
+
+
+                const village =
+                    escapeHtml(
+                        caseData.village ||
+                        "Not provided"
+                    );
+
+
+                const animal =
+                    escapeHtml(
+                        caseData.animal_type ||
+                        "Not provided"
+                    );
+
+
+                const affected =
+                    escapeHtml(
+                        String(
+                            caseData.affected
+                        )
+                    );
+
+
+                const riskLevel =
+                    escapeHtml(
+                        caseData.risk_level ||
+                        "UNKNOWN"
+                    );
+
+
+                const riskScore =
+                    escapeHtml(
+                        String(
+                            caseData.risk_score ??
+                            "0"
+                        )
+                    );
+
+
+                const surveillance =
+                    escapeHtml(
+                        diseaseSignal
+                    );
+
+
+                card.innerHTML = `
+
+                    <div class="case-top">
+
+                        <span class="case-id">
+                            ${caseId}
+                        </span>
+
+                        <span
+                            class="status ${statusClass}"
+                        >
+                            ${status}
+                        </span>
+
+                    </div>
+
+
+                    <div class="case-details">
+
+                        <div>
+                            Village:
+                            <strong>
+                                ${village}
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            Animal:
+                            <strong>
+                                ${animal}
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            Affected:
+                            <strong>
+                                ${affected}
+                                animals
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            Symptoms:
+                            <strong>
+                                ${escapeHtml(
+                                    symptoms
+                                )}
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            Risk:
+                            <strong>
+                                ${riskLevel}
+                                (${riskScore})
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            Surveillance:
+                            <strong>
+                                ${surveillance}
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        ${getActionButtons(
+                            caseData
+                        )}
+
+                    </div>
+
+                `;
+
+
+                queue.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        queue.innerHTML = `
+
+            <div class="empty">
+
+                Unable to load case data.
+
+                <br>
+                <br>
+
+                Please refresh the dashboard.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* ============================================================
+   CASE ACTION BUTTONS
+============================================================ */
+
+function getActionButtons(caseData) {
+
+    const caseId =
+        escapeHtml(
+            caseData.case_id
+        );
+
+
+    if (
+        caseData.status ===
+        "Pending Review"
+    ) {
+
+        return `
+
+            <button
+                class="button primary"
+                onclick="markInspected('${caseId}')"
+            >
+                ✓ Mark Inspected
+            </button>
+
+
+            <button
+                class="button secondary"
+                onclick="showCaseDetails('${caseId}')"
+            >
+                View Details
+            </button>
+
+        `;
+
+    }
+
+
+    if (
+        caseData.status ===
+        "Inspected"
+    ) {
+
+        return `
+
+            <button
+                class="button danger"
+                onclick="escalateCase('${caseId}')"
+            >
+                🚨 Escalate to Vet
+            </button>
+
+
+            <button
+                class="button secondary"
+                onclick="showCaseDetails('${caseId}')"
+            >
+                View Details
+            </button>
+
+        `;
+
+    }
+
+
+    if (
+        caseData.status ===
+        "Escalated"
+    ) {
+
+        return `
+
+            <button
+                class="button secondary"
+                onclick="showCaseDetails('${caseId}')"
+            >
+                View Case
+            </button>
+
+        `;
+
+    }
+
+
+    return `
+
+        <button
+            class="button secondary"
+            onclick="showCaseDetails('${caseId}')"
+        >
+            View Details
+        </button>
+
+    `;
+
+}
+
+
+
+/* ============================================================
+   MARK CASE AS INSPECTED
+============================================================ */
+
+async function markInspected(caseId) {
+
+    const confirmed =
+        confirm(
+            "Mark this case as inspected?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    await updateCaseStatus(
+        caseId,
+        "Inspected"
+    );
+
+}
+
+
+
+/* ============================================================
+   ESCALATE CASE
+============================================================ */
+
+async function escalateCase(caseId) {
+
+    const confirmed =
+        confirm(
+            "Escalate this case to the Veterinary Officer?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    await updateCaseStatus(
+        caseId,
+        "Escalated"
+    );
+
+}
+
+
+
+/* ============================================================
+   UPDATE CASE STATUS
+============================================================ */
+
+async function updateCaseStatus(
+    caseId,
+    newStatus
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/paravet/cases/${encodeURIComponent(caseId)}/status`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                "Unable to update case."
+            );
+
+        }
+
+
+        alert(
+            result.message ||
+            "Case updated successfully."
+        );
+
+
+        await loadCases();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to update case."
+        );
+
+    }
+
+}
+
+
+
+/* ============================================================
+   SHOW CASE DETAILS
+============================================================ */
+
+/*
+   IMPORTANT:
+   The backend already has:
+
+       /case/<case_id>
+
+   Therefore we navigate directly to that route.
+*/
+
+function showCaseDetails(caseId) {
+
+    window.location.href =
+        `/case/${encodeURIComponent(caseId)}`;
+
+}
+
+
+
+/* ============================================================
+   BASIC HTML ESCAPING
+============================================================ */
+
+function escapeHtml(value) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        value ?? "";
+
+
+    return div.innerHTML;
+
+}
+
+
+
+/* ============================================================
+   COMING SOON
+============================================================ */
+
+function showComingSoon(event) {
+
+    event.preventDefault();
+
+
+    alert(
+        "Evidence collection module will be added in the next phase."
+    );
+
+}
+
+
+
+/* ============================================================
+   ESCALATION INFO
+============================================================ */
+
+function showEscalationInfo(event) {
+
+    event.preventDefault();
+
+
+    alert(
+        "Select an Inspected case from the Field Case Queue, " +
+        "then click 'Escalate to Vet'."
+    );
+
+}
+
+
+
+/* ============================================================
+   INITIAL LOAD
+============================================================ */
+
+loadCases();
+
+
+
+/* ============================================================
+   AUTO REFRESH
+============================================================ */
+
+setInterval(
+    loadCases,
+    30000
+);
+
+</script>
+
+</body>
+
+</html>

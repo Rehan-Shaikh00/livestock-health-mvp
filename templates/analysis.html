@@ -3,8 +3,10 @@
 <html lang="en">
 
 <head>
+    <link rel="manifest" href="/static/manifest.webmanifest">
+    <meta name="theme-color" content="#176b45">
+    <script defer src="/static/js/offline-sync.js"></script>
 
-```
 <meta charset="UTF-8">
 
 <meta
@@ -12,247 +14,657 @@
     content="width=device-width, initial-scale=1.0"
 >
 
-<title>Risk Assessment | Livestock Health</title>
+<title>Livestock Health Assessment</title>
 
-<!-- Bootstrap -->
 <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
     rel="stylesheet"
 >
 
-<!-- Bootstrap Icons -->
-<link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
->
-
-<!-- Our CSS -->
 <link
     rel="stylesheet"
     href="{{ url_for('static', filename='style.css') }}"
 >
-```
 
 </head>
 
 <body>
 
-<!-- NAVBAR -->
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
 
-<nav class="navbar bg-white border-bottom sticky-top">
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
 
-```
-<div class="container py-2">
+<div class="container">
 
     <a
-        href="/"
-        class="navbar-brand d-flex align-items-center gap-2 text-decoration-none"
+        class="navbar-brand fw-bold"
+        href="/dashboard"
     >
-
-        <span class="brand-icon">🐄</span>
-
-        <span>
-
-            <strong>Livestock Health</strong>
-
-            <small class="d-block text-muted brand-subtitle">
-                AI-Powered Animal Health Surveillance
-            </small>
-
-        </span>
-
+        Livestock Health
     </a>
 
+    <div class="d-flex align-items-center gap-3">
 
-    <span class="user-badge">
+        <span class="text-muted small">
+            {{ session.get("name", "User") }}
+        </span>
 
-        <i class="bi bi-shield-check"></i>
+        <a
+            href="/logout"
+            class="btn btn-outline-danger btn-sm"
+        >
+            Logout
+        </a>
 
-        Assessment
-
-    </span>
+    </div>
 
 </div>
-```
 
 </nav>
 
-<main class="container py-5">
+<!-- =========================================================
+     MAIN CONTAINER
+========================================================= -->
 
-```
-<!-- HEADER -->
+<div class="container py-5">
 
-<section class="assessment-header mb-4">
+<!-- =====================================================
+     HEADER
+====================================================== -->
 
-    <a
-        href="/"
-        class="back-link"
-    >
-        <i class="bi bi-arrow-left"></i>
-        Dashboard
-    </a>
+<div class="mb-4">
 
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
 
-    <div class="mt-4">
+        <div>
 
-        <span class="status-pill">
+            <p class="text-uppercase text-muted small fw-semibold mb-1">
+                AI-Assisted Surveillance
+            </p>
 
-            <span class="status-dot"></span>
+            <h1 class="fw-bold mb-2">
+                Livestock Health Assessment
+            </h1>
 
-            Assessment Complete
-
-        </span>
-
-
-        <h1 class="assessment-title mt-3">
-
-            Livestock Health Assessment
-
-        </h1>
-
-
-        <p class="assessment-subtitle">
-
-            AI-assisted risk assessment based on reported
-            symptoms, affected animals, and available
-            historical disease evidence.
-
-        </p>
-
-    </div>
-
-</section>
-
-
-
-<!-- ============================================= -->
-<!-- FINAL RISK -->
-<!-- ============================================= -->
-
-<section class="risk-result-card mb-4
-
-    {% if risk_level == 'HIGH' %}
-        risk-high
-    {% elif risk_level == 'MEDIUM' %}
-        risk-medium
-    {% else %}
-        risk-low
-    {% endif %}
-
-">
-
-    <div class="risk-result-content">
-
-
-        <div class="risk-result-icon">
-
-            {% if risk_level == "HIGH" %}
-
-                <i class="bi bi-exclamation-triangle-fill"></i>
-
-            {% elif risk_level == "MEDIUM" %}
-
-                <i class="bi bi-exclamation-circle-fill"></i>
-
-            {% else %}
-
-                <i class="bi bi-check-circle-fill"></i>
-
-            {% endif %}
+            <p class="text-muted mb-0">
+                Risk assessment based on reported symptoms,
+                affected animals and available historical
+                disease surveillance evidence.
+            </p>
 
         </div>
 
+        <div class="text-end">
 
-        <div class="risk-result-text">
-
-            <p>Current Risk Level</p>
-
-            <h1>{{ risk_level }}</h1>
-
-
-            {% if risk_level == "HIGH" %}
-
-                <span>
-                    Higher level of concern detected
-                </span>
-
-            {% elif risk_level == "MEDIUM" %}
-
-                <span>
-                    Moderate level of concern detected
-                </span>
-
-            {% else %}
-
-                <span>
-                    Lower level of concern detected
-                </span>
-
-            {% endif %}
-
-        </div>
-
-
-        <div class="risk-score-display">
-
-            <small>Final Risk Score</small>
-
-            <strong>{{ risk_score }}</strong>
-
-            <span>points</span>
+            <span class="badge bg-light text-dark border">
+                Maharashtra Surveillance
+            </span>
 
         </div>
 
     </div>
 
+</div>
 
-    <!-- RECOMMENDATION -->
 
-    <div class="risk-recommendation">
+<!-- =====================================================
+     CASE REGISTRATION SUCCESS
+====================================================== -->
 
-        {% if risk_level == "HIGH" %}
+<div class="card border-0 shadow-sm mb-4">
 
-            <i class="bi bi-shield-exclamation"></i>
+    <div class="card-body p-4">
 
-            <div>
+        <div class="d-flex align-items-start gap-3">
 
-                <strong>Veterinary attention recommended</strong>
+            <div class="fs-3">
+                ✓
+            </div>
 
-                <p>
-                    Contact a veterinarian as soon as possible
-                    and follow professional guidance.
+            <div class="flex-grow-1">
+
+                <div class="text-uppercase small fw-bold text-success">
+                    Report Successfully Registered
+                </div>
+
+                <h5 class="fw-bold mt-1 mb-2">
+
+                    Case ID:
+
+                    <span class="text-primary">
+                        {{ current_case_id }}
+                    </span>
+
+                </h5>
+
+                <p class="text-muted mb-3">
+                    The livestock health report has been
+                    registered and forwarded for field review.
                 </p>
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    <span class="badge bg-warning text-dark">
+                        Pending Review
+                    </span>
+
+                    <span class="badge bg-light text-dark border">
+                        Assigned to Paravet / Village Health Worker
+                    </span>
+
+                </div>
 
             </div>
 
-        {% elif risk_level == "MEDIUM" %}
+        </div>
 
-            <i class="bi bi-eye"></i>
+    </div>
 
-            <div>
+</div>
 
-                <strong>Monitor the situation closely</strong>
 
-                <p>
-                    Consider veterinary advice if symptoms
-                    persist, worsen, or additional animals
-                    become affected.
-                </p>
+<!-- =====================================================
+     LOCATION
+====================================================== -->
+
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-body p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h5 class="fw-bold mb-0">
+                Report Location
+            </h5>
+
+            <span class="badge bg-light text-dark border">
+                Maharashtra
+            </span>
+
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+
+                <div class="small text-muted">
+                    State
+                </div>
+
+                <div class="fw-semibold">
+                    {{ location.state }}
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="small text-muted">
+                    District
+                </div>
+
+                <div class="fw-semibold">
+                    {{ location.district }}
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="small text-muted">
+                    Village
+                </div>
+
+                <div class="fw-semibold">
+                    {{ location.village }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RISK OVERVIEW
+====================================================== -->
+
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-body p-4">
+
+        <div class="row align-items-center g-4">
+
+
+            <!-- Risk level -->
+
+            <div class="col-md-5">
+
+                <div class="small text-muted mb-2">
+                    Current Risk Level
+                </div>
+
+                {% if risk_level == "HIGH" %}
+
+                    <div class="display-5 fw-bold text-danger">
+                        HIGH
+                    </div>
+
+                    <p class="text-muted mb-0">
+                        Higher level of concern detected
+                    </p>
+
+                {% elif risk_level == "MEDIUM" %}
+
+                    <div class="display-5 fw-bold text-warning">
+                        MEDIUM
+                    </div>
+
+                    <p class="text-muted mb-0">
+                        Moderate level of concern detected
+                    </p>
+
+                {% else %}
+
+                    <div class="display-5 fw-bold text-success">
+                        LOW
+                    </div>
+
+                    <p class="text-muted mb-0">
+                        Lower level of concern detected
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Score -->
+
+            <div class="col-md-3">
+
+                <div class="small text-muted mb-2">
+                    Final Risk Score
+                </div>
+
+                <div class="display-6 fw-bold">
+                    {{ risk_score }}
+                </div>
+
+                <div class="text-muted small">
+                    points
+                </div>
+
+            </div>
+
+
+            <!-- Recommendation -->
+
+            <div class="col-md-4">
+
+                <div class="p-3 rounded bg-light">
+
+                    <div class="fw-semibold mb-1">
+                        Veterinary attention recommended
+                    </div>
+
+                    <div class="small text-muted">
+                        Contact a veterinarian as soon as
+                        possible and follow professional guidance.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     WHY THIS RISK LEVEL
+====================================================== -->
+
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-body p-4">
+
+        <h5 class="fw-bold mb-1">
+            Why this risk level?
+        </h5>
+
+        <p class="text-muted small mb-4">
+            The final score combines multiple evidence
+            sources from the assessment.
+        </p>
+
+
+        <div class="row g-3">
+
+
+            <!-- ML -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="border rounded p-3 h-100">
+
+                    <div class="small text-muted">
+                        AI Model
+                    </div>
+
+                    <div class="fs-3 fw-bold">
+                        {{ ml_risk }}
+                    </div>
+
+                    <div class="small text-muted">
+                        points contribution
+                    </div>
+
+                    <hr>
+
+                    <div class="small">
+
+                        Predicted deaths:
+
+                        <strong>
+                            {{ predicted_deaths }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Historical -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="border rounded p-3 h-100">
+
+                    <div class="small text-muted">
+                        Historical Anthrax
+                    </div>
+
+                    <div class="fs-3 fw-bold">
+                        {{ historical_risk }}
+                    </div>
+
+                    <div class="small text-muted">
+                        points contribution
+                    </div>
+
+                    <hr>
+
+                    <div class="small">
+
+                        Historical deaths:
+
+                        <strong>
+                            {{ historical_deaths }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Symptoms -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="border rounded p-3 h-100">
+
+                    <div class="small text-muted">
+                        Symptoms
+                    </div>
+
+                    <div class="fs-3 fw-bold">
+                        {{ symptom_risk }}
+                    </div>
+
+                    <div class="small text-muted">
+                        points contribution
+                    </div>
+
+                    <hr>
+
+                    <div class="small">
+
+                        Reported:
+
+                        <strong>
+                            {{ report.symptoms|length }}
+                        </strong>
+
+                        symptom(s)
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Affected -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="border rounded p-3 h-100">
+
+                    <div class="small text-muted">
+                        Affected Animals
+                    </div>
+
+                    <div class="fs-3 fw-bold">
+                        {{ affected_risk }}
+                    </div>
+
+                    <div class="small text-muted">
+                        points contribution
+                    </div>
+
+                    <hr>
+
+                    <div class="small">
+
+                        Affected:
+
+                        <strong>
+                            {{ report.affected }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DISEASE SURVEILLANCE
+====================================================== -->
+
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-body p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+
+            <h5 class="fw-bold mb-0">
+                Current Disease Surveillance
+            </h5>
+
+
+            <!-- Overall disease surveillance level -->
+
+            {% if disease_risk_score >= 3 %}
+
+                <span class="badge bg-danger">
+                    Very High
+                </span>
+
+            {% elif disease_risk_score == 2 %}
+
+                <span class="badge bg-danger">
+                    High
+                </span>
+
+            {% elif disease_risk_score == 1 %}
+
+                <span class="badge bg-warning text-dark">
+                    Medium
+                </span>
+
+            {% else %}
+
+                <span class="badge bg-success">
+                    Low
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <p class="text-muted small">
+
+            Disease names shown here are surveillance signals
+            from available historical/current data and do not
+            represent a confirmed diagnosis.
+
+        </p>
+
+
+        {% if disease_alerts %}
+
+            <div class="table-responsive">
+
+                <table class="table align-middle mb-0">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Disease Signal
+                            </th>
+
+                            <th>
+                                Risk
+                            </th>
+
+                            <th>
+                                Month
+                            </th>
+
+                            <th>
+                                Contribution
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for alert in disease_alerts %}
+
+                            <tr>
+
+                                <td class="fw-semibold">
+                                    {{ alert.disease }}
+                                </td>
+
+
+                                <!-- Risk derived from score -->
+
+                                <td>
+
+                                    {% if alert.score >= 3 %}
+
+                                        <span class="badge bg-danger">
+                                            Very High
+                                        </span>
+
+                                    {% elif alert.score == 2 %}
+
+                                        <span class="badge bg-danger">
+                                            High
+                                        </span>
+
+                                    {% elif alert.score == 1 %}
+
+                                        <span class="badge bg-warning text-dark">
+                                            Medium
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-success">
+                                            Low
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+                                    {{ alert.month }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if alert.score > 0 %}
+
+                                        +{{ alert.score }}
+
+                                    {% else %}
+
+                                        0
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
 
             </div>
 
         {% else %}
 
-            <i class="bi bi-shield-check"></i>
+            <div class="alert alert-light border mb-0">
 
-            <div>
-
-                <strong>Continue regular monitoring</strong>
-
-                <p>
-                    Monitor the animal and report any worsening
-                    symptoms or newly affected animals.
-                </p>
+                No significant disease surveillance signal
+                was found for the selected location.
 
             </div>
 
@@ -260,654 +672,333 @@
 
     </div>
 
-</section>
+</div>
 
 
+<!-- =====================================================
+     REPORTED ANIMAL INFORMATION
+====================================================== -->
 
-<!-- ============================================= -->
-<!-- RISK BREAKDOWN -->
-<!-- ============================================= -->
+<div class="card border-0 shadow-sm mb-4">
 
-<section class="analysis-card mb-4">
+    <div class="card-body p-4">
 
-    <div class="analysis-card-header">
-
-        <div>
-
-            <h3>
-                <i class="bi bi-bar-chart-fill"></i>
-                Why this risk level?
-            </h3>
-
-            <p>
-                The final score combines multiple evidence
-                sources from the assessment.
-            </p>
-
-        </div>
-
-        <span class="analysis-total">
-
-            {{ risk_score }}
-
-        </span>
-
-    </div>
+        <h5 class="fw-bold mb-3">
+            Reported Animal Information
+        </h5>
 
 
-    <div class="risk-breakdown-grid">
+        <div class="row g-4">
 
 
-        <!-- ML -->
+            <div class="col-md-4">
 
-        <div class="contribution-card">
-
-            <div class="contribution-top">
-
-                <div class="contribution-icon ml-icon">
-                    <i class="bi bi-cpu"></i>
+                <div class="small text-muted">
+                    Animal Type
                 </div>
 
-                <span class="contribution-value">
-                    +{{ ml_risk }}
-                </span>
-
-            </div>
-
-
-            <h5>AI Model</h5>
-
-            <p>
-                Contribution based on the machine learning
-                model's predicted deaths.
-            </p>
-
-        </div>
-
-
-
-        <!-- HISTORICAL -->
-
-        <div class="contribution-card">
-
-            <div class="contribution-top">
-
-                <div class="contribution-icon history-icon">
-                    <i class="bi bi-database"></i>
-                </div>
-
-                <span class="contribution-value">
-                    +{{ historical_risk }}
-                </span>
-
-            </div>
-
-
-            <h5>Historical Evidence</h5>
-
-            <p>
-                Based on historical Anthrax records for the
-                reported district.
-            </p>
-
-        </div>
-
-
-
-        <!-- SYMPTOMS -->
-
-        <div class="contribution-card">
-
-            <div class="contribution-top">
-
-                <div class="contribution-icon symptom-icon">
-                    <i class="bi bi-activity"></i>
-                </div>
-
-                <span class="contribution-value">
-                    +{{ symptom_risk }}
-                </span>
-
-            </div>
-
-
-            <h5>Symptoms</h5>
-
-            <p>
-                Contribution based on the number and severity
-                of reported symptoms.
-            </p>
-
-        </div>
-
-
-
-        <!-- AFFECTED -->
-
-        <div class="contribution-card">
-
-            <div class="contribution-top">
-
-                <div class="contribution-icon animal-icon-small">
-                    <i class="bi bi-heart-pulse"></i>
-                </div>
-
-                <span class="contribution-value">
-                    +{{ affected_risk }}
-                </span>
-
-            </div>
-
-
-            <h5>Affected Animals</h5>
-
-            <p>
-                Contribution based on the number of animals
-                currently reported as affected.
-            </p>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-
-<!-- ============================================= -->
-<!-- CASE + LOCATION -->
-<!-- ============================================= -->
-
-<div class="row g-4 mb-4">
-
-
-    <!-- LOCATION -->
-
-    <div class="col-lg-6">
-
-        <section class="analysis-card h-100">
-
-            <div class="analysis-card-header simple">
-
-                <div>
-
-                    <h3>
-                        <i class="bi bi-geo-alt-fill"></i>
-                        Reported Location
-                    </h3>
-
-                    <p>
-                        Location associated with this report.
-                    </p>
-
+                <div class="fw-semibold">
+                    {{ report.animal_type }}
                 </div>
 
             </div>
 
 
-            <div class="detail-list">
+            <div class="col-md-4">
 
-
-                <div class="detail-row">
-
-                    <span>State</span>
-
-                    <strong>
-                        {{ location.state }}
-                    </strong>
-
+                <div class="small text-muted">
+                    Age
                 </div>
 
-
-                <div class="detail-row">
-
-                    <span>District</span>
-
-                    <strong>
-                        {{ location.district }}
-                    </strong>
-
-                </div>
-
-
-                <div class="detail-row">
-
-                    <span>Village / Area</span>
-
-                    <strong>
-
-                        {% if location.village %}
-
-                            {{ location.village }}
-
-                        {% else %}
-
-                            Not provided
-
-                        {% endif %}
-
-                    </strong>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-    </div>
-
-
-
-    <!-- HEALTH REPORT -->
-
-    <div class="col-lg-6">
-
-        <section class="analysis-card h-100">
-
-            <div class="analysis-card-header simple">
-
-                <div>
-
-                    <h3>
-                        <i class="bi bi-clipboard2-pulse"></i>
-                        Report Summary
-                    </h3>
-
-                    <p>
-                        Information provided by the reporter.
-                    </p>
-
+                <div class="fw-semibold">
+                    {{ report.age }}
                 </div>
 
             </div>
 
 
-            <div class="detail-list">
+            <div class="col-md-4">
 
-
-                <div class="detail-row">
-
-                    <span>Animal Type</span>
-
-                    <strong>
-                        {{ report.animal_type }}
-                    </strong>
-
+                <div class="small text-muted">
+                    Affected Animals
                 </div>
 
-
-                <div class="detail-row">
-
-                    <span>Age</span>
-
-                    <strong>
-                        {{ report.age }}
-                    </strong>
-
+                <div class="fw-semibold">
+                    {{ report.affected }}
                 </div>
-
-
-                <div class="detail-row">
-
-                    <span>Affected Animals</span>
-
-                    <strong>
-                        {{ report.affected }}
-                    </strong>
-
-                </div>
-
-
-                <div class="detail-row">
-
-                    <span>Duration</span>
-
-                    <strong>
-                        {{ report.duration }}
-                    </strong>
-
-                </div>
-
 
             </div>
 
 
-            <div class="symptoms-summary">
+            <div class="col-md-4">
 
-                <span class="summary-label">
+                <div class="small text-muted">
+                    Duration
+                </div>
+
+                <div class="fw-semibold">
+                    {{ report.duration }}
+                </div>
+
+            </div>
+
+
+            <div class="col-md-8">
+
+                <div class="small text-muted">
                     Reported Symptoms
-                </span>
+                </div>
 
+                {% if report.symptoms %}
 
-                <div class="mt-2">
-
-                    {% if report.symptoms %}
+                    <div class="d-flex flex-wrap gap-2 mt-1">
 
                         {% for symptom in report.symptoms %}
 
-                            <span class="symptom-tag">
+                            <span class="badge bg-light text-dark border">
                                 {{ symptom }}
                             </span>
 
                         {% endfor %}
 
-                    {% else %}
+                    </div>
 
-                        <span class="text-muted small">
-                            No symptoms reported.
-                        </span>
+                {% else %}
 
-                    {% endif %}
+                    <div class="text-muted">
+                        No symptoms reported.
+                    </div>
 
-                </div>
+                {% endif %}
 
             </div>
 
-        </section>
+        </div>
 
     </div>
 
 </div>
 
 
+<!-- =====================================================
+     RISK INTERPRETATION
+====================================================== -->
 
-<!-- ============================================= -->
-<!-- HISTORICAL EVIDENCE -->
-<!-- ============================================= -->
+<div class="card border-0 shadow-sm mb-4">
 
-<section class="analysis-card mb-4">
+    <div class="card-body p-4">
 
-    <div class="analysis-card-header">
+        <h5 class="fw-bold mb-3">
+            Risk Interpretation
+        </h5>
 
-        <div>
-
-            <h3>
-                <i class="bi bi-database-fill"></i>
-                Historical Disease Evidence
-            </h3>
-
-            <p>
-                Available Anthrax records for the reported
-                district.
-            </p>
-
-        </div>
-
-
-        <span class="dataset-badge">
-            2020–2023 Dataset
-        </span>
-
-    </div>
-
-
-    {% if historical_cases %}
-
-
-        <div class="evidence-alert">
-
-            <i class="bi bi-info-circle-fill"></i>
-
-            <div>
-
-                <strong>Historical records found</strong>
-
-                <p>
-                    Records are available for
-                    <strong>{{ location.district }}</strong>
-                    in the current dataset.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="row g-3 mt-2">
-
-
-            <div class="col-md-4">
-
-                <div class="metric-card">
-
-                    <span>Historical Outbreaks</span>
-
-                    <strong>
-                        {{ historical_outbreaks }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-4">
-
-                <div class="metric-card">
-
-                    <span>Historical Attacks</span>
-
-                    <strong>
-                        {{ historical_attacks }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-4">
-
-                <div class="metric-card">
-
-                    <span>Historical Deaths</span>
-
-                    <strong>
-                        {{ historical_deaths }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-
-    {% else %}
-
-
-        <div class="no-evidence">
-
-            <i class="bi bi-info-circle"></i>
-
-            <div>
-
-                <strong>No matching historical records</strong>
-
-                <p>
-
-                    No Anthrax records were found for
-                    <strong>{{ location.district }}</strong>
-                    in the available 2020–2023 dataset.
-
-                    This does <strong>not</strong> mean Anthrax
-                    cannot occur in this area. It only means
-                    that no matching record exists in the
-                    current dataset.
-
-                </p>
-
-            </div>
-
-        </div>
-
-
-    {% endif %}
-
-</section>
-
-
-
-<!-- ============================================= -->
-<!-- ML MODEL -->
-<!-- ============================================= -->
-
-<section class="analysis-card mb-4">
-
-    <div class="analysis-card-header simple">
-
-        <div>
-
-            <h3>
-                <i class="bi bi-cpu-fill"></i>
-                Machine Learning Prediction
-            </h3>
-
-            <p>
-                Prediction generated by the trained model.
-            </p>
-
-        </div>
-
-        <span class="model-badge">
-            Random Forest
-        </span>
-
-    </div>
-
-
-    <div class="ml-result">
-
-        <div>
-
-            <span>
-                Predicted Deaths
-            </span>
-
-            <strong>
-                {{ ml_prediction }}
-            </strong>
-
-        </div>
-
-
-        <div class="ml-explanation">
-
-            <i class="bi bi-info-circle"></i>
-
-            <p>
-
-                Estimated using the trained Random Forest
-                Regressor with Year, Outbreaks, Susceptible
-                animals and Attacks as model features.
-
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- ============================================= -->
-<!-- ACTION -->
-<!-- ============================================= -->
-
-<section class="next-action-card mb-4">
-
-    <div class="next-action-icon">
-
-        <i class="bi bi-person-vcard"></i>
-
-    </div>
-
-
-    <div>
-
-        <h3>What should you do next?</h3>
 
         {% if risk_level == "HIGH" %}
 
-            <p>
-                Contact a veterinarian as soon as possible.
-                Keep affected animals under observation and
-                follow professional veterinary instructions.
-            </p>
+            <div class="alert alert-danger mb-0">
+
+                <strong>
+                    High-risk surveillance signal.
+                </strong>
+
+                The combined evidence suggests that this case
+                should receive prompt veterinary attention and
+                field verification.
+
+            </div>
+
 
         {% elif risk_level == "MEDIUM" %}
 
-            <p>
-                Monitor the affected animals closely.
-                Seek veterinary advice if symptoms persist,
-                worsen, or additional animals become affected.
-            </p>
+            <div class="alert alert-warning mb-0">
+
+                <strong>
+                    Moderate-risk surveillance signal.
+                </strong>
+
+                Field inspection and continued monitoring are
+                recommended.
+
+            </div>
+
 
         {% else %}
 
-            <p>
-                Continue monitoring the animal and report
-                any worsening symptoms or newly affected
-                animals.
-            </p>
+            <div class="alert alert-success mb-0">
+
+                <strong>
+                    Low-risk surveillance signal.
+                </strong>
+
+                Continue monitoring the animals and report any
+                worsening symptoms or additional cases.
+
+            </div>
 
         {% endif %}
 
     </div>
 
-</section>
+</div>
 
 
+<!-- =====================================================
+     WORKFLOW
+====================================================== -->
 
-<!-- DISCLAIMER -->
+<div class="card border-0 shadow-sm mb-4">
 
-<div class="assessment-disclaimer">
+    <div class="card-body p-4">
 
-    <i class="bi bi-shield-check"></i>
+        <h5 class="fw-bold mb-4">
+            Case Workflow
+        </h5>
 
-    <p>
 
-        <strong>Decision-support prototype:</strong>
-        This assessment does not replace professional
-        veterinary diagnosis. Results are based on the
-        information provided and the currently available
-        historical dataset.
+        <div class="row g-3">
 
-    </p>
+
+            <div class="col-md-3">
+
+                <div class="border rounded p-3 h-100">
+
+                    <div class="small text-muted">
+                        Step 1
+                    </div>
+
+                    <div class="fw-semibold">
+                        Farmer Report
+                    </div>
+
+                    <div class="small text-muted">
+                        Health information submitted
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="border rounded p-3 h-100">
+
+                    <div class="small text-muted">
+                        Step 2
+                    </div>
+
+                    <div class="fw-semibold">
+                        AI Risk Assessment
+                    </div>
+
+                    <div class="small text-muted">
+                        Automated surveillance scoring
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="border rounded p-3 h-100">
+
+                    <div class="small text-muted">
+                        Step 3
+                    </div>
+
+                    <div class="fw-semibold">
+                        Paravet Review
+                    </div>
+
+                    <div class="small text-muted">
+                        Field inspection and verification
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="border rounded p-3 h-100">
+
+                    <div class="small text-muted">
+                        Step 4
+                    </div>
+
+                    <div class="fw-semibold">
+                        Veterinary Escalation
+                    </div>
+
+                    <div class="small text-muted">
+                        Sample collection and further action
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
 
+<!-- =====================================================
+     ACTIONS
+====================================================== -->
 
-<!-- ACTION BUTTONS -->
+<div class="d-flex flex-wrap gap-2">
 
-<div class="assessment-actions">
+    <a
+        href="/dashboard"
+        class="btn btn-primary"
+    >
+        Back to Dashboard
+    </a>
 
     <a
         href="/report"
-        class="btn secondary-action"
+        class="btn btn-outline-secondary"
     >
-        <i class="bi bi-plus-circle"></i>
-        Report Another Case
-    </a>
-
-
-    <a
-        href="/"
-        class="btn primary-btn"
-    >
-        <i class="bi bi-house"></i>
-        Dashboard
+        Submit Another Report
     </a>
 
 </div>
-```
 
-</main>
+</div>
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="border-top bg-white mt-5">
+
+<div class="container py-4">
+
+    <div class="small text-muted text-center">
+
+        Livestock Health Surveillance & Decision Support System
+
+        <br>
+
+        AI-assisted assessment for early detection and
+        management of livestock health risks.
+
+    </div>
+
+</div>
+
+</footer>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
 
 </body>
+
 </html>

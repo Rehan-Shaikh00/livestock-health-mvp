@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    <link rel="manifest" href="/static/manifest.webmanifest">
+    <meta name="theme-color" content="#176b45">
+    <script defer src="/static/js/offline-sync.js"></script>
 
     <meta charset="UTF-8">
 
@@ -10,167 +13,592 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Animal Location | Livestock Health</title>
+    <title>
+        Location Assessment | Livestock Health Surveillance
+    </title>
 
-    <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+    <style>
 
-    <!-- Our CSS -->
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f1f8f4,
+                    #ffffff
+                );
+
+            min-height: 100vh;
+
+            color: #183b2a;
+        }
+
+
+        .page {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 30px 20px;
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 850px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .logo {
+
+            width: 70px;
+
+            height: 70px;
+
+            margin: 0 auto 15px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #e2f2e8;
+
+            font-size: 34px;
+        }
+
+
+        .header h1 {
+
+            margin: 0 0 8px;
+
+            font-size: 30px;
+
+            font-weight: 750;
+
+            color: #174b31;
+        }
+
+
+        .header p {
+
+            margin: 0;
+
+            color: #688074;
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .card {
+
+            background: #ffffff;
+
+            border-radius: 20px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 15px 45px rgba(
+                    35,
+                    83,
+                    55,
+                    0.10
+                );
+
+            border:
+                1px solid #e2eee6;
+        }
+
+
+        .card-header {
+
+            margin-bottom: 28px;
+        }
+
+
+        .card-header h2 {
+
+            margin: 0 0 8px;
+
+            color: #194c32;
+
+            font-size: 23px;
+        }
+
+
+        .card-header p {
+
+            margin: 0;
+
+            color: #718177;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        .error {
+
+            background: #fff0f0;
+
+            border: 1px solid #f0b8b8;
+
+            color: #a33a3a;
+
+            border-radius: 10px;
+
+            padding: 12px 15px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-group {
+
+            margin-bottom: 22px;
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: 650;
+
+            font-size: 14px;
+
+            color: #284b39;
+        }
+
+
+        .required {
+
+            color: #c33;
+
+            margin-left: 3px;
+        }
+
+
+        .optional {
+
+            color: #8a9991;
+
+            font-weight: 400;
+
+            font-size: 12px;
+
+            margin-left: 5px;
+        }
+
+
+        select,
+        input {
+
+            width: 100%;
+
+            padding: 13px 15px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid #d6e4da;
+
+            background: #ffffff;
+
+            font-size: 15px;
+
+            color: #244634;
+
+            outline: none;
+
+            transition:
+                border-color .2s,
+                box-shadow .2s,
+                background .2s;
+        }
+
+
+        select:focus,
+        input:focus {
+
+            border-color: #4c9b69;
+
+            box-shadow:
+                0 0 0 3px rgba(
+                    76,
+                    155,
+                    105,
+                    0.12
+                );
+        }
+
+
+        select:disabled {
+
+            background: #f2f5f3;
+
+            color: #9aa79f;
+
+            cursor: not-allowed;
+        }
+
+
+        .help-text {
+
+            margin-top: 7px;
+
+            font-size: 12px;
+
+            color: #829087;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           LOCATION PREVIEW
+        ===================================================== */
+
+        .preview {
+
+            margin-top: 10px;
+
+            padding: 17px;
+
+            border-radius: 12px;
+
+            background: #f4faf6;
+
+            border:
+                1px solid #dcebe1;
+        }
+
+
+        .preview-title {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: .7px;
+
+            color: #568064;
+
+            margin-bottom: 8px;
+        }
+
+
+        .preview-location {
+
+            font-size: 16px;
+
+            font-weight: 650;
+
+            color: #1d5133;
+        }
+
+
+        /* =====================================================
+           BUTTON
+        ===================================================== */
+
+        .actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            margin-top: 30px;
+        }
+
+
+        .btn {
+
+            border: none;
+
+            border-radius: 11px;
+
+            padding: 14px 24px;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform .15s,
+                box-shadow .15s,
+                opacity .15s;
+
+            background: #287747;
+
+            color: #ffffff;
+
+            min-width: 190px;
+        }
+
+
+        .btn:hover:not(:disabled) {
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 20px rgba(
+                    40,
+                    119,
+                    71,
+                    0.20
+                );
+        }
+
+
+        .btn:disabled {
+
+            opacity: .5;
+
+            cursor: not-allowed;
+
+            box-shadow: none;
+        }
+
+
+        .btn.loading {
+
+            cursor: wait;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .district-status {
+
+            margin-top: 8px;
+
+            font-size: 12px;
+
+            color: #6d7e74;
+
+            display: none;
+        }
+
+
+        .district-status.show {
+
+            display: block;
+        }
+
+
+        .district-status.error-status {
+
+            color: #a33a3a;
+        }
+
+
+        .district-status.success-status {
+
+            color: #38754e;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 650px) {
+
+            .page {
+
+                padding: 20px 14px;
+            }
+
+
+            .card {
+
+                padding: 25px 20px;
+
+                border-radius: 16px;
+            }
+
+
+            .header h1 {
+
+                font-size: 24px;
+            }
+
+
+            .actions {
+
+                display: block;
+            }
+
+
+            .btn {
+
+                width: 100%;
+            }
+        }
+
+    </style>
 
 </head>
 
 
 <body>
 
-<!-- ===================================================== -->
-<!-- NAVBAR -->
-<!-- ===================================================== -->
-
-<nav class="navbar bg-white border-bottom">
+<div class="page">
 
     <div class="container">
 
-        <a
-            href="/"
-            class="navbar-brand fw-bold fs-4 text-decoration-none"
-        >
-            🐄 Livestock Health
-        </a>
 
-        <span class="text-muted d-none d-md-block">
-            Location & Surveillance
-        </span>
+        <!-- =================================================
+             HEADER
+        ================================================= -->
 
-    </div>
+        <div class="header">
 
-</nav>
+            <div class="logo">
+                🐄
+            </div>
 
+            <h1>
+                Livestock Health Surveillance
+            </h1>
 
-<!-- ===================================================== -->
-<!-- MAIN -->
-<!-- ===================================================== -->
-
-<main class="container py-5">
-
-    <!-- BACK -->
-    <div class="mb-4">
-
-        <a
-            href="/"
-            class="text-decoration-none text-muted"
-        >
-            ← Back to Dashboard
-        </a>
-
-    </div>
-
-
-    <!-- ================================================= -->
-    <!-- HEADER -->
-    <!-- ================================================= -->
-
-    <div class="mb-4">
-
-        <div class="d-flex align-items-center gap-2 mb-3">
-
-            <span class="badge bg-success-subtle text-success px-3 py-2">
-                Step 1 of 2
-            </span>
-
-            <span class="text-muted small">
-                Location
-            </span>
+            <p>
+                Maharashtra Animal Health Decision Support System
+            </p>
 
         </div>
 
-        <h1 class="fw-bold">
-            📍 Animal Location
-        </h1>
 
-        <p class="text-muted fs-5">
-            Tell us where the affected animal or herd is located.
-        </p>
+        <!-- =================================================
+             MAIN CARD
+        ================================================= -->
 
-    </div>
+        <div class="card">
 
 
-    <!-- ================================================= -->
-    <!-- WHY LOCATION MATTERS -->
-    <!-- ================================================= -->
+            <div class="card-header">
 
-    <div class="card border-0 shadow-sm mb-4 location-info-card">
+                <h2>
+                    Select Location
+                </h2>
 
-        <div class="card-body p-4">
-
-            <div class="d-flex gap-3">
-
-                <div class="location-info-icon">
-                    🦠
-                </div>
-
-                <div>
-
-                    <h5 class="fw-bold mb-2">
-                        Why is location important?
-                    </h5>
-
-                    <p class="text-muted mb-0">
-
-                        Your district helps the system compare the
-                        current report with available historical
-                        disease records and identify location-based
-                        risk patterns.
-
-                    </p>
-
-                </div>
+                <p>
+                    Select the location where the livestock
+                    health issue has been reported. This
+                    information is used to compare the report
+                    with historical and current disease
+                    surveillance evidence.
+                </p>
 
             </div>
 
-        </div>
 
-    </div>
+            <!-- =================================================
+                 ERROR MESSAGE
+            ================================================= -->
 
+            {% if error %}
 
-    <!-- ================================================= -->
-    <!-- LOCATION FORM -->
-    <!-- ================================================= -->
+            <div class="error">
 
-    <form
-        method="POST"
-        action="/location"
-        id="locationForm"
-    >
+                {{ error }}
 
-        <!-- LOCATION CARD -->
+            </div>
 
-        <div class="card border-0 shadow-sm mb-4">
-
-            <div class="card-body p-4 p-md-5">
+            {% endif %}
 
 
-                <!-- STATE -->
+            <!-- =================================================
+                 FORM
+            ================================================= -->
 
-                <div class="mb-4">
+            <form
+                method="POST"
+                action="{{ url_for('location') }}"
+                id="locationForm"
+                autocomplete="off"
+            >
 
-                    <label
-                        for="state"
-                        class="form-label fw-semibold"
-                    >
+
+                <!-- =================================================
+                     STATE
+                ================================================= -->
+
+                <div class="form-group">
+
+                    <label for="state">
+
                         State
+
+                        <span class="required">
+                            *
+                        </span>
+
                     </label>
+
 
                     <select
                         id="state"
                         name="state"
-                        class="form-select form-select-lg"
                         required
                     >
 
@@ -178,318 +606,458 @@
                             Select State
                         </option>
 
-                        {% for state in states %}
-
-                            <option value="{{ state }}">
-                                {{ state }}
-                            </option>
-
-                        {% endfor %}
+                        <option
+                            value="Maharashtra"
+                            {% if selected_state == "Maharashtra" %}
+                                selected
+                            {% endif %}
+                        >
+                            Maharashtra
+                        </option>
 
                     </select>
 
-                    <div class="form-text">
-                        Select the state where the animal is located.
+
+                    <div class="help-text">
+
+                        Currently available:
+                        Maharashtra
+
                     </div>
 
                 </div>
 
 
-                <!-- DISTRICT -->
+                <!-- =================================================
+                     DISTRICT
+                ================================================= -->
 
-                <div class="mb-4">
+                <div class="form-group">
 
-                    <label
-                        for="district"
-                        class="form-label fw-semibold"
-                    >
+                    <label for="district">
+
                         District
+
+                        <span class="required">
+                            *
+                        </span>
+
                     </label>
+
 
                     <select
                         id="district"
                         name="district"
-                        class="form-select form-select-lg"
                         required
                         disabled
                     >
 
                         <option value="">
-                            Select State First
+                            Select District
                         </option>
 
                     </select>
 
+
                     <div
-                        id="districtHelp"
-                        class="form-text"
+                        id="districtStatus"
+                        class="district-status"
                     >
-                        District data will load after selecting a state.
+                        Loading districts...
                     </div>
 
                 </div>
 
 
-                <!-- VILLAGE -->
+                <!-- =================================================
+                     VILLAGE
+                ================================================= -->
 
-                <div class="mb-2">
+                <div class="form-group">
 
-                    <label
-                        for="village"
-                        class="form-label fw-semibold"
-                    >
-                        Village / Town / Area
-                        <span class="text-muted fw-normal">
+                    <label for="village">
+
+                        Village
+
+                        <span class="optional">
                             (Optional)
                         </span>
+
                     </label>
+
 
                     <input
                         type="text"
                         id="village"
                         name="village"
-                        class="form-control form-control-lg"
-                        placeholder="Enter village, town or area"
+                        value="{{ village or '' }}"
+                        placeholder="Enter village name"
                     >
 
-                    <div class="form-text">
-                        This helps identify the affected area more precisely.
-                    </div>
 
-                </div>
+                    <div class="help-text">
 
-
-            </div>
-
-        </div>
-
-
-        <!-- ================================================= -->
-        <!-- SELECTED LOCATION PREVIEW -->
-        <!-- ================================================= -->
-
-        <div
-            id="locationPreview"
-            class="card border-0 shadow-sm mb-4 d-none"
-        >
-
-            <div class="card-body p-4">
-
-                <h5 class="fw-bold mb-3">
-                    ✅ Location Selected
-                </h5>
-
-                <div class="row g-3">
-
-                    <div class="col-md-4">
-
-                        <small class="text-muted">
-                            State
-                        </small>
-
-                        <div
-                            id="previewState"
-                            class="fw-semibold mt-1"
-                        ></div>
-
-                    </div>
-
-                    <div class="col-md-4">
-
-                        <small class="text-muted">
-                            District
-                        </small>
-
-                        <div
-                            id="previewDistrict"
-                            class="fw-semibold mt-1"
-                        ></div>
-
-                    </div>
-
-                    <div class="col-md-4">
-
-                        <small class="text-muted">
-                            Village / Area
-                        </small>
-
-                        <div
-                            id="previewVillage"
-                            class="fw-semibold mt-1"
-                        >
-                            Not provided
-                        </div>
+                        Village information improves
+                        location-level surveillance but is
+                        not required to continue.
 
                     </div>
 
                 </div>
 
-            </div>
+
+                <!-- =================================================
+                     LIVE GPS (real device coordinates, WGS84)
+                ================================================= -->
+
+                <div class="form-group">
+
+                    <label>Precise Location (GPS)</label>
+
+                    <input type="hidden" id="lat" name="lat" value="{{ lat or '' }}">
+                    <input type="hidden" id="lng" name="lng" value="{{ lng or '' }}">
+
+                    <button type="button" id="gpsBtn"
+                            style="width:100%;padding:12px 14px;border:1px solid #176b45;background:#e9f5ee;color:#176b45;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+                        📍 <span id="gpsBtnLabel">Use my current location</span>
+                    </button>
+
+                    <div class="help-text" id="gpsStatus">
+                        Pins this report at your exact coordinates on the surveillance
+                        map. Optional — village/district is used if you skip it.
+                    </div>
+
+                </div>
+
+                <script>
+                (function(){
+                    var btn=document.getElementById('gpsBtn'),
+                        label=document.getElementById('gpsBtnLabel'),
+                        status=document.getElementById('gpsStatus'),
+                        latEl=document.getElementById('lat'),
+                        lngEl=document.getElementById('lng');
+                    if(latEl.value && lngEl.value){ status.textContent='✓ Location set: '+(+latEl.value).toFixed(5)+', '+(+lngEl.value).toFixed(5); }
+                    btn.addEventListener('click',function(){
+                        if(!('geolocation' in navigator)){ status.textContent='⚠ GPS not supported on this device.'; return; }
+                        label.textContent='Locating…'; btn.disabled=true;
+                        navigator.geolocation.getCurrentPosition(function(pos){
+                            var la=pos.coords.latitude, ln=pos.coords.longitude, acc=Math.round(pos.coords.accuracy||0);
+                            latEl.value=la.toFixed(6); lngEl.value=ln.toFixed(6);
+                            status.textContent='✓ Location captured: '+la.toFixed(5)+', '+ln.toFixed(5)+' (±'+acc+' m)';
+                            label.textContent='Update location'; btn.disabled=false;
+                        },function(err){
+                            status.textContent='⚠ '+(err.code===1?'Permission denied — enable location to pin exact coordinates.':'Could not get a GPS fix. Village/district will be used.');
+                            label.textContent='Retry location'; btn.disabled=false;
+                        },{enableHighAccuracy:true,timeout:10000,maximumAge:60000});
+                    });
+                })();
+                </script>
+
+
+                <!-- =================================================
+                     PREVIEW
+                ================================================= -->
+                <div class="preview">
+
+                    <div class="preview-title">
+                        Selected Location
+                    </div>
+
+                    <div
+                        class="preview-location"
+                        id="previewLocation"
+                    >
+                        Maharashtra
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTION
+                ================================================= -->
+
+                <div class="actions">
+
+                    <button
+                        type="submit"
+                        class="btn"
+                        id="continueBtn"
+                        disabled
+                    >
+                        Continue Assessment →
+                    </button>
+
+                </div>
+
+
+            </form>
 
         </div>
 
+    </div>
 
-        <!-- ================================================= -->
-        <!-- CONTINUE -->
-        <!-- ================================================= -->
+</div>
 
-        <div class="d-flex justify-content-end">
-
-            <button
-                type="submit"
-                class="btn primary-btn btn-lg px-4"
-            >
-                Continue to Assessment →
-            </button>
-
-        </div>
-
-    </form>
-
-</main>
-
-
-<!-- ===================================================== -->
-<!-- JAVASCRIPT -->
-<!-- ===================================================== -->
 
 <script>
 
-const stateSelect =
-    document.getElementById("state");
-
-const districtSelect =
-    document.getElementById("district");
-
-const villageInput =
-    document.getElementById("village");
-
-const districtHelp =
-    document.getElementById("districtHelp");
-
-const locationPreview =
-    document.getElementById("locationPreview");
-
-const previewState =
-    document.getElementById("previewState");
-
-const previewDistrict =
-    document.getElementById("previewDistrict");
-
-const previewVillage =
-    document.getElementById("previewVillage");
-
-
-// =====================================================
-// UPDATE LOCATION PREVIEW
-// =====================================================
-
-function updatePreview() {
-
-    const state =
-        stateSelect.value;
-
-    const district =
-        districtSelect.value;
-
-    const village =
-        villageInput.value.trim();
-
-
-    if (state && district) {
-
-        locationPreview.classList.remove("d-none");
-
-        previewState.textContent =
-            state;
-
-        previewDistrict.textContent =
-            district;
-
-        previewVillage.textContent =
-            village || "Not provided";
-
-    }
-
-}
-
-
-// =====================================================
-// STATE CHANGE
-// =====================================================
-
-stateSelect.addEventListener(
-    "change",
+document.addEventListener(
+    "DOMContentLoaded",
     function () {
 
-        const state =
-            this.value;
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const form =
+            document.getElementById(
+                "locationForm"
+            );
+
+        const stateSelect =
+            document.getElementById(
+                "state"
+            );
+
+        const districtSelect =
+            document.getElementById(
+                "district"
+            );
+
+        const villageInput =
+            document.getElementById(
+                "village"
+            );
+
+        const continueBtn =
+            document.getElementById(
+                "continueBtn"
+            );
+
+        const previewLocation =
+            document.getElementById(
+                "previewLocation"
+            );
+
+        const districtStatus =
+            document.getElementById(
+                "districtStatus"
+            );
 
 
-        // Reset district
+        /* =====================================================
+           INITIAL STATE
+        ===================================================== */
 
-        districtSelect.innerHTML =
-            '<option value="">Loading districts...</option>';
-
-        districtSelect.disabled =
-            true;
+        let districtsLoaded = false;
 
 
-        locationPreview.classList.add("d-none");
+        /* =====================================================
+           UPDATE PREVIEW
+        ===================================================== */
+
+        function updatePreview() {
+
+            const state =
+                stateSelect.value.trim();
+
+            const district =
+                districtSelect.value.trim();
+
+            const village =
+                villageInput.value.trim();
 
 
-        // No state selected
+            let locationText =
+                state || "Maharashtra";
 
-        if (!state) {
 
-            districtSelect.innerHTML =
-                '<option value="">Select State First</option>';
+            if (district) {
 
-            districtHelp.textContent =
-                "District data will load after selecting a state.";
+                locationText +=
+                    " → " + district;
+            }
 
-            return;
 
+            if (village) {
+
+                locationText +=
+                    " → " + village;
+            }
+
+
+            previewLocation.textContent =
+                locationText;
         }
 
 
-        districtHelp.textContent =
-            "Loading available districts...";
+        /* =====================================================
+           UPDATE BUTTON
+        ===================================================== */
+
+        function updateButton() {
+
+            const state =
+                stateSelect.value.trim();
+
+            const district =
+                districtSelect.value.trim();
 
 
-        // Request districts from Flask
+            const valid =
+                state.toLowerCase()
+                === "maharashtra"
+                &&
+                district.length > 0
+                &&
+                districtsLoaded;
 
-        fetch(
-            "/districts/" +
-            encodeURIComponent(state)
-        )
 
-        .then(
-            response => {
+            continueBtn.disabled =
+                !valid;
+        }
+
+
+        /* =====================================================
+           STATUS HELPER
+        ===================================================== */
+
+        function setDistrictStatus(
+            message,
+            type
+        ) {
+
+            districtStatus.textContent =
+                message;
+
+            districtStatus.className =
+                "district-status show";
+
+
+            if (type === "error") {
+
+                districtStatus.classList.add(
+                    "error-status"
+                );
+
+            } else if (type === "success") {
+
+                districtStatus.classList.add(
+                    "success-status"
+                );
+            }
+        }
+
+
+        /* =====================================================
+           LOAD DISTRICTS
+        ===================================================== */
+
+        async function loadDistricts() {
+
+            const state =
+                stateSelect.value.trim();
+
+
+            districtsLoaded = false;
+
+            continueBtn.disabled = true;
+
+            districtSelect.disabled = true;
+
+
+            districtSelect.innerHTML =
+                `
+                <option value="">
+                    Select District
+                </option>
+                `;
+
+
+            if (
+                state.toLowerCase()
+                !== "maharashtra"
+            ) {
+
+                districtStatus.className =
+                    "district-status";
+
+                updatePreview();
+
+                return;
+            }
+
+
+            setDistrictStatus(
+                "Loading districts...",
+                ""
+            );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/districts/"
+                        +
+                        encodeURIComponent(
+                            state
+                        ),
+                        {
+                            method: "GET",
+                            headers: {
+                                "Accept":
+                                    "application/json"
+                            }
+                        }
+                    );
+
 
                 if (!response.ok) {
+
                     throw new Error(
-                        "Unable to load districts"
+                        "Server returned "
+                        + response.status
                     );
                 }
 
-                return response.json();
 
-            }
-        )
+                const data =
+                    await response.json();
 
-        .then(
-            districts => {
 
-                districtSelect.innerHTML =
-                    '<option value="">Select District</option>';
+                const districts =
+                    Array.isArray(
+                        data.districts
+                    )
+                        ? data.districts
+                        : [];
+
+
+                if (districts.length === 0) {
+
+                    setDistrictStatus(
+                        "No districts found in the surveillance dataset.",
+                        "error"
+                    );
+
+                    districtsLoaded = false;
+
+                    updateButton();
+
+                    return;
+                }
 
 
                 districts.forEach(
                     function (district) {
 
                         const option =
-                            document.createElement("option");
+                            document.createElement(
+                                "option"
+                            );
 
                         option.value =
                             district;
@@ -497,10 +1065,10 @@ stateSelect.addEventListener(
                         option.textContent =
                             district;
 
+
                         districtSelect.appendChild(
                             option
                         );
-
                     }
                 );
 
@@ -509,62 +1077,237 @@ stateSelect.addEventListener(
                     false;
 
 
-                districtHelp.textContent =
-                    districts.length +
-                    " district(s) available for " +
-                    state +
-                    ".";
+                districtsLoaded =
+                    true;
 
-            }
-        )
 
-        .catch(
-            error => {
+                setDistrictStatus(
+                    districts.length
+                    + " districts available.",
+                    "success"
+                );
+
+
+                /*
+                 * Restore previously selected district
+                 * if the backend sent one.
+                 */
+                const previousDistrict =
+                    "{{ selected_district or '' }}"
+                    .trim();
+
+
+                if (previousDistrict) {
+
+                    const matchingOption =
+                        Array.from(
+                            districtSelect.options
+                        ).find(
+                            function (option) {
+
+                                return (
+                                    option.value
+                                    .toLowerCase()
+                                    ===
+                                    previousDistrict
+                                    .toLowerCase()
+                                );
+                            }
+                        );
+
+
+                    if (matchingOption) {
+
+                        districtSelect.value =
+                            matchingOption.value;
+                    }
+                }
+
+
+                updatePreview();
+
+                updateButton();
+
+            } catch (error) {
 
                 console.error(
-                    "Error loading districts:",
+                    "District loading error:",
                     error
                 );
 
 
-                districtSelect.innerHTML =
-                    '<option value="">Unable to load districts</option>';
+                setDistrictStatus(
+                    "Unable to load districts. Please refresh and try again.",
+                    "error"
+                );
 
-                districtSelect.disabled =
+
+                districtsLoaded =
+                    false;
+
+                updateButton();
+            }
+        }
+
+
+        /* =====================================================
+           STATE CHANGE
+        ===================================================== */
+
+        stateSelect.addEventListener(
+            "change",
+            function () {
+
+                loadDistricts();
+
+                updatePreview();
+
+                updateButton();
+            }
+        );
+
+
+        /* =====================================================
+           DISTRICT CHANGE
+        ===================================================== */
+
+        districtSelect.addEventListener(
+            "change",
+            function () {
+
+                updatePreview();
+
+                updateButton();
+            }
+        );
+
+
+        /* =====================================================
+           VILLAGE CHANGE
+        ===================================================== */
+
+        villageInput.addEventListener(
+            "input",
+            function () {
+
+                updatePreview();
+            }
+        );
+
+
+        /* =====================================================
+           FORM SUBMIT
+        ===================================================== */
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+                const state =
+                    stateSelect.value.trim();
+
+                const district =
+                    districtSelect.value.trim();
+
+
+                /*
+                 * Final client-side validation.
+                 */
+
+                if (
+                    state.toLowerCase()
+                    !== "maharashtra"
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select Maharashtra."
+                    );
+
+                    return;
+                }
+
+
+                if (!district) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select a district."
+                    );
+
+                    return;
+                }
+
+
+                /*
+                 * Make absolutely sure the district
+                 * dropdown is enabled before submission.
+                 *
+                 * Disabled form fields are NOT submitted
+                 * by the browser.
+                 */
+
+                if (
+                    districtSelect.disabled
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Districts are still loading. Please wait a moment."
+                    );
+
+                    return;
+                }
+
+
+                if (!districtsLoaded) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "District data has not loaded yet. Please try again."
+                    );
+
+                    return;
+                }
+
+
+                /*
+                 * Prevent accidental double submission.
+                 */
+
+                continueBtn.disabled =
                     true;
 
+                continueBtn.classList.add(
+                    "loading"
+                );
 
-                districtHelp.textContent =
-                    "Unable to load districts. Please try again.";
+                continueBtn.textContent =
+                    "Opening Assessment...";
 
             }
         );
 
-    }
-);
 
+        /* =====================================================
+           INITIAL LOAD
+        ===================================================== */
 
-// =====================================================
-// DISTRICT CHANGE
-// =====================================================
+        if (
+            stateSelect.value.trim()
+        ) {
 
-districtSelect.addEventListener(
-    "change",
-    function () {
+            loadDistricts();
 
-        updatePreview();
+        } else {
 
-    }
-);
+            updateButton();
+        }
 
-
-// =====================================================
-// VILLAGE CHANGE
-// =====================================================
-
-villageInput.addEventListener(
-    "input",
-    function () {
 
         updatePreview();
 
@@ -572,7 +1315,6 @@ villageInput.addEventListener(
 );
 
 </script>
-
 
 </body>
 

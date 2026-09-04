@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="/static/manifest.webmanifest">
+    <meta name="theme-color" content="#176b45">
+    <script defer src="/static/js/offline-sync.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>District Authority | Maharashtra Animal Health</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7f5;
+            color: #26382e;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: #145c3b;
+            color: white;
+            padding: 18px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand h1 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .brand p {
+            font-size: 12px;
+            opacity: 0.85;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            font-size: 13px;
+        }
+
+        .role-badge {
+            background: rgba(255,255,255,0.14);
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+
+        .logout {
+            color: white;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 8px 14px;
+            border-radius: 7px;
+            font-size: 12px;
+        }
+
+        .logout:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            max-width: 1350px;
+            margin: 30px auto;
+            padding: 0 22px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 20px;
+        }
+
+        .welcome h2 {
+            font-size: 24px;
+            margin-bottom: 7px;
+        }
+
+        .welcome p {
+            color: #718078;
+            font-size: 14px;
+        }
+
+        .refresh-btn {
+            border: none;
+            background: #176b45;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .refresh-btn:hover {
+            background: #145c3b;
+        }
+
+        /* ================= STATUS BAR ================= */
+
+        .system-status {
+            background: white;
+            border: 1px solid #e3e9e5;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #718078;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2e8b57;
+        }
+
+        /* ================= STAT CARDS ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 13px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            border: 1px solid #edf0ee;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #758179;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .stat-description {
+            margin-top: 5px;
+            font-size: 10px;
+            color: #8a948e;
+        }
+
+        .stat-card.high-risk {
+            border-top: 3px solid #c0392b;
+        }
+
+        .stat-card.lab {
+            border-top: 3px solid #d69e2e;
+        }
+
+        .stat-card.confirmed {
+            border-top: 3px solid #2980b9;
+        }
+
+        .stat-card.vaccine {
+            border-top: 3px solid #176b45;
+        }
+
+        /* ================= GRID ================= */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            border: 1px solid #edf0ee;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            gap: 10px;
+        }
+
+        .panel-header h3 {
+            font-size: 17px;
+        }
+
+        .panel-header span {
+            font-size: 10px;
+            color: #78847d;
+        }
+
+        /* ================= FILTER ================= */
+
+        .case-tools {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-box,
+        .filter-box {
+            border: 1px solid #dce4df;
+            background: #fafcfb;
+            padding: 9px 11px;
+            border-radius: 7px;
+            font-size: 11px;
+            color: #26382e;
+            outline: none;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .search-box:focus,
+        .filter-box:focus {
+            border-color: #176b45;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        th {
+            text-align: left;
+            padding: 11px 8px;
+            color: #6e7b73;
+            font-size: 10px;
+            border-bottom: 1px solid #e4e9e6;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 13px 8px;
+            border-bottom: 1px solid #edf0ee;
+            white-space: nowrap;
+        }
+
+        tr:hover {
+            background: #fafcfb;
+        }
+
+        .case-id {
+            font-weight: 700;
+            color: #176b45;
+        }
+
+        .muted {
+            color: #758179;
+        }
+
+        /* ================= BADGES ================= */
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        .high {
+            background: #ffe3e3;
+            color: #b42318;
+        }
+
+        .medium {
+            background: #fff4d6;
+            color: #8a6200;
+        }
+
+        .low {
+            background: #e8f5ed;
+            color: #176b45;
+        }
+
+        .pending {
+            background: #eef1f0;
+            color: #68746d;
+        }
+
+        .confirmed {
+            background: #e3f2ff;
+            color: #155b8a;
+        }
+
+        .escalated {
+            background: #fce8dc;
+            color: #a34518;
+        }
+
+        .testing {
+            background: #eee8ff;
+            color: #6444a6;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .button {
+            display: inline-block;
+            padding: 8px 11px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: #176b45;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #145c3b;
+        }
+
+        .secondary {
+            background: #edf3ef;
+            color: #176b45;
+        }
+
+        .secondary:hover {
+            background: #e0ebe4;
+        }
+
+        /* ================= EMPTY STATE ================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 45px 20px;
+            color: #7a867f;
+            display: none;
+        }
+
+        .empty-state .icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #4c5b52;
+        }
+
+        .empty-state p {
+            font-size: 11px;
+        }
+
+        /* ================= LAB ================= */
+
+        .lab-card {
+            background: #f7f9f8;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #176b45;
+        }
+
+        .lab-card strong {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .lab-card span {
+            font-size: 10px;
+            color: #718078;
+        }
+
+        .lab-number {
+            color: #176b45;
+        }
+
+        /* ================= ALERT ================= */
+
+        .alert {
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .alert-danger {
+            background: #fff3f3;
+            border: 1px solid #f1d0d0;
+        }
+
+        .alert-warning {
+            background: #fff9e9;
+            border: 1px solid #f0dfaa;
+        }
+
+        .alert-info {
+            background: #eef7ff;
+            border: 1px solid #d4e8f8;
+        }
+
+        .alert h4 {
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .alert p {
+            font-size: 10px;
+            color: #718078;
+            line-height: 1.5;
+        }
+
+        /* ================= INVENTORY ================= */
+
+        .inventory-item {
+            margin-bottom: 17px;
+        }
+
+        .inventory-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 11px;
+        }
+
+        .inventory-bar {
+            height: 7px;
+            background: #e7ebe8;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .inventory-progress {
+            height: 100%;
+            background: #176b45;
+            border-radius: 10px;
+        }
+
+        .inventory-progress.low-stock {
+            background: #c58a19;
+        }
+
+        /* Legacy CSS mock-map styles removed — see the Leaflet/OSM component (.geo-map*). */
+
+        /* ================= PIPELINE ================= */
+
+        .pipeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .pipeline-step {
+            padding: 15px;
+            border-radius: 9px;
+            background: #f7f9f8;
+            border-left: 4px solid #176b45;
+        }
+
+        .pipeline-step.active {
+            background: #eaf5ee;
+            border-left-color: #0d5b37;
+        }
+
+        .pipeline-number {
+            font-size: 9px;
+            color: #176b45;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .pipeline-step strong {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .pipeline-step span {
+            font-size: 9px;
+            color: #758179;
+            line-height: 1.4;
+        }
+
+        /* ================= MODAL ================= */
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background: rgba(15, 35, 25, 0.55);
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 850px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            background: #145c3b;
+            color: white;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 17px;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .case-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .summary-box {
+            background: #f7f9f8;
+            padding: 13px;
+            border-radius: 9px;
+        }
+
+        .summary-box small {
+            display: block;
+            font-size: 9px;
+            color: #7a867f;
+            margin-bottom: 5px;
+        }
+
+        .summary-box strong {
+            font-size: 12px;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-section h4 {
+            font-size: 13px;
+            margin-bottom: 9px;
+            color: #176b45;
+        }
+
+        .detail-section p {
+            font-size: 11px;
+            line-height: 1.6;
+            color: #66736b;
+            background: #fafcfb;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e7ebe8;
+            flex-wrap: wrap;
+        }
+
+        /* ================= LOADING ================= */
+
+        .loading {
+            text-align: center;
+            padding: 35px;
+            color: #78847d;
+            font-size: 11px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #dbe5df;
+            border-top-color: #176b45;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #89938e;
+            font-size: 10px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 950px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pipeline {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 15px 18px;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .container {
+                margin-top: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .welcome {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .case-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .pipeline {
+                grid-template-columns: 1fr;
+            }
+
+            .case-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .modal {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div class="brand">
+        <h1>🐄 Animal Health Surveillance</h1>
+        <p>
+            Department of Animal Husbandry · Government of Maharashtra
+        </p>
+    </div>
+
+    <div class="user-area">
+        <span class="user-name">
+            {{ session.get("name", "District Authority") }}
+        </span>
+
+        <span class="role-badge">
+            DISTRICT AUTHORITY
+        </span>
+
+        <a href="/logout" class="logout">
+            Logout
+        </a>
+    </div>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+    <!-- ===== Surveillance Analytics (auto-injected, self-contained) ===== -->
+    <section class="sha-analytics" aria-label="Surveillance analytics">
+        <div class="sha-head">
+            <h3>Surveillance Analytics</h3>
+            <span id="shaTotal">loading…</span>
+        </div>
+        <div class="sha-grid">
+            <div class="sha-card">
+                <h4>Triage Level Distribution</h4>
+                <div class="sha-cv"><canvas id="shaLevels"></canvas></div>
+            </div>
+            <div class="sha-card">
+                <h4>Top Villages by Cases</h4>
+                <div class="sha-cv"><canvas id="shaVillages"></canvas></div>
+            </div>
+            <div class="sha-card sha-wide">
+                <h4>14-Day Case Trend</h4>
+                <div class="sha-cv tall"><canvas id="shaTrend"></canvas></div>
+            </div>
+            <div class="sha-card sha-wide">
+                <h4>Reporting Channel Mix</h4>
+                <div class="sha-cv"><canvas id="shaChannels"></canvas></div>
+            </div>
+        </div>
+        <p class="sha-empty" id="shaEmpty" hidden>No case data yet — submit a field report to populate analytics.</p>
+    </section>
+    <style>
+        .sha-analytics{background:#fff;border-radius:14px;padding:22px;margin-bottom:22px;box-shadow:0 5px 20px rgba(0,0,0,.06)}
+        .sha-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+        .sha-head h3{font-size:17px;margin:0;color:#176b45}
+        .sha-head span{font-size:12px;color:#78847d}
+        .sha-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+        .sha-card{border:1px solid #eef2ef;border-radius:12px;padding:14px;background:#fcfdfc}
+        .sha-card h4{margin:0 0 10px;font-size:13px;color:#758179;font-weight:600}
+        .sha-cv{position:relative;height:200px}
+        .sha-cv.tall{height:170px}
+        .sha-wide{grid-column:1 / -1}
+        .sha-empty{color:#8a948e;font-size:13px;margin:14px 2px 0}
+        @media(max-width:720px){.sha-grid{grid-template-columns:1fr}}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+    (function(){
+        var GREEN='#176b45', GREEN2='#3fa172', AMBER='#e0a800', RED='#c0392b', SLATE='#5b7c99', GREY='#9aa5a0';
+        function render(d){
+            var total=d.total_cases||0;
+            document.getElementById('shaTotal').textContent=total+' total case'+(total===1?'':'s');
+            if(!total){document.getElementById('shaEmpty').hidden=false;}
+            var noAspect={responsive:true,maintainAspectRatio:false};
+            var lv=d.by_level||{HIGH:0,MEDIUM:0,LOW:0};
+            new Chart(document.getElementById('shaLevels'),{type:'doughnut',
+                data:{labels:['High','Medium','Low'],datasets:[{data:[lv.HIGH||0,lv.MEDIUM||0,lv.LOW||0],backgroundColor:[RED,AMBER,GREEN],borderWidth:0}]},
+                options:Object.assign({},noAspect,{plugins:{legend:{position:'bottom'}}})});
+            var tv=d.top_villages||[];
+            new Chart(document.getElementById('shaVillages'),{type:'bar',
+                data:{labels:tv.map(function(x){return x.village;}),datasets:[{label:'Cases',data:tv.map(function(x){return x.cases;}),backgroundColor:GREEN}]},
+                options:Object.assign({},noAspect,{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}})});
+            var tr=d.trend||[];
+            new Chart(document.getElementById('shaTrend'),{type:'line',
+                data:{labels:tr.map(function(x){return x.date;}),datasets:[{label:'Cases',data:tr.map(function(x){return x.cases;}),borderColor:GREEN,backgroundColor:'rgba(23,107,69,.12)',fill:true,tension:.3}]},
+                options:Object.assign({},noAspect,{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}})});
+            var ch=d.by_channel||{}, cl=Object.keys(ch);
+            new Chart(document.getElementById('shaChannels'),{type:'bar',
+                data:{labels:cl,datasets:[{label:'Cases',data:cl.map(function(k){return ch[k];}),backgroundColor:SLATE}]},
+                options:Object.assign({},noAspect,{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{precision:0}}}})});
+        }
+        function boot(){
+            if(typeof Chart==='undefined'){return setTimeout(boot,150);}
+            fetch('/api/v1/analytics/summary',{headers:{'Accept':'application/json'}})
+                .then(function(r){return r.ok?r.json():null;})
+                .then(function(d){if(d)render(d);else document.getElementById('shaEmpty').hidden=false;})
+                .catch(function(){document.getElementById('shaEmpty').hidden=false;});
+        }
+        if(document.readyState!=='loading')boot();else document.addEventListener('DOMContentLoaded',boot);
+    })();
+    </script>
+    <!-- ===== /Surveillance Analytics ===== -->
+
+
+    <!-- WELCOME -->
+
+    <div class="welcome">
+
+        <div>
+            <h2>District Veterinary Authority</h2>
+
+            <p>
+                District-level surveillance, laboratory coordination,
+                vaccine inventory management and outbreak escalation.
+            </p>
+        </div>
+
+        <button class="refresh-btn" onclick="loadDistrictData()">
+            ↻ Refresh Data
+        </button>
+
+    </div>
+
+
+    <!-- SYSTEM STATUS -->
+
+    <div class="system-status">
+
+        <span class="status-dot"></span>
+
+        <span>
+            Surveillance system connected · Live district case data
+        </span>
+
+        <span id="lastUpdated">
+            —
+        </span>
+
+    </div>
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                ACTIVE CASES
+            </div>
+
+            <div class="stat-value" id="activeCases">
+                —
+            </div>
+
+            <div class="stat-description">
+                District cases requiring monitoring
+            </div>
+
+        </div>
+
+
+        <div class="stat-card high-risk">
+
+            <div class="stat-label">
+                HIGH-RISK CASES
+            </div>
+
+            <div class="stat-value" id="highRiskCases">
+                —
+            </div>
+
+            <div class="stat-description">
+                Require immediate attention
+            </div>
+
+        </div>
+
+
+        <div class="stat-card lab">
+
+            <div class="stat-label">
+                LAB SAMPLES
+            </div>
+
+            <div class="stat-value" id="labSamples">
+                —
+            </div>
+
+            <div class="stat-description">
+                Cases with pending diagnostics
+            </div>
+
+        </div>
+
+
+        <div class="stat-card confirmed">
+
+            <div class="stat-label">
+                CONFIRMED CASES
+            </div>
+
+            <div class="stat-value" id="confirmedCases">
+                —
+            </div>
+
+            <div class="stat-description">
+                Confirmed/diagnostically resolved cases
+            </div>
+
+        </div>
+
+
+        <div class="stat-card vaccine">
+
+            <div class="stat-label">
+                VACCINE STOCK
+            </div>
+
+            <div class="stat-value">
+                72%
+            </div>
+
+            <div class="stat-description">
+                Demo district inventory
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= CASES + LAB ================= -->
+
+    <div class="grid">
+
+
+        <!-- CASE TABLE -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    District Case Surveillance
+                </h3>
+
+                <span id="caseCountLabel">
+                    Loading cases...
+                </span>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="case-tools">
+
+                <input
+                    type="text"
+                    id="caseSearch"
+                    class="search-box"
+                    placeholder="Search Case ID, location or source..."
+                    oninput="filterCases()"
+                >
+
+                <select
+                    id="riskFilter"
+                    class="filter-box"
+                    onchange="filterCases()"
+                >
+                    <option value="ALL">
+                        All Risk
+                    </option>
+
+                    <option value="HIGH">
+                        High
+                    </option>
+
+                    <option value="MEDIUM">
+                        Medium
+                    </option>
+
+                    <option value="LOW">
+                        Low
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                CASE
+                            </th>
+
+                            <th>
+                                LOCATION
+                            </th>
+
+                            <th>
+                                SOURCE
+                            </th>
+
+                            <th>
+                                RISK
+                            </th>
+
+                            <th>
+                                STATUS
+                            </th>
+
+                            <th>
+                                ACTION
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="caseTableBody">
+
+                    </tbody>
+
+                </table>
+
+
+                <div id="loadingCases" class="loading">
+
+                    <div class="spinner"></div>
+
+                    <div>
+                        Loading district cases...
+                    </div>
+
+                </div>
+
+
+                <div id="emptyCases" class="empty-state">
+
+                    <div class="icon">
+                        📋
+                    </div>
+
+                    <h4>
+                        No district cases
+                    </h4>
+
+                    <p>
+                        No cases currently require district-level action.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LAB PANEL -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Laboratory Queue
+                </h3>
+
+                <span>
+                    Diagnostic referrals
+                </span>
+
+            </div>
+
+
+            <div class="lab-card">
+
+                <strong>
+                    🧪 <span class="lab-number" id="pendingSamples">0</span>
+                    Samples Pending
+                </strong>
+
+                <span>
+                    Samples awaiting collection or laboratory dispatch.
+                </span>
+
+            </div>
+
+
+            <div class="lab-card">
+
+                <strong>
+                    🔬 <span class="lab-number" id="testingSamples">0</span>
+                    Under Testing
+                </strong>
+
+                <span>
+                    Laboratory examination in progress.
+                </span>
+
+            </div>
+
+
+            <div class="lab-card">
+
+                <strong>
+                    ✅ <span class="lab-number" id="availableResults">0</span>
+                    Results Available
+                </strong>
+
+                <span>
+                    Results ready for authority review.
+                </span>
+
+            </div>
+
+
+            <div class="lab-card">
+
+                <strong>
+                    ⚠ <span class="lab-number" id="urgentSamples">0</span>
+                    Urgent Samples
+                </strong>
+
+                <span>
+                    High-risk cases requiring priority attention.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ALERTS ================= -->
+
+    <div class="grid">
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    District Alerts
+                </h3>
+
+                <span>
+                    Surveillance indicators
+                </span>
+
+            </div>
+
+
+            <div id="alertsContainer">
+
+                <div class="alert alert-info">
+
+                    <h4>
+                        ℹ Surveillance Status
+                    </h4>
+
+                    <p>
+                        District surveillance indicators will update
+                        automatically from active cases.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- INVENTORY -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Vaccine Inventory
+                </h3>
+
+                <span>
+                    Demo inventory
+                </span>
+
+            </div>
+
+
+            <div class="inventory-item">
+
+                <div class="inventory-header">
+
+                    <span>
+                        FMD Vaccine
+                    </span>
+
+                    <strong>
+                        82%
+                    </strong>
+
+                </div>
+
+                <div class="inventory-bar">
+
+                    <div
+                        class="inventory-progress"
+                        style="width:82%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="inventory-item">
+
+                <div class="inventory-header">
+
+                    <span>
+                        HS Vaccine
+                    </span>
+
+                    <strong>
+                        64%
+                    </strong>
+
+                </div>
+
+                <div class="inventory-bar">
+
+                    <div
+                        class="inventory-progress"
+                        style="width:64%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="inventory-item">
+
+                <div class="inventory-header">
+
+                    <span>
+                        Anthrax Vaccine
+                    </span>
+
+                    <strong>
+                        41%
+                    </strong>
+
+                </div>
+
+                <div class="inventory-bar">
+
+                    <div
+                        class="inventory-progress low-stock"
+                        style="width:41%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="inventory-item">
+
+                <div class="inventory-header">
+
+                    <span>
+                        PPR Vaccine
+                    </span>
+
+                    <strong>
+                        76%
+                    </strong>
+
+                </div>
+
+                <div class="inventory-bar">
+
+                    <div
+                        class="inventory-progress"
+                        style="width:76%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MAP ================= -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h3>
+                District Epidemiological Risk Map
+            </h3>
+
+            <span>
+                Taluka-level surveillance visualization
+            </span>
+
+        </div>
+
+
+        
+    <!-- ===== Live Surveillance Map (Leaflet + OpenStreetMap, real WGS84 GIS) ===== -->
+    <div class="geo-map-panel">
+        <div class="geo-map-head">
+            <h3>Live Outbreak Map</h3>
+            <span>Real-time GIS · OpenStreetMap · village / district geocoded (EPSG:4326)</span>
+        </div>
+        <div id="surveillanceMap" class="geo-map"></div>
+        <div class="geo-legend">
+            <span><i style="background:#c0392b"></i> High</span>
+            <span><i style="background:#e0a800"></i> Medium</span>
+            <span><i style="background:#176b45"></i> Low</span>
+            <span class="geo-note" id="geoNote">loading map…</span>
+        </div>
+    </div>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        .geo-map-panel{background:#fff;border-radius:14px;padding:22px;margin-bottom:22px;box-shadow:0 5px 20px rgba(0,0,0,.06)}
+        .geo-map-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+        .geo-map-head h3{font-size:17px;margin:0;color:#176b45}
+        .geo-map-head span{font-size:11px;color:#78847d}
+        .geo-map{height:380px;width:100%;border-radius:12px;border:1px solid #eef2ef;z-index:1}
+        .geo-legend{display:flex;align-items:center;gap:16px;margin-top:12px;font-size:12px;color:#59665f;flex-wrap:wrap}
+        .geo-legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:middle}
+        .geo-note{color:#8a948e;margin-left:auto}
+    </style>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+    (function(){
+        var CENTER=[18.5204,73.8567], ZOOM=9;
+        function boot(){
+            if(typeof L==='undefined'){return setTimeout(boot,150);}
+            var map=L.map('surveillanceMap',{scrollWheelZoom:false}).setView(CENTER,ZOOM);
+            var tiles=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+                maxZoom:18, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'});
+            tiles.on('tileerror',function(){var n=document.getElementById('geoNote');if(n)n.textContent='(base map tiles unavailable — check connectivity)';});
+            tiles.addTo(map);
+            var layer=L.layerGroup().addTo(map);
+            function load(){
+                fetch('/api/v1/geo/cases.geojson',{headers:{'Accept':'application/json'}})
+                    .then(function(r){return r.ok?r.json():null;})
+                    .then(function(fc){
+                        if(!fc){return;}
+                        layer.clearLayers();
+                        var pts=[];
+                        (fc.features||[]).forEach(function(f){
+                            var co=f.geometry.coordinates, lat=co[1], lng=co[0], p=f.properties;
+                            var m=L.circleMarker([lat,lng],{radius:9,color:'#fff',weight:2,fillColor:p.color,fillOpacity:0.85});
+                            m.bindPopup('<b>'+(p.village||'Unknown')+'</b><br>'+(p.district||'')+
+                                '<br>Risk: <b>'+p.risk_level+'</b> (score '+p.risk_score+')'+
+                                '<br>Status: '+(p.status||'—')+
+                                '<br>Affected: '+(p.affected||0)+
+                                '<br><small style="color:#8a948e">location precision: '+p.precision+'</small>');
+                            m.addTo(layer); pts.push([lat,lng]);
+                        });
+                        var n=document.getElementById('geoNote');
+                        if(pts.length){ if(n)n.textContent=pts.length+' active case'+(pts.length>1?'s':''); if(pts.length>1){map.fitBounds(pts,{padding:[30,30],maxZoom:11});} }
+                        else if(n){ n.textContent='No active cases in your jurisdiction yet.'; }
+                    }).catch(function(){});
+            }
+            load();
+            setInterval(load, 30000); // gentle refresh — our own endpoint, no external rate limit
+            setTimeout(function(){map.invalidateSize();},200);
+        }
+        if(document.readyState!=='loading')boot();else document.addEventListener('DOMContentLoaded',boot);
+    })();
+    </script>
+    <!-- ===== /Live Surveillance Map ===== -->
+
+
+    </div>
+
+
+    <!-- ================= PIPELINE ================= -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h3>
+                District Escalation Pipeline
+            </h3>
+
+            <span>
+                Surveillance chain
+            </span>
+
+        </div>
+
+
+        <div class="pipeline">
+
+
+            <div class="pipeline-step">
+
+                <div class="pipeline-number">
+                    STEP 01
+                </div>
+
+                <strong>
+                    Field Report
+                </strong>
+
+                <span>
+                    Farmer or Paravet submits suspected
+                    animal-health case.
+                </span>
+
+            </div>
+
+
+            <div class="pipeline-step">
+
+                <div class="pipeline-number">
+                    STEP 02
+                </div>
+
+                <strong>
+                    Veterinary Review
+                </strong>
+
+                <span>
+                    Taluka Veterinary Officer validates
+                    the suspected case.
+                </span>
+
+            </div>
+
+
+            <div class="pipeline-step">
+
+                <div class="pipeline-number">
+                    STEP 03
+                </div>
+
+                <strong>
+                    Laboratory
+                </strong>
+
+                <span>
+                    Samples are referred and diagnostic
+                    results are received.
+                </span>
+
+            </div>
+
+
+            <div class="pipeline-step active">
+
+                <div class="pipeline-number">
+                    STEP 04
+                </div>
+
+                <strong>
+                    District Action
+                </strong>
+
+                <span>
+                    District authority reviews escalation
+                    and initiates containment action.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= CASE MODAL ================= -->
+
+<div id="caseModal" class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h3 id="modalCaseTitle">
+                Case Details
+            </h3>
+
+            <button
+                class="close-modal"
+                onclick="closeCaseModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="case-summary">
+
+                <div class="summary-box">
+
+                    <small>
+                        CASE ID
+                    </small>
+
+                    <strong id="detailCaseId">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <small>
+                        RISK LEVEL
+                    </small>
+
+                    <strong id="detailRisk">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <small>
+                        STATUS
+                    </small>
+
+                    <strong id="detailStatus">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <small>
+                        STATE
+                    </small>
+
+                    <strong id="detailState">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <small>
+                        DISTRICT
+                    </small>
+
+                    <strong id="detailDistrict">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <small>
+                        VILLAGE
+                    </small>
+
+                    <strong id="detailVillage">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Animal Information
+                </h4>
+
+                <p id="detailAnimal">
+                    —
+                </p>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Reported Symptoms
+                </h4>
+
+                <p id="detailSymptoms">
+                    —
+                </p>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Surveillance Assessment
+                </h4>
+
+                <p id="detailAssessment">
+                    —
+                </p>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Laboratory / Sample Status
+                </h4>
+
+                <p id="detailSample">
+                    —
+                </p>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="button secondary"
+                    onclick="updateDistrictCase('Monitoring')"
+                >
+                    Start Monitoring
+                </button>
+
+                <button
+                    class="button danger"
+                    onclick="updateDistrictCase('State Escalated')"
+                >
+                    Escalate to State
+                </button>
+
+                <button
+                    class="button primary"
+                    onclick="updateDistrictCase('Resolved')"
+                >
+                    Mark Resolved
+                </button>
+
+                <button
+                    class="button secondary"
+                    onclick="closeCaseModal()"
+                >
+                    Close
+                </button>
+
+                <button
+                    class="button primary"
+                    onclick="openFullCase()"
+                >
+                    Open Full Case
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    Maharashtra Animal Health Surveillance &
+    Decision Support System · District Authority Portal
+
+</footer>
+
+
+<script>
+
+    let districtCases = [];
+    let selectedCaseId = null;
+
+
+    /* ================= LOAD DATA ================= */
+
+    async function loadDistrictData() {
+
+        const loading = document.getElementById("loadingCases");
+        const tableBody = document.getElementById("caseTableBody");
+        const emptyState = document.getElementById("emptyCases");
+
+        loading.style.display = "block";
+        emptyState.style.display = "none";
+        tableBody.innerHTML = "";
+
+        try {
+
+            const response = await fetch("/api/district/cases");
+
+            if (!response.ok) {
+                throw new Error("Unable to load district cases.");
+            }
+
+            districtCases = await response.json();
+
+            updateStatistics();
+            updateLabQueue();
+            renderCases(districtCases);
+            updateAlerts();
+
+            document.getElementById("lastUpdated").textContent =
+                "· Updated " + new Date().toLocaleTimeString();
+
+        } catch (error) {
+
+            console.error(error);
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center;padding:30px;color:#b42318;">
+                        Unable to load district case data.
+                    </td>
+                </tr>
+            `;
+
+        } finally {
+
+            loading.style.display = "none";
+
+        }
+
+    }
+
+
+    /* ================= STATISTICS ================= */
+
+    function updateStatistics() {
+
+        const active = districtCases.filter(caseItem =>
+            !["Resolved", "Closed"].includes(caseItem.status)
+        ).length;
+
+
+        const highRisk = districtCases.filter(caseItem =>
+            String(caseItem.risk_level || "").toUpperCase() === "HIGH"
+        ).length;
+
+
+        const lab = districtCases.filter(caseItem => {
+
+            const sample = String(
+                caseItem.sample_status || ""
+            ).toLowerCase();
+
+            return [
+                "pending collection",
+                "collected",
+                "sent to lab",
+                "under testing"
+            ].includes(sample);
+
+        }).length;
+
+
+        const confirmed = districtCases.filter(caseItem => {
+
+            const status = String(
+                caseItem.status || ""
+            ).toLowerCase();
+
+            return status.includes("confirmed");
+
+        }).length;
+
+
+        document.getElementById("activeCases").textContent = active;
+        document.getElementById("highRiskCases").textContent = highRisk;
+        document.getElementById("labSamples").textContent = lab;
+        document.getElementById("confirmedCases").textContent = confirmed;
+
+    }
+
+
+    /* ================= LAB ================= */
+
+    function updateLabQueue() {
+
+        let pending = 0;
+        let testing = 0;
+        let results = 0;
+        let urgent = 0;
+
+
+        districtCases.forEach(caseItem => {
+
+            const sample = String(
+                caseItem.sample_status || ""
+            ).toLowerCase();
+
+
+            if (
+                sample === "pending collection" ||
+                sample === "pending"
+            ) {
+                pending++;
+            }
+
+
+            if (
+                sample === "sent to lab" ||
+                sample === "under testing"
+            ) {
+                testing++;
+            }
+
+
+            if (
+                sample === "result available" ||
+                sample === "results available"
+            ) {
+                results++;
+            }
+
+
+            if (
+                String(caseItem.risk_level || "").toUpperCase() === "HIGH" &&
+                [
+                    "pending collection",
+                    "collected",
+                    "sent to lab",
+                    "under testing"
+                ].includes(sample)
+            ) {
+                urgent++;
+            }
+
+        });
+
+
+        document.getElementById("pendingSamples").textContent = pending;
+        document.getElementById("testingSamples").textContent = testing;
+        document.getElementById("availableResults").textContent = results;
+        document.getElementById("urgentSamples").textContent = urgent;
+
+    }
+
+
+    /* ================= RENDER CASES ================= */
+
+    function renderCases(cases) {
+
+        const tableBody =
+            document.getElementById("caseTableBody");
+
+        const emptyState =
+            document.getElementById("emptyCases");
+
+        const countLabel =
+            document.getElementById("caseCountLabel");
+
+
+        tableBody.innerHTML = "";
+
+
+        countLabel.textContent =
+            `${cases.length} case${cases.length === 1 ? "" : "s"}`;
+
+
+        if (!cases.length) {
+
+            emptyState.style.display = "block";
+
+            return;
+
+        }
+
+
+        emptyState.style.display = "none";
+
+
+        cases.forEach(caseItem => {
+
+            const risk =
+                String(caseItem.risk_level || "LOW").toUpperCase();
+
+
+            const riskClass =
+                risk === "HIGH"
+                    ? "high"
+                    : risk === "MEDIUM"
+                        ? "medium"
+                        : "low";
+
+
+            const status =
+                caseItem.status || "Unknown";
+
+
+            const statusClass =
+                getStatusClass(status);
+
+
+            const location =
+                caseItem.village ||
+                caseItem.taluka ||
+                caseItem.district ||
+                "—";
+
+
+            const source =
+                caseItem.source ||
+                caseItem.reported_by ||
+                caseItem.role ||
+                "Field Report";
+
+
+            const row = document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    <span class="case-id">
+                        ${escapeHtml(caseItem.case_id || "—")}
+                    </span>
+                </td>
+
+                <td>
+                    ${escapeHtml(location)}
+                </td>
+
+                <td>
+                    ${escapeHtml(source)}
+                </td>
+
+                <td>
+                    <span class="status ${riskClass}">
+                        ${escapeHtml(risk)}
+                    </span>
+                </td>
+
+                <td>
+                    <span class="status ${statusClass}">
+                        ${escapeHtml(status)}
+                    </span>
+                </td>
+
+                <td>
+                    <button
+                        class="button primary"
+                        onclick="openCase('${encodeURIComponent(caseItem.case_id)}')"
+                    >
+                        Review
+                    </button>
+                </td>
+
+            `;
+
+
+            tableBody.appendChild(row);
+
+        });
+
+    }
+
+
+    /* ================= SEARCH / FILTER ================= */
+
+    function filterCases() {
+
+        const search =
+            document.getElementById("caseSearch")
+                .value
+                .toLowerCase()
+                .trim();
+
+
+        const risk =
+            document.getElementById("riskFilter").value;
+
+
+        const filtered = districtCases.filter(caseItem => {
+
+            const text = [
+
+                caseItem.case_id,
+                caseItem.village,
+                caseItem.taluka,
+                caseItem.district,
+                caseItem.source,
+                caseItem.reported_by,
+                caseItem.role
+
+            ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+            const itemRisk =
+                String(
+                    caseItem.risk_level || ""
+                ).toUpperCase();
+
+
+            return (
+                text.includes(search) &&
+                (risk === "ALL" || itemRisk === risk)
+            );
+
+        });
+
+
+        renderCases(filtered);
+
+    }
+
+
+    /* ================= OPEN CASE ================= */
+
+    async function openCase(encodedCaseId) {
+
+        const caseId =
+            decodeURIComponent(encodedCaseId);
+
+        selectedCaseId = caseId;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/district/case/${encodeURIComponent(caseId)}`
+                );
+
+
+            if (!response.ok) {
+                throw new Error("Case details unavailable.");
+            }
+
+
+            const caseData =
+                await response.json();
+
+
+            populateCaseModal(caseData);
+
+
+            document.getElementById("caseModal").style.display =
+                "block";
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to load case details. Please refresh and try again."
+            );
+
+        }
+
+    }
+
+
+    /* ================= MODAL DATA ================= */
+
+    function populateCaseModal(caseData) {
+
+        document.getElementById("modalCaseTitle").textContent =
+            "Case " + (caseData.case_id || "Details");
+
+
+        document.getElementById("detailCaseId").textContent =
+            caseData.case_id || "—";
+
+
+        document.getElementById("detailRisk").textContent =
+            caseData.risk_level || "—";
+
+
+        document.getElementById("detailStatus").textContent =
+            caseData.status || "—";
+
+
+        document.getElementById("detailState").textContent =
+            caseData.state || "Maharashtra";
+
+
+        document.getElementById("detailDistrict").textContent =
+            caseData.district || "Pune";
+
+
+        document.getElementById("detailVillage").textContent =
+            caseData.village || "—";
+
+
+        document.getElementById("detailAnimal").textContent = [
+
+            caseData.animal_type
+                ? "Animal: " + caseData.animal_type
+                : "",
+
+            caseData.age
+                ? "Age: " + caseData.age
+                : "",
+
+            caseData.affected
+                ? "Affected: " + caseData.affected
+                : "",
+
+            caseData.duration
+                ? "Duration: " + caseData.duration
+                : ""
+
+        ]
+        .filter(Boolean)
+        .join(" · ") || "No animal information available.";
+
+
+        document.getElementById("detailSymptoms").textContent =
+
+            Array.isArray(caseData.symptoms)
+                ? caseData.symptoms.join(", ")
+                : caseData.symptoms || "No symptoms recorded.";
+
+
+        document.getElementById("detailAssessment").textContent =
+
+            caseData.assessment ||
+            caseData.risk_reason ||
+            `Risk level: ${caseData.risk_level || "Unknown"}. ` +
+            `Final risk score: ${caseData.risk_score ?? "—"}.`;
+
+
+        document.getElementById("detailSample").textContent =
+
+            `Sample status: ${caseData.sample_status || "Not recorded"} · ` +
+            `Case status: ${caseData.status || "—"}`;
+
+    }
+
+
+    /* ================= OPEN FULL CASE ================= */
+
+    function openFullCase() {
+
+        if (!selectedCaseId) {
+            return;
+        }
+
+        window.location.href =
+            `/district/case/${encodeURIComponent(selectedCaseId)}`;
+
+    }
+
+
+    /* ================= DISTRICT DECISION ================= */
+
+    async function updateDistrictCase(status) {
+
+        if (!selectedCaseId) {
+            return;
+        }
+
+        const confirmed = confirm(
+            `Change this case to "${status}"?`
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                `/api/district/cases/${encodeURIComponent(selectedCaseId)}/status`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ status: status })
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || "Unable to update the case.");
+            }
+
+            alert(`Case updated to ${status}.`);
+            closeCaseModal();
+            loadDistrictData();
+
+        } catch (error) {
+
+            alert(error.message);
+
+        }
+
+    }
+
+
+    /* ================= CLOSE MODAL ================= */
+
+    function closeCaseModal() {
+
+        document.getElementById("caseModal").style.display =
+            "none";
+
+    }
+
+
+    /* ================= STATUS CLASS ================= */
+
+    function getStatusClass(status) {
+
+        const value =
+            String(status || "").toLowerCase();
+
+
+        if (value.includes("confirmed")) {
+            return "confirmed";
+        }
+
+
+        if (
+            value.includes("escalated") ||
+            value.includes("urgent")
+        ) {
+            return "escalated";
+        }
+
+
+        if (
+            value.includes("testing") ||
+            value.includes("lab")
+        ) {
+            return "testing";
+        }
+
+
+        if (
+            value.includes("resolved") ||
+            value.includes("closed") ||
+            value.includes("monitor")
+        ) {
+            return "confirmed";
+        }
+
+
+        return "pending";
+
+    }
+
+
+    /* ================= ALERTS ================= */
+
+    function updateAlerts() {
+
+        const container =
+            document.getElementById("alertsContainer");
+
+
+        const highRisk =
+            districtCases.filter(caseItem =>
+                String(caseItem.risk_level || "").toUpperCase() === "HIGH"
+            );
+
+
+        const urgent =
+            highRisk.filter(caseItem => {
+
+                const status =
+                    String(caseItem.status || "").toLowerCase();
+
+                return !(
+                    status.includes("resolved") ||
+                    status.includes("closed")
+                );
+
+            });
+
+
+        let html = "";
+
+
+        if (urgent.length > 0) {
+
+            html += `
+
+                <div class="alert alert-danger">
+
+                    <h4>
+                        🚨 High-Risk Cases Require Attention
+                    </h4>
+
+                    <p>
+                        ${urgent.length} high-risk case${urgent.length > 1 ? "s are" : " is"}
+                        currently present in the district surveillance queue.
+                        Veterinary authorities should review these cases promptly.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        const sampleCount =
+            districtCases.filter(caseItem => {
+
+                const sample =
+                    String(
+                        caseItem.sample_status || ""
+                    ).toLowerCase();
+
+                return [
+                    "pending collection",
+                    "collected",
+                    "sent to lab",
+                    "under testing"
+                ].includes(sample);
+
+            }).length;
+
+
+        if (sampleCount > 0) {
+
+            html += `
+
+                <div class="alert alert-warning">
+
+                    <h4>
+                        🧪 Laboratory Queue Active
+                    </h4>
+
+                    <p>
+                        ${sampleCount} case${sampleCount > 1 ? "s have" : " has"}
+                        an active laboratory/sample workflow.
+                        Coordinate sample collection and referral as required.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        if (!html) {
+
+            html = `
+
+                <div class="alert alert-info">
+
+                    <h4>
+                        ✅ No Immediate District Alerts
+                    </h4>
+
+                    <p>
+                        No active high-risk or laboratory escalation
+                        indicators were detected in the current district queue.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        container.innerHTML = html;
+
+    }
+
+
+    /* ================= ESCAPE HTML ================= */
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* ================= MODAL CLICK OUTSIDE ================= */
+
+    window.addEventListener("click", function(event) {
+
+        const modal =
+            document.getElementById("caseModal");
+
+
+        if (event.target === modal) {
+            closeCaseModal();
+        }
+
+    });
+
+
+    /* ================= INITIAL LOAD ================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadDistrictData
+    );
+
+</script>
+
+</body>
+</html>

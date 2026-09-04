@@ -1426,3 +1426,110 @@ MOBILE
 #locationPreview small {
     font-size: 13px;
 }
+
+/* =========================================================
+   CASE REGISTRATION CARD
+   ========================================================= */
+
+.case-registration-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #dfe7e2;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.case-registration-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e9f7ef;
+    color: #198754;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.case-registration-content {
+    flex: 1;
+}
+
+.case-registration-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #198754;
+    margin-bottom: 4px;
+}
+
+.case-registration-content h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.case-id-display {
+    display: inline-block;
+    padding: 7px 12px;
+    background: #f4f7f5;
+    border: 1px solid #d9e3dc;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #1f3d2b;
+    margin-bottom: 8px;
+}
+
+.case-registration-content p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.case-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 13px;
+    border-radius: 999px;
+    background: #fff8e1;
+    color: #8a6d1d;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.case-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d39e00;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .case-registration-card {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .case-registration-content {
+        min-width: 0;
+        width: calc(100% - 72px);
+    }
+
+    .case-status {
+        margin-left: 72px;
+    }
+
+}

@@ -3,9 +3,11 @@
 <html lang="en">
 
 <head>
+    <link rel="manifest" href="/static/manifest.webmanifest">
+    <meta name="theme-color" content="#176b45">
+    <script defer src="/static/js/offline-sync.js"></script>
     <meta charset="UTF-8">
 
-```
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -30,7 +32,6 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='style.css') }}"
 >
-```
 
 </head>
 
@@ -41,7 +42,6 @@
 <nav class="navbar bg-white border-bottom">
     <div class="container py-2">
 
-```
     <a
         href="/"
         class="navbar-brand d-flex align-items-center gap-2 text-decoration-none"
@@ -63,7 +63,6 @@
     </span>
 
 </div>
-```
 
 </nav>
 
@@ -71,7 +70,6 @@
 
 <main class="container py-5">
 
-```
 <!-- BACK -->
 <div class="mb-4">
 
@@ -500,7 +498,6 @@
     </div>
 
 </form>
-```
 
 </main>
 
@@ -508,7 +505,6 @@
 
 <footer class="border-top bg-white mt-5">
 
-```
 <div class="container py-4 text-center">
 
     <strong>🐄 Livestock Health</strong>
@@ -518,7 +514,6 @@
     </p>
 
 </div>
-```
 
 </footer>
 

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="manifest" href="/static/manifest.webmanifest">
+    <meta name="theme-color" content="#176b45">
+    <script defer src="/static/js/offline-sync.js"></script>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Farmer Dashboard | Livestock Health</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+
+    <div class="container">
+
+        <a
+            class="navbar-brand fw-bold"
+            href="/farmer"
+        >
+            Livestock Health
+        </a>
+
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="text-end d-none d-sm-block">
+
+                <div class="fw-semibold small">
+
+                    {{ session.get("name", "Farmer") }}
+
+                </div>
+
+                <div class="text-muted small">
+
+                    Farmer
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="/logout"
+                class="btn btn-outline-danger btn-sm"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="container py-5">
+
+
+    <!-- =====================================================
+         WELCOME
+    ====================================================== -->
+
+    <section class="mb-5">
+
+        <div class="row align-items-center g-4">
+
+            <div class="col-lg-8">
+
+                <div class="text-uppercase text-muted small fw-semibold mb-2">
+
+                    Livestock Health Surveillance
+
+                </div>
+
+
+                <h1 class="display-6 fw-bold mb-3">
+
+                    Welcome,
+                    {{ session.get("name", "Farmer") }}
+
+                </h1>
+
+
+                <p class="lead text-muted mb-0">
+
+                    Report unusual symptoms or illness in your
+                    livestock and get an AI-assisted health risk
+                    assessment.
+
+                </p>
+
+            </div>
+
+
+            <div class="col-lg-4">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <div class="small text-muted mb-1">
+
+                            Reporting Location
+
+                        </div>
+
+
+                        <div class="fw-bold">
+
+                            {{ session.get("district", "Maharashtra") }}
+
+                        </div>
+
+
+                        <div class="text-muted small">
+
+                            {{ session.get("state", "Maharashtra") }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MAIN ACTION
+    ====================================================== -->
+
+    <section class="mb-5">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-4 p-md-5">
+
+                <div class="row align-items-center g-4">
+
+                    <div class="col-lg-8">
+
+                        <div class="d-flex align-items-center gap-3 mb-3">
+
+                            <div
+                                class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                                style="width: 48px; height: 48px;"
+                            >
+
+                                +
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="text-uppercase small text-primary fw-bold">
+
+                                    New Health Report
+
+                                </div>
+
+
+                                <h3 class="fw-bold mb-0">
+
+                                    Report Livestock Health Problem
+
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+
+                        <p class="text-muted mb-0">
+
+                            Tell us about the affected animals,
+                            symptoms and duration. The system will
+                            combine the report with available
+                            historical and disease-surveillance
+                            evidence.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="col-lg-4 text-lg-end">
+
+                        <a
+                            href="/report"
+                            class="btn btn-primary btn-lg px-4"
+                        >
+
+                            Start Health Report
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         HOW IT WORKS
+    ====================================================== -->
+
+    <section class="mb-5">
+
+        <div class="mb-4">
+
+            <div class="text-uppercase text-muted small fw-semibold">
+
+                Simple Process
+
+            </div>
+
+
+            <h2 class="fw-bold">
+
+                How the system works
+
+            </h2>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <!-- STEP 1 -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="small text-primary fw-bold mb-2">
+
+                            STEP 01
+
+                        </div>
+
+
+                        <h5 class="fw-bold">
+
+                            Report
+
+                        </h5>
+
+
+                        <p class="text-muted small mb-0">
+
+                            Enter information about your livestock
+                            and observed symptoms.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STEP 2 -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="small text-primary fw-bold mb-2">
+
+                            STEP 02
+
+                        </div>
+
+
+                        <h5 class="fw-bold">
+
+                            Location
+
+                        </h5>
+
+
+                        <p class="text-muted small mb-0">
+
+                            Select Maharashtra, district and village
+                            for location-aware surveillance.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STEP 3 -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="small text-primary fw-bold mb-2">
+
+                            STEP 03
+
+                        </div>
+
+
+                        <h5 class="fw-bold">
+
+                            AI Assessment
+
+                        </h5>
+
+
+                        <p class="text-muted small mb-0">
+
+                            The system calculates a combined
+                            surveillance risk score.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STEP 4 -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="small text-primary fw-bold mb-2">
+
+                            STEP 04
+
+                        </div>
+
+
+                        <h5 class="fw-bold">
+
+                            Field Review
+
+                        </h5>
+
+
+                        <p class="text-muted small mb-0">
+
+                            Higher-risk reports can be forwarded
+                            for paravet and veterinary review.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         IMPORTANT INFORMATION
+    ====================================================== -->
+
+    <section class="mb-5">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-3">
+
+                    Important
+
+                </h5>
+
+
+                <div class="row g-4">
+
+
+                    <div class="col-md-4">
+
+                        <div class="d-flex gap-3">
+
+                            <div class="fw-bold text-primary">
+
+                                01
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="fw-semibold">
+
+                                    Early reporting
+
+                                </div>
+
+
+                                <div class="small text-muted">
+
+                                    Report unusual illness as early
+                                    as possible.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-md-4">
+
+                        <div class="d-flex gap-3">
+
+                            <div class="fw-bold text-primary">
+
+                                02
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="fw-semibold">
+
+                                    AI is supportive
+
+                                </div>
+
+
+                                <div class="small text-muted">
+
+                                    The assessment supports
+                                    surveillance and does not
+                                    replace a veterinarian.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-md-4">
+
+                        <div class="d-flex gap-3">
+
+                            <div class="fw-bold text-primary">
+
+                                03
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="fw-semibold">
+
+                                    Follow professional advice
+
+                                </div>
+
+
+                                <div class="small text-muted">
+
+                                    Contact veterinary services when
+                                    animals are seriously ill.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUICK ACTION
+    ====================================================== -->
+
+    <section>
+
+        <div class="card border-0 bg-light">
+
+            <div class="card-body p-4 text-center">
+
+                <h4 class="fw-bold">
+
+                    Is your livestock showing unusual symptoms?
+
+                </h4>
+
+
+                <p class="text-muted">
+
+                    Submit a health report to begin the
+                    surveillance assessment.
+
+                </p>
+
+
+                <a
+                    href="/report"
+                    class="btn btn-primary px-4"
+                >
+
+                    Submit Health Report
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="border-top bg-white mt-5">
+
+    <div class="container py-4">
+
+        <div class="text-center small text-muted">
+
+            Livestock Health Surveillance & Decision Support System
+
+            <br>
+
+            AI-assisted surveillance for early detection and
+            management of livestock health risks.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+</body>
+
+</html>

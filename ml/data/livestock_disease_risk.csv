@@ -1,0 +1,348 @@
+State Name	District Name	Disease Name	Month	Predicted	Outcome
+MAHARASHTRA	Amravati	Peste des petits ruminants	November	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Foot and mouth disease	November	Very High Risk	
+MAHARASHTRA	Akola	African Swine Fever	November	Very High Risk	
+MAHARASHTRA	Akola	Lumpy Skin Diseases	November	Very High Risk	
+MAHARASHTRA	Satara	Haemorrhagic septicaemia	November	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Peste des petits ruminants	November	Very High Risk	
+MAHARASHTRA	Akola	Theileriosis	November	Very High Risk	
+MAHARASHTRA	Dhule	Peste des petits ruminants	November	Very High Risk	
+MAHARASHTRA	Latur	Foot and mouth disease	November	Very High Risk	
+MAHARASHTRA	Nashik	Peste des petits ruminants	November	Very High Risk	
+MAHARASHTRA	Osmanabad	Foot and mouth disease	November	Very High Risk	
+MAHARASHTRA	Pune	Foot and mouth disease	November	Very High Risk	
+MAHARASHTRA	Sangli	Foot and mouth disease	November	Very High Risk	
+MAHARASHTRA	Solapur	Foot and mouth disease	November	Very High Risk	
+MAHARASHTRA	Yavatmal	Foot and mouth disease	November	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Sheep & Goat pox	November	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Classical Swine fever	November	Very High Risk	
+MAHARASHTRA	Akola	Trypanosomiasis	November	Very High Risk	
+MAHARASHTRA	Akola	Avian Influenza	November	Very High Risk	
+MAHARASHTRA	Amravati	Sheep & Goat pox	November	Very High Risk	
+MAHARASHTRA	Amravati	Classical Swine fever	November	Very High Risk	
+MAHARASHTRA	Dhule	Sheep & Goat pox	November	Very High Risk	
+MAHARASHTRA	Dhule	Classical Swine fever	November	Very High Risk	
+MAHARASHTRA	Nashik	Sheep & Goat pox	November	Very High Risk	
+MAHARASHTRA	Nashik	Classical Swine fever	November	Very High Risk	
+MAHARASHTRA	Solapur	Haemorrhagic septicaemia	November	Very High Risk	
+MAHARASHTRA	Sangli	Haemorrhagic septicaemia	November	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Haemorrhagic septicaemia	November	Very High Risk	
+MAHARASHTRA	Pune	Haemorrhagic septicaemia	November	Very High Risk	
+MAHARASHTRA	Yavatmal	Haemorrhagic septicaemia	November	High Risk	
+MAHARASHTRA	Mumbai	African Swine Fever	November	High Risk	
+MAHARASHTRA	Latur	Haemorrhagic septicaemia	November	High Risk	
+MAHARASHTRA	Osmanabad	Haemorrhagic septicaemia	November	High Risk	
+MAHARASHTRA	Buldana	African Swine Fever	September	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Foot and mouth disease	September	Very High Risk	
+MAHARASHTRA	Pune	Foot and mouth disease	September	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Haemorrhagic septicaemia	September	Very High Risk	
+MAHARASHTRA	Kolhapur	Haemorrhagic septicaemia	September	Very High Risk	
+MAHARASHTRA	Nashik	Peste des petits ruminants	September	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Bluetongue	September	Very High Risk	
+MAHARASHTRA	Kolhapur	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Jalgaon	Enterotoxaemia	September	High Risk	
+MAHARASHTRA	Sindhudurg	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Ratnagiri	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Akola	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Gadchiroli	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Gondiya	Haemorrhagic septicaemia	September	High Risk	
+MAHARASHTRA	Pune	Haemorrhagic septicaemia	September	High Risk	
+MAHARASHTRA	Kolhapur	Black quarter	September	High Risk	
+MAHARASHTRA	Mumbai	Theileriosis	September	High Risk	
+MAHARASHTRA	Mumbai	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Satara	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Sangli	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Yavatmal	Black quarter	September	High Risk	
+MAHARASHTRA	Amravati	Black quarter	September	High Risk	
+MAHARASHTRA	Osmanabad	Enterotoxaemia	September	High Risk	
+MAHARASHTRA	Nagpur	Enterotoxaemia	September	High Risk	
+MAHARASHTRA	Dhule	Enterotoxaemia	September	High Risk	
+MAHARASHTRA	Parbhani	Enterotoxaemia	September	High Risk	
+MAHARASHTRA	Chandrapur	Enterotoxaemia	September	High Risk	
+MAHARASHTRA	Solapur	Bluetongue	September	High Risk	
+MAHARASHTRA	Pune	Bluetongue	September	High Risk	
+MAHARASHTRA	Amravati	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Bid	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Mumbai	Babesiosis	September	High Risk	
+MAHARASHTRA	Solapur	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Jalgaon	Foot and mouth disease	September	High Risk	
+MAHARASHTRA	Dhule	Lumpy Skin Diseases	September	High Risk	
+MAHARASHTRA	Amravati	Peste des petits ruminants	September	High Risk	
+MAHARASHTRA	Thane	Peste des petits ruminants	September	High Risk	
+MAHARASHTRA	Gadchiroli	Haemorrhagic septicaemia	September	High Risk	
+MAHARASHTRA	Mumbai	Lumpy Skin Diseases	September	High Risk	
+MAHARASHTRA	Pune	Lumpy Skin Diseases	September	High Risk	
+MAHARASHTRA	Kolhapur	Lumpy Skin Diseases	September	High Risk	
+MAHARASHTRA	Ahmadnagar	Lumpy Skin Diseases	September	High Risk	
+MAHARASHTRA	Satara	Lumpy Skin Diseases	September	High Risk	
+MAHARASHTRA	Sindhudurg	Sheep & Goat pox	September	High Risk	
+MAHARASHTRA	Nashik	Lumpy Skin Diseases	September	High Risk	
+MAHARASHTRA	Latur	Black quarter	August	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Akola	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Bid	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Buldana	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Dhule	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Hingoli	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Jalgaon	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Latur	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Nagpur	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Nanded	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Nandurbar	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Nashik	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Osmanabad	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Pune	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Satara	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Sindhudurg	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Solapur	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Wardha	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Washim	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Palghar	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Sangli	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Peste des petits ruminants	August	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Sheep & Goat pox	August	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Foot and mouth disease	August	Very High Risk	
+MAHARASHTRA	Satara	Foot and mouth disease	August	Very High Risk	
+MAHARASHTRA	Sangli	Enterotoxaemia	August	Very High Risk	
+MAHARASHTRA	Kolhapur	Lumpy Skin Diseases	August	Very High Risk	
+MAHARASHTRA	Pune	Foot and mouth disease	August	Very High Risk	
+MAHARASHTRA	Mumbai Suburban	Babesiosis	August	High Risk	
+MAHARASHTRA	Mumbai	Babesiosis	August	High Risk	
+MAHARASHTRA	Sangli	Foot and mouth disease	August	Very High Risk	
+MAHARASHTRA	Mumbai	Peste des petits ruminants	August	High Risk	
+MAHARASHTRA	Kolhapur	Haemorrhagic septicaemia	August	High Risk	
+MAHARASHTRA	Sindhudurg	Foot and mouth disease	August	High Risk	
+MAHARASHTRA	Pune	Peste des petits ruminants	July	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Peste des petits ruminants	July	Very High Risk	
+MAHARASHTRA	Nashik	Haemorrhagic septicaemia	July	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Black quarter	July	Very High Risk	
+MAHARASHTRA	Amravati	Haemorrhagic septicaemia	July	Very High Risk	
+MAHARASHTRA	Akola	Haemorrhagic septicaemia	July	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Haemorrhagic septicaemia	July	Very High Risk	
+MAHARASHTRA	Nashik	Theileriosis	July	Very High Risk	
+MAHARASHTRA	Amravati	Theileriosis	July	Very High Risk	
+MAHARASHTRA	Pune	Lumpy Skin Diseases	July	High Risk	
+MAHARASHTRA	Ratnagiri	Lumpy Skin Diseases	July	High Risk	
+MAHARASHTRA	Sindhudurg	Enterotoxaemia	July	High Risk	
+MAHARASHTRA	Kolhapur	Lumpy Skin Diseases	July	High Risk	
+MAHARASHTRA	Mumbai Suburban	Lumpy Skin Diseases	July	High Risk	
+MAHARASHTRA	Sindhudurg	Lumpy Skin Diseases	July	High Risk	
+MAHARASHTRA	Akola	Anaplasmosis	June	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Anaplasmosis	June	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Theileriosis	June	Very High Risk	
+MAHARASHTRA	Akola	Theileriosis	June	Very High Risk	
+MAHARASHTRA	Bid	Haemorrhagic septicaemia	June	Very High Risk	
+MAHARASHTRA	Pune	Anthrax	June	Very High Risk	
+MAHARASHTRA	Pune	Sheep & Goat pox	June	Very High Risk	
+MAHARASHTRA	Wardha	African Swine Fever	June	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Trypanosomiasis	June	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Avin Influenza	June	Very High Risk	
+MAHARASHTRA	Akola	Trypanosomiasis	June	Very High Risk	
+MAHARASHTRA	Akola	Avin Influenza	June	Very High Risk	
+MAHARASHTRA	Amravati	Anaplasmosis	June	Very High Risk	
+MAHARASHTRA	Bid	Peste des petits ruminants	June	Very High Risk	
+MAHARASHTRA	Pune	Babesiosis	June	Very High Risk	
+MAHARASHTRA	Pune	Black quarter	June	Very High Risk	
+MAHARASHTRA	Pune	Enterotoxaemia	June	Very High Risk	
+MAHARASHTRA	Pune	Fascioliasis	June	Very High Risk	
+MAHARASHTRA	Pune	Foot and mouth disease	June	Very High Risk	
+MAHARASHTRA	Pune	Classical Swine fever	June	Very High Risk	
+MAHARASHTRA	Satara	Anaplasmosis	June	Very High Risk	
+MAHARASHTRA	Wardha	Mycoplasmosis	June	Very High Risk	
+MAHARASHTRA	Mumbai	Lumpy Skin Diseases	June	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Anthrax	June	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Babesiosis	June	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Black quarter	June	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Enterotoxaemia	June	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Fascioliasis	June	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Foot and mouth disease	June	Very High Risk	
+MAHARASHTRA	Bid	Sheep & Goat pox	June	Very High Risk	
+MAHARASHTRA	Bid	Classical Swine fever	June	Very High Risk	
+MAHARASHTRA	Mumbai	Enterotoxaemia	June	Very High Risk	
+MAHARASHTRA	Nandurbar	Mycoplasmosis	June	Very High Risk	
+MAHARASHTRA	Kolhapur	Foot and mouth disease	June	Very High Risk	
+MAHARASHTRA	Akola	Anthrax	June	High Risk	
+MAHARASHTRA	Akola	Babesiosis	June	High Risk	
+MAHARASHTRA	Akola	Black quarter	June	High Risk	
+MAHARASHTRA	Akola	Enterotoxaemia	June	High Risk	
+MAHARASHTRA	Akola	Fascioliasis	June	High Risk	
+MAHARASHTRA	Akola	Foot and mouth disease	June	High Risk	
+MAHARASHTRA	Hingoli	Anaplasmosis	June	High Risk	
+MAHARASHTRA	Mumbai Suburban	Theileriosis	June	High Risk	
+MAHARASHTRA	Mumbai Suburban	Lumpy Skin Diseases	June	High Risk	
+MAHARASHTRA	Hingoli	Lumpy Skin Diseases	June	High Risk	
+MAHARASHTRA	Mumbai Suburban	Anaplasmosis	June	High Risk	
+MAHARASHTRA	Mumbai Suburban	Babesiosis	June	High Risk	
+MAHARASHTRA	Bhandara	Anaplasmosis	June	High Risk	
+MAHARASHTRA	Nagpur	Anaplasmosis	June	High Risk	
+MAHARASHTRA	Palghar	Anaplasmosis	June	High Risk	
+MAHARASHTRA	Sangli	Foot and mouth disease	June	High Risk	
+MAHARASHTRA	Mumbai	Foot and mouth disease	June	High Risk	
+MAHARASHTRA	Satara	Foot and mouth disease	June	High Risk	
+MAHARASHTRA	Ahmadnagar	Anaplasmosis	May	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Haemorrhagic septicaemia	May	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Peste des petits ruminants	May	Very High Risk	
+MAHARASHTRA	Hingoli	Haemorrhagic septicaemia	May	Very High Risk	
+MAHARASHTRA	Pune	Haemorrhagic septicaemia	May	Very High Risk	
+MAHARASHTRA	Satara	Sheep & Goat pox	May	Very High Risk	
+MAHARASHTRA	Wardha	Peste des petits ruminants	May	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Anthrax	May	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Babesiosis	May	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Enterotoxaemia	May	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Sheep & Goat pox	May	Very High Risk	
+MAHARASHTRA	Pune	Peste des petits ruminants	May	Very High Risk	
+MAHARASHTRA	Wardha	Sheep & Goat pox	May	Very High Risk	
+MAHARASHTRA	Solapur	Anaplasmosis	May	Very High Risk	
+MAHARASHTRA	Hingoli	Peste des petits ruminants	May	High Risk	
+MAHARASHTRA	Nandurbar	Mycoplasmosis	May	High Risk	
+MAHARASHTRA	Thane	Foot and mouth disease	May	High Risk	
+MAHARASHTRA	Palghar	Foot and mouth disease	May	High Risk	
+MAHARASHTRA	Pune	Enterotoxaemia	May	High Risk	
+MAHARASHTRA	Latur	Lumpy Skin Diseases	May	High Risk	
+MAHARASHTRA	Dhule	Foot and mouth disease	May	High Risk	
+MAHARASHTRA	Dhule	Sheep & Goat pox	May	High Risk	
+MAHARASHTRA	Mumbai Suburban	Lumpy Skin Diseases	May	High Risk	
+MAHARASHTRA	Gadchiroli	Haemorrhagic septicaemia	May	High Risk	
+MAHARASHTRA	Nashik	Enterotoxaemia	May	High Risk	
+MAHARASHTRA	Gondiya	Lumpy Skin Diseases	May	High Risk	
+MAHARASHTRA	Yavatmal	Peste des petits ruminants	May	High Risk	
+MAHARASHTRA	Mumbai	Classical Swine fever	May	High Risk	
+MAHARASHTRA	Ahmadnagar	Haemorrhagic septicaemia	April	Very High Risk	
+MAHARASHTRA	Dhule	Sheep & Goat pox	April	Very High Risk	
+MAHARASHTRA	Dhule	Classical Swine fever	April	Very High Risk	
+MAHARASHTRA	Nashik	Haemorrhagic septicaemia	April	Very High Risk	
+MAHARASHTRA	Nashik	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Black quarter	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Foot and mouth disease	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Sheep & Goat pox	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Classical Swine fever	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Theileriosis	April	Very High Risk	
+MAHARASHTRA	Amravati	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Amravati	Theileriosis	April	Very High Risk	
+MAHARASHTRA	Bid	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Dhule	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Hingoli	Haemorrhagic septicaemia	April	Very High Risk	
+MAHARASHTRA	Hingoli	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Jalgaon	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Latur	Black quarter	April	Very High Risk	
+MAHARASHTRA	Latur	Enterotoxaemia	April	Very High Risk	
+MAHARASHTRA	Latur	Fascioliasis	April	Very High Risk	
+MAHARASHTRA	Latur	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Nanded	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Nanded	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Nandurbar	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Nashik	Foot and mouth disease	April	Very High Risk	
+MAHARASHTRA	Nashik	Sheep & Goat pox	April	Very High Risk	
+MAHARASHTRA	Nashik	Theileriosis	April	Very High Risk	
+MAHARASHTRA	Osmanabad	Avian Influenza	April	Very High Risk	
+MAHARASHTRA	Osmanabad	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Parbhani	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Pune	Anthrax	April	Very High Risk	
+MAHARASHTRA	Pune	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Pune	Sheep & Goat pox	April	Very High Risk	
+MAHARASHTRA	Pune	Classical Swine fever	April	Very High Risk	
+MAHARASHTRA	Sangli	Sheep & Goat pox	April	Very High Risk	
+MAHARASHTRA	Sangli	Theileriosis	April	Very High Risk	
+MAHARASHTRA	Satara	Enterotoxaemia	April	Very High Risk	
+MAHARASHTRA	Satara	Fascioliasis	April	Very High Risk	
+MAHARASHTRA	Satara	Sheep & Goat pox	April	Very High Risk	
+MAHARASHTRA	Solapur	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Trypanosomiasis	April	Very High Risk	
+MAHARASHTRA	Amravati	Trypanosomiasis	April	Very High Risk	
+MAHARASHTRA	Nashik	Classical Swine fever	April	Very High Risk	
+MAHARASHTRA	Nashik	Trypanosomiasis	April	Very High Risk	
+MAHARASHTRA	Sangli	Classical Swine fever	April	Very High Risk	
+MAHARASHTRA	Sangli	Trypanosomiasis	April	Very High Risk	
+MAHARASHTRA	Satara	Classical Swine fever	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Avian Influenza	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	African Swine Fever	April	Very High Risk	
+MAHARASHTRA	Nashik	Avian Influenza	April	Very High Risk	
+MAHARASHTRA	Nashik	African Swine Fever	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Bluetongue	April	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Mycoplasmosis	April	Very High Risk	
+MAHARASHTRA	Bid	Theileriosis	April	Very High Risk	
+MAHARASHTRA	Nandurbar	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Amravati	Avian Influenza	April	Very High Risk	
+MAHARASHTRA	Amravati	African Swine Fever	April	Very High Risk	
+MAHARASHTRA	Sangli	Avian Influenza	April	Very High Risk	
+MAHARASHTRA	Sangli	African Swine Fever	April	Very High Risk	
+MAHARASHTRA	Nashik	Mycoplasmosis	April	Very High Risk	
+MAHARASHTRA	Solapur	Foot and mouth disease	April	Very High Risk	
+MAHARASHTRA	Dhule	Haemorrhagic septicaemia	April	Very High Risk	
+MAHARASHTRA	Sangli	Mycoplasmosis	April	Very High Risk	
+MAHARASHTRA	Washim	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Sangli	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Mumbai	Enterotoxaemia	April	Very High Risk	
+MAHARASHTRA	Mumbai	Fascioliasis	April	Very High Risk	
+MAHARASHTRA	Pune	Haemorrhagic septicaemia	April	Very High Risk	
+MAHARASHTRA	Amravati	Mycoplasmosis	April	Very High Risk	
+MAHARASHTRA	Pune	Foot and mouth disease	April	Very High Risk	
+MAHARASHTRA	Kolhapur	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Palghar	Sheep & Goat pox	April	Very High Risk	
+MAHARASHTRA	Satara	Lumpy Skin Diseases	April	Very High Risk	
+MAHARASHTRA	Jalna	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Satara	Peste des petits ruminants	April	Very High Risk	
+MAHARASHTRA	Akola	Peste des petits ruminants	April	High Risk	
+MAHARASHTRA	Kolhapur	Lumpy Skin Diseases	April	High Risk	
+MAHARASHTRA	Mumbai Suburban	Sheep & Goat pox	April	High Risk	
+MAHARASHTRA	Wardha	Foot and mouth disease	April	High Risk	
+MAHARASHTRA	Latur	Sheep & Goat pox	April	High Risk	
+MAHARASHTRA	Mumbai Suburban	Peste des petits ruminants	April	High Risk	
+MAHARASHTRA	Bid	Peste des petits ruminants	April	High Risk	
+MAHARASHTRA	Kolhapur	Foot and mouth disease	April	High Risk	
+MAHARASHTRA	Ratnagiri	Sheep & Goat pox	April	High Risk	
+MAHARASHTRA	Mumbai Suburban	Enterotoxaemia	April	High Risk	
+MAHARASHTRA	Mumbai Suburban	Fascioliasis	April	High Risk	
+MAHARASHTRA	Solapur	Haemorrhagic septicaemia	April	High Risk	
+MAHARASHTRA	Yavatmal	Anthrax	April	High Risk	
+MAHARASHTRA	Buldana	Sheep & Goat pox	April	High Risk	
+MAHARASHTRA	Buldana	Classical Swine fever	April	High Risk	
+MAHARASHTRA	Mumbai Suburban	Avian Influenza	April	High Risk	
+MAHARASHTRA	Buldana	Lumpy Skin Diseases	April	High Risk	
+MAHARASHTRA	Bid	Black quarter	April	High Risk	
+MAHARASHTRA	Kolhapur	Enterotoxaemia	April	High Risk	
+MAHARASHTRA	Thane	Sheep & Goat pox	April	High Risk	
+MAHARASHTRA	Jalgaon	Sheep & Goat pox	April	High Risk	
+MAHARASHTRA	Kolhapur	Bluetongue	April	High Risk	
+MAHARASHTRA	Osmanabad	Peste des petits ruminants	April	High Risk	
+MAHARASHTRA	Solapur	Theileriosis	April	High Risk	
+MAHARASHTRA	Buldana	Peste des petits ruminants	April	High Risk	
+MAHARASHTRA	Pune	African Swine Fever	October	Very High Risk	
+MAHARASHTRA	Solapur	Lumpy Skin Diseases	October	Very High Risk	
+MAHARASHTRA	Nashik	Lumpy Skin Diseases	October	Very High Risk	
+MAHARASHTRA	Akola	African Swine Fever	October	Very High Risk	
+MAHARASHTRA	Nashik	Theileriosis	October	Very High Risk	
+MAHARASHTRA	Nandurbar	African Swine Fever	October	Very High Risk	
+MAHARASHTRA	Latur	Theileriosis	October	Very High Risk	
+MAHARASHTRA	Jalgaon	Theileriosis	October	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Theileriosis	October	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Foot and mouth disease	October	Very High Risk	
+MAHARASHTRA	Latur	Haemorrhagic septicaemia	October	Very High Risk	
+MAHARASHTRA	Dhule	Haemorrhagic septicaemia	October	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Haemorrhagic septicaemia	October	Very High Risk	
+MAHARASHTRA	Latur	Foot and mouth disease	October	Very High Risk	
+MAHARASHTRA	Ratnagiri	Trypanosomiasis	October	Very High Risk	
+MAHARASHTRA	Ahmadnagar	Peste des petits ruminants	October	Very High Risk	
+MAHARASHTRA	Dhule	Peste des petits ruminants	October	Very High Risk	
+MAHARASHTRA	Mumbai	Peste des petits ruminants	October	Very High Risk	
+MAHARASHTRA	Kolhapur	Lumpy Skin Diseases	October	Very High Risk	
+MAHARASHTRA	Nagpur	Foot and mouth disease	October	Very High Risk	
+MAHARASHTRA	Osmanabad	Foot and mouth disease	October	Very High Risk	
+MAHARASHTRA	Satara	Foot and mouth disease	October	Very High Risk	
+MAHARASHTRA	Sindhudurg	Foot and mouth disease	October	Very High Risk	
+MAHARASHTRA	Mumbai	Bluetongue	October	Very High Risk	
+MAHARASHTRA	Latur	Black quarter	October	Very High Risk	
+MAHARASHTRA	Pune	Enterotoxaemia	October	Very High Risk	
+MAHARASHTRA	Sindhudurg	Enterotoxaemia	October	Very High Risk	
+MAHARASHTRA	Mumbai	Trypanosomiasis	October	Very High Risk	
+MAHARASHTRA	Ratnagiri	Foot and mouth disease	October	High Risk	
+MAHARASHTRA	Gadchiroli	Theileriosis	October	High Risk	
+MAHARASHTRA	Satara	Bluetongue	October	High Risk	
+MAHARASHTRA	Sangli	Foot and mouth disease	October	High Risk	
+MAHARASHTRA	Solapur	Foot and mouth disease	October	High Risk	
+MAHARASHTRA	Pune	Theileriosis	October	High Risk	
+MAHARASHTRA	Bid	Theileriosis	October	High Risk	
+MAHARASHTRA	Akola	Theileriosis	October	High Risk	
+MAHARASHTRA	Sangli	Lumpy Skin Diseases	October	High Risk	
+MAHARASHTRA	Nanded	Foot and mouth disease	October	High Risk	

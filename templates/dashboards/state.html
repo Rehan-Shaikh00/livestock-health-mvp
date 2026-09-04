@@ -1,0 +1,1514 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="manifest" href="/static/manifest.webmanifest">
+    <meta name="theme-color" content="#176b45">
+    <script defer src="/static/js/offline-sync.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        State Directorate | Maharashtra Animal Health
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7f5;
+            color: #26382e;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: #124d34;
+            color: white;
+
+            padding: 18px 35px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .brand p {
+            font-size: 12px;
+            opacity: .85;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .user-name {
+            font-size: 13px;
+        }
+
+        .role {
+            background: rgba(255,255,255,.14);
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+
+        .logout {
+            color: white;
+            text-decoration: none;
+
+            border: 1px solid rgba(255,255,255,.5);
+
+            padding: 8px 14px;
+
+            border-radius: 7px;
+
+            font-size: 12px;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            max-width: 1400px;
+
+            margin: 30px auto;
+
+            padding: 0 22px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        .welcome p {
+            color: #728078;
+            font-size: 14px;
+        }
+
+        /* ================= STATS ================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
+
+            gap: 16px;
+
+            margin-bottom: 25px;
+        }
+
+        .stat {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 13px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .stat-label {
+
+            font-size: 10px;
+
+            color: #77837c;
+
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+
+            font-size: 28px;
+
+            font-weight: 700;
+        }
+
+        .stat-note {
+
+            margin-top: 5px;
+
+            font-size: 10px;
+
+            color: #8a948e;
+        }
+
+        /* ================= PANELS ================= */
+
+        .panel {
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.06);
+
+            margin-bottom: 20px;
+        }
+
+        .panel-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+        .panel-header h3 {
+
+            font-size: 17px;
+        }
+
+        .panel-header span {
+
+            font-size: 10px;
+
+            color: #7b867f;
+        }
+
+                /* Legacy CSS mock-map styles removed — see the Leaflet/OSM component (.geo-map*). */
+
+        /* ================= TWO COLUMN ================= */
+
+        .two-column {
+
+            display: grid;
+
+            grid-template-columns: 1.5fr 1fr;
+
+            gap: 20px;
+        }
+
+        /* ================= TABLE ================= */
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            font-size: 11px;
+        }
+
+        th {
+
+            text-align: left;
+
+            padding: 11px 8px;
+
+            font-size: 10px;
+
+            color: #707c75;
+
+            border-bottom:
+                1px solid #e5eae7;
+        }
+
+        td {
+
+            padding: 13px 8px;
+
+            border-bottom:
+                1px solid #edf0ee;
+        }
+
+        .badge {
+
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 9px;
+
+            font-weight: 600;
+        }
+
+        .high {
+
+            background: #ffe3e3;
+
+            color: #b42318;
+        }
+
+        .medium {
+
+            background: #fff3d4;
+
+            color: #8a6200;
+        }
+
+        .low {
+
+            background: #e5f4ea;
+
+            color: #176b45;
+        }
+
+        /* ================= TREND ================= */
+
+        .trend {
+
+            height: 240px;
+
+            display: flex;
+
+            align-items: end;
+
+            gap: 13px;
+
+            padding: 20px 10px 5px;
+
+            border-bottom:
+                1px solid #dfe6e1;
+        }
+
+        .bar {
+
+            flex: 1;
+
+            background: #72a987;
+
+            border-radius: 6px 6px 0 0;
+
+            position: relative;
+
+            min-width: 20px;
+        }
+
+        .bar span {
+
+            position: absolute;
+
+            bottom: -22px;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            font-size: 9px;
+
+            color: #78847d;
+        }
+
+        .bar-value {
+
+            position: absolute;
+
+            top: -17px;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            font-size: 9px;
+
+            font-weight: 600;
+        }
+
+        /* ================= DISEASE CARDS ================= */
+
+        .disease {
+
+            padding: 15px;
+
+            background: #f7f9f8;
+
+            border-radius: 10px;
+
+            margin-bottom: 10px;
+        }
+
+        .disease-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 6px;
+        }
+
+        .disease strong {
+
+            font-size: 12px;
+        }
+
+        .disease p {
+
+            font-size: 10px;
+
+            color: #758179;
+
+            line-height: 1.4;
+        }
+
+        /* ================= PROGRESS ================= */
+
+        .progress-item {
+
+            margin-bottom: 18px;
+        }
+
+        .progress-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            font-size: 11px;
+
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+
+            height: 8px;
+
+            background: #e6ebe8;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .progress-fill {
+
+            height: 100%;
+
+            background: #176b45;
+
+            border-radius: 10px;
+        }
+
+        /* ================= ALERTS ================= */
+
+        .alert {
+
+            padding: 16px;
+
+            border-radius: 10px;
+
+            margin-bottom: 10px;
+        }
+
+        .alert h4 {
+
+            font-size: 12px;
+
+            margin-bottom: 6px;
+        }
+
+        .alert p {
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+            color: #718078;
+        }
+
+        .danger {
+
+            background: #fff3f3;
+
+            border: 1px solid #efd1d1;
+        }
+
+        .warning {
+
+            background: #fff9e9;
+
+            border: 1px solid #eeddaa;
+        }
+
+        .info {
+
+            background: #edf6ff;
+
+            border: 1px solid #d4e7f5;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            text-align: center;
+
+            padding: 25px;
+
+            font-size: 10px;
+
+            color: #89938e;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 950px) {
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width: 600px) {
+
+            header {
+                padding: 15px 18px;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .container {
+                padding: 0 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="brand">
+
+        <h1>
+            🐄 Maharashtra Animal Health Surveillance
+        </h1>
+
+        <p>
+            Department of Animal Husbandry · Government of Maharashtra
+        </p>
+
+    </div>
+
+
+    <div class="user-area">
+
+        <span class="user-name">
+            {{ session.get("name", "State Administrator") }}
+        </span>
+
+        <span class="role">
+            STATE DIRECTORATE
+        </span>
+
+        <a
+            href="/logout"
+            class="logout"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="container">
+
+    <!-- ===== Surveillance Analytics (auto-injected, self-contained) ===== -->
+    <section class="sha-analytics" aria-label="Surveillance analytics">
+        <div class="sha-head">
+            <h3>Surveillance Analytics</h3>
+            <span id="shaTotal">loading…</span>
+        </div>
+        <div class="sha-grid">
+            <div class="sha-card">
+                <h4>Triage Level Distribution</h4>
+                <div class="sha-cv"><canvas id="shaLevels"></canvas></div>
+            </div>
+            <div class="sha-card">
+                <h4>Top Villages by Cases</h4>
+                <div class="sha-cv"><canvas id="shaVillages"></canvas></div>
+            </div>
+            <div class="sha-card sha-wide">
+                <h4>14-Day Case Trend</h4>
+                <div class="sha-cv tall"><canvas id="shaTrend"></canvas></div>
+            </div>
+            <div class="sha-card sha-wide">
+                <h4>Reporting Channel Mix</h4>
+                <div class="sha-cv"><canvas id="shaChannels"></canvas></div>
+            </div>
+        </div>
+        <p class="sha-empty" id="shaEmpty" hidden>No case data yet — submit a field report to populate analytics.</p>
+    </section>
+    <style>
+        .sha-analytics{background:#fff;border-radius:14px;padding:22px;margin-bottom:22px;box-shadow:0 5px 20px rgba(0,0,0,.06)}
+        .sha-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+        .sha-head h3{font-size:17px;margin:0;color:#176b45}
+        .sha-head span{font-size:12px;color:#78847d}
+        .sha-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+        .sha-card{border:1px solid #eef2ef;border-radius:12px;padding:14px;background:#fcfdfc}
+        .sha-card h4{margin:0 0 10px;font-size:13px;color:#758179;font-weight:600}
+        .sha-cv{position:relative;height:200px}
+        .sha-cv.tall{height:170px}
+        .sha-wide{grid-column:1 / -1}
+        .sha-empty{color:#8a948e;font-size:13px;margin:14px 2px 0}
+        @media(max-width:720px){.sha-grid{grid-template-columns:1fr}}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+    (function(){
+        var GREEN='#176b45', GREEN2='#3fa172', AMBER='#e0a800', RED='#c0392b', SLATE='#5b7c99', GREY='#9aa5a0';
+        function render(d){
+            var total=d.total_cases||0;
+            document.getElementById('shaTotal').textContent=total+' total case'+(total===1?'':'s');
+            if(!total){document.getElementById('shaEmpty').hidden=false;}
+            var noAspect={responsive:true,maintainAspectRatio:false};
+            var lv=d.by_level||{HIGH:0,MEDIUM:0,LOW:0};
+            new Chart(document.getElementById('shaLevels'),{type:'doughnut',
+                data:{labels:['High','Medium','Low'],datasets:[{data:[lv.HIGH||0,lv.MEDIUM||0,lv.LOW||0],backgroundColor:[RED,AMBER,GREEN],borderWidth:0}]},
+                options:Object.assign({},noAspect,{plugins:{legend:{position:'bottom'}}})});
+            var tv=d.top_villages||[];
+            new Chart(document.getElementById('shaVillages'),{type:'bar',
+                data:{labels:tv.map(function(x){return x.village;}),datasets:[{label:'Cases',data:tv.map(function(x){return x.cases;}),backgroundColor:GREEN}]},
+                options:Object.assign({},noAspect,{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}})});
+            var tr=d.trend||[];
+            new Chart(document.getElementById('shaTrend'),{type:'line',
+                data:{labels:tr.map(function(x){return x.date;}),datasets:[{label:'Cases',data:tr.map(function(x){return x.cases;}),borderColor:GREEN,backgroundColor:'rgba(23,107,69,.12)',fill:true,tension:.3}]},
+                options:Object.assign({},noAspect,{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}})});
+            var ch=d.by_channel||{}, cl=Object.keys(ch);
+            new Chart(document.getElementById('shaChannels'),{type:'bar',
+                data:{labels:cl,datasets:[{label:'Cases',data:cl.map(function(k){return ch[k];}),backgroundColor:SLATE}]},
+                options:Object.assign({},noAspect,{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{precision:0}}}})});
+        }
+        function boot(){
+            if(typeof Chart==='undefined'){return setTimeout(boot,150);}
+            fetch('/api/v1/analytics/summary',{headers:{'Accept':'application/json'}})
+                .then(function(r){return r.ok?r.json():null;})
+                .then(function(d){if(d)render(d);else document.getElementById('shaEmpty').hidden=false;})
+                .catch(function(){document.getElementById('shaEmpty').hidden=false;});
+        }
+        if(document.readyState!=='loading')boot();else document.addEventListener('DOMContentLoaded',boot);
+    })();
+    </script>
+    <!-- ===== /Surveillance Analytics ===== -->
+
+
+
+    <!-- ================= WELCOME ================= -->
+
+    <div class="welcome">
+
+        <h2>
+            State Directorate · Pune HQ
+        </h2>
+
+        <p>
+            Maharashtra-wide animal health surveillance,
+            epidemiological intelligence and policy decision support.
+        </p>
+
+    </div>
+
+
+    <!-- ================= STATE STATISTICS ================= -->
+
+    <div class="stats">
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                ACTIVE CASES
+            </div>
+
+            <div class="stat-value">
+                318
+            </div>
+
+            <div class="stat-note">
+                Across Maharashtra
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                HIGH-RISK TALUKAS
+            </div>
+
+            <div class="stat-value">
+                24
+            </div>
+
+            <div class="stat-note">
+                Require enhanced surveillance
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                DISTRICTS MONITORED
+            </div>
+
+            <div class="stat-value">
+                36
+            </div>
+
+            <div class="stat-note">
+                State administrative coverage
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                LAB CONFIRMATIONS
+            </div>
+
+            <div class="stat-value">
+                41
+            </div>
+
+            <div class="stat-note">
+                Current surveillance period
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                VACCINATION COVERAGE
+            </div>
+
+            <div class="stat-value">
+                78%
+            </div>
+
+            <div class="stat-note">
+                State monitoring indicator
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                OPEN ESCALATIONS
+            </div>
+
+            <div class="stat-value">
+                13
+            </div>
+
+            <div class="stat-note">
+                Pending state-level action
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         GIS MAP
+    ================================================== -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h3>
+                Maharashtra Epidemiological Risk Map
+            </h3>
+
+            <span>
+                Taluka-level surveillance
+            </span>
+
+        </div>
+
+
+        
+    <!-- ===== Live Surveillance Map (Leaflet + OpenStreetMap, real WGS84 GIS) ===== -->
+    <div class="geo-map-panel">
+        <div class="geo-map-head">
+            <h3>Live Outbreak Map</h3>
+            <span>Real-time GIS · OpenStreetMap · village / district geocoded (EPSG:4326)</span>
+        </div>
+        <div id="surveillanceMap" class="geo-map"></div>
+        <div class="geo-legend">
+            <span><i style="background:#c0392b"></i> High</span>
+            <span><i style="background:#e0a800"></i> Medium</span>
+            <span><i style="background:#176b45"></i> Low</span>
+            <span class="geo-note" id="geoNote">loading map…</span>
+        </div>
+    </div>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        .geo-map-panel{background:#fff;border-radius:14px;padding:22px;margin-bottom:22px;box-shadow:0 5px 20px rgba(0,0,0,.06)}
+        .geo-map-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+        .geo-map-head h3{font-size:17px;margin:0;color:#176b45}
+        .geo-map-head span{font-size:11px;color:#78847d}
+        .geo-map{height:400px;width:100%;border-radius:12px;border:1px solid #eef2ef;z-index:1}
+        .geo-legend{display:flex;align-items:center;gap:16px;margin-top:12px;font-size:12px;color:#59665f;flex-wrap:wrap}
+        .geo-legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:middle}
+        .geo-note{color:#8a948e;margin-left:auto}
+    </style>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+    (function(){
+        var CENTER=[19.7515,75.7139], ZOOM=6;
+        function boot(){
+            if(typeof L==='undefined'){return setTimeout(boot,150);}
+            var map=L.map('surveillanceMap',{scrollWheelZoom:false}).setView(CENTER,ZOOM);
+            var tiles=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+                maxZoom:18, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'});
+            tiles.on('tileerror',function(){var n=document.getElementById('geoNote');if(n)n.textContent='(base map tiles unavailable — check connectivity)';});
+            tiles.addTo(map);
+            var layer=L.layerGroup().addTo(map);
+            function load(){
+                fetch('/api/v1/geo/cases.geojson',{headers:{'Accept':'application/json'}})
+                    .then(function(r){return r.ok?r.json():null;})
+                    .then(function(fc){
+                        if(!fc){return;}
+                        layer.clearLayers();
+                        var pts=[];
+                        (fc.features||[]).forEach(function(f){
+                            var co=f.geometry.coordinates, lat=co[1], lng=co[0], p=f.properties;
+                            var m=L.circleMarker([lat,lng],{radius:9,color:'#fff',weight:2,fillColor:p.color,fillOpacity:0.85});
+                            m.bindPopup('<b>'+(p.village||'Unknown')+'</b><br>'+(p.district||'')+
+                                '<br>Risk: <b>'+p.risk_level+'</b> (score '+p.risk_score+')'+
+                                '<br>Status: '+(p.status||'—')+
+                                '<br>Affected: '+(p.affected||0)+
+                                '<br><small style="color:#8a948e">location precision: '+p.precision+'</small>');
+                            m.addTo(layer); pts.push([lat,lng]);
+                        });
+                        var n=document.getElementById('geoNote');
+                        if(pts.length){ if(n)n.textContent=pts.length+' active case'+(pts.length>1?'s':''); if(pts.length>1){map.fitBounds(pts,{padding:[30,30],maxZoom:11});} }
+                        else if(n){ n.textContent='No active cases in your jurisdiction yet.'; }
+                    }).catch(function(){});
+            }
+            load();
+            setInterval(load, 30000); // gentle refresh — our own endpoint, no external rate limit
+            setTimeout(function(){map.invalidateSize();},200);
+        }
+        if(document.readyState!=='loading')boot();else document.addEventListener('DOMContentLoaded',boot);
+    })();
+    </script>
+    <!-- ===== /Live Surveillance Map ===== -->
+
+
+    </div>
+
+
+    <!-- =================================================
+         DISTRICT + DISEASE
+    ================================================== -->
+
+    <div class="two-column">
+
+
+        <!-- DISTRICT TABLE -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    District Surveillance
+                </h3>
+
+                <span>
+                    State comparison
+                </span>
+
+            </div>
+
+
+            <div style="overflow-x:auto;">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                DISTRICT
+                            </th>
+
+                            <th>
+                                ACTIVE CASES
+                            </th>
+
+                            <th>
+                                RISK
+                            </th>
+
+                            <th>
+                                VACCINATION
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        <tr>
+
+                            <td>
+                                Pune
+                            </td>
+
+                            <td>
+                                42
+                            </td>
+
+                            <td>
+                                <span class="badge high">
+                                    HIGH
+                                </span>
+                            </td>
+
+                            <td>
+                                81%
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Nashik
+                            </td>
+
+                            <td>
+                                31
+                            </td>
+
+                            <td>
+                                <span class="badge medium">
+                                    MEDIUM
+                                </span>
+                            </td>
+
+                            <td>
+                                76%
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Nagpur
+                            </td>
+
+                            <td>
+                                28
+                            </td>
+
+                            <td>
+                                <span class="badge medium">
+                                    MEDIUM
+                                </span>
+                            </td>
+
+                            <td>
+                                79%
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Latur
+                            </td>
+
+                            <td>
+                                18
+                            </td>
+
+                            <td>
+                                <span class="badge low">
+                                    LOW
+                                </span>
+                            </td>
+
+                            <td>
+                                84%
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Kolhapur
+                            </td>
+
+                            <td>
+                                14
+                            </td>
+
+                            <td>
+                                <span class="badge low">
+                                    LOW
+                                </span>
+                            </td>
+
+                            <td>
+                                87%
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- DISEASE SURVEILLANCE -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Disease Surveillance
+                </h3>
+
+                <span>
+                    Current signals
+                </span>
+
+            </div>
+
+
+            <div class="disease">
+
+                <div class="disease-header">
+
+                    <strong>
+                        Foot & Mouth Disease
+                    </strong>
+
+                    <span class="badge high">
+                        HIGH
+                    </span>
+
+                </div>
+
+                <p>
+                    Increased suspected cases in selected
+                    Western Maharashtra areas.
+                </p>
+
+            </div>
+
+
+            <div class="disease">
+
+                <div class="disease-header">
+
+                    <strong>
+                        Haemorrhagic Septicaemia
+                    </strong>
+
+                    <span class="badge medium">
+                        MEDIUM
+                    </span>
+
+                </div>
+
+                <p>
+                    Seasonal surveillance signal detected
+                    in vulnerable livestock areas.
+                </p>
+
+            </div>
+
+
+            <div class="disease">
+
+                <div class="disease-header">
+
+                    <strong>
+                        Anthrax
+                    </strong>
+
+                    <span class="badge medium">
+                        MEDIUM
+                    </span>
+
+                </div>
+
+                <p>
+                    Historical occurrence requires targeted
+                    monitoring in selected districts.
+                </p>
+
+            </div>
+
+
+            <div class="disease">
+
+                <div class="disease-header">
+
+                    <strong>
+                        PPR
+                    </strong>
+
+                    <span class="badge low">
+                        LOW
+                    </span>
+
+                </div>
+
+                <p>
+                    Current surveillance activity remains
+                    within expected levels.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         TREND + VACCINATION
+    ================================================== -->
+
+    <div class="two-column">
+
+
+        <!-- TREND -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    State Disease Trend
+                </h3>
+
+                <span>
+                    Monthly suspected cases
+                </span>
+
+            </div>
+
+
+            <div class="trend">
+
+                <div
+                    class="bar"
+                    style="height:32%;"
+                >
+                    <span>
+                        Jan
+                    </span>
+
+                    <div class="bar-value">
+                        48
+                    </div>
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:45%;"
+                >
+                    <span>
+                        Feb
+                    </span>
+
+                    <div class="bar-value">
+                        67
+                    </div>
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:39%;"
+                >
+                    <span>
+                        Mar
+                    </span>
+
+                    <div class="bar-value">
+                        58
+                    </div>
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:58%;"
+                >
+                    <span>
+                        Apr
+                    </span>
+
+                    <div class="bar-value">
+                        84
+                    </div>
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:69%;"
+                >
+                    <span>
+                        May
+                    </span>
+
+                    <div class="bar-value">
+                        102
+                    </div>
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:84%;"
+                >
+                    <span>
+                        Jun
+                    </span>
+
+                    <div class="bar-value">
+                        126
+                    </div>
+                </div>
+
+
+                <div
+                    class="bar"
+                    style="height:73%;"
+                >
+                    <span>
+                        Jul
+                    </span>
+
+                    <div class="bar-value">
+                        109
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- VACCINATION -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Vaccination Coverage
+                </h3>
+
+                <span>
+                    State monitoring
+                </span>
+
+            </div>
+
+
+            <div class="progress-item">
+
+                <div class="progress-header">
+
+                    <span>
+                        FMD
+                    </span>
+
+                    <strong>
+                        82%
+                    </strong>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        style="width:82%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-item">
+
+                <div class="progress-header">
+
+                    <span>
+                        HS
+                    </span>
+
+                    <strong>
+                        74%
+                    </strong>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        style="width:74%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-item">
+
+                <div class="progress-header">
+
+                    <span>
+                        Anthrax
+                    </span>
+
+                    <strong>
+                        68%
+                    </strong>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        style="width:68%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-item">
+
+                <div class="progress-header">
+
+                    <span>
+                        PPR
+                    </span>
+
+                    <strong>
+                        88%
+                    </strong>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        style="width:88%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         STATE ALERTS
+    ================================================== -->
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h3>
+                State-Level Alerts & Actions
+            </h3>
+
+            <span>
+                Decision support
+            </span>
+
+        </div>
+
+
+        <div class="alert danger">
+
+            <h4>
+                🚨 Multi-Taluka Outbreak Signal
+            </h4>
+
+            <p>
+                Surveillance data indicates an emerging cluster
+                spanning multiple talukas. District authorities
+                should verify field reports and coordinate
+                laboratory testing.
+            </p>
+
+        </div>
+
+
+        <div class="alert warning">
+
+            <h4>
+                ⚠ Vaccination Coverage Gap
+            </h4>
+
+            <p>
+                Several districts remain below the desired
+                vaccination coverage threshold. Targeted
+                vaccination campaigns may be required.
+            </p>
+
+        </div>
+
+
+        <div class="alert info">
+
+            <h4>
+                📢 Advisory Recommendation
+            </h4>
+
+            <p>
+                Consider issuing a multilingual advisory to
+                affected districts through the farmer,
+                paravet and veterinary communication channels.
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<section class="panel" aria-live="polite">
+    <div class="panel-header">
+        <h3>State Escalation Queue</h3>
+        <span id="stateCaseCount">Loading…</span>
+    </div>
+    <div id="stateCaseList">Loading state escalations…</div>
+</section>
+
+<script>
+async function loadStateCases() {
+    const list = document.getElementById("stateCaseList");
+    const count = document.getElementById("stateCaseCount");
+    try {
+        const response = await fetch("/api/state/cases");
+        if (!response.ok) throw new Error("Unable to load state cases");
+        const cases = await response.json();
+        count.textContent = `${cases.length} active`;
+        if (!cases.length) { list.textContent = "No cases are currently escalated to the State Directorate."; return; }
+        list.innerHTML = cases.map(item => `<div class="alert danger"><h4>${item.case_id} · ${item.risk_level}</h4><p>${item.district} — ${item.village || "Village not recorded"}. ${item.disease_name || "No disease signal recorded."}</p><button onclick="resolveStateCase('${item.case_id}')">Mark resolved</button></div>`).join("");
+    } catch (error) { list.textContent = error.message; count.textContent = "Unavailable"; }
+}
+async function resolveStateCase(caseId) {
+    const response = await fetch(`/api/state/cases/${encodeURIComponent(caseId)}/status`, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:"Resolved"})});
+    if (!response.ok) { alert("Could not update the case."); return; }
+    loadStateCases();
+}
+loadStateCases();
+</script>
+
+<footer>
+
+    Maharashtra Animal Health Surveillance &
+    Decision Support System · State Directorate · Pune
+
+</footer>
+
+
+</body>
+
+</html>
+
