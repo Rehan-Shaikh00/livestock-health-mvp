@@ -85,6 +85,9 @@ def bearer_claims() -> dict | None:
     value = request.headers.get("Authorization", "")
     if value.startswith("Bearer "):
         return decode_token(value[7:].strip())
+    alt = request.headers.get("X-Auth-Token")  # some reverse proxies strip Authorization
+    if alt:
+        return decode_token(alt.strip())
     tok = request.args.get("token")  # SSE (EventSource cannot set headers)
     return decode_token(tok) if tok else None
 

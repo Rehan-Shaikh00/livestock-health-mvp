@@ -17,7 +17,7 @@ export class ApiError extends Error {
 export async function api(path, { method = 'GET', body, headers = {}, raw = false } = {}) {
   const h = { Accept: 'application/json', 'X-Lang': getLang(), ...headers }
   const tok = getToken()
-  if (tok) h.Authorization = `Bearer ${tok}`
+  if (tok) { h.Authorization = `Bearer ${tok}`; h['X-Auth-Token'] = tok }
   if (body !== undefined) h['Content-Type'] = 'application/json'
   const res = await fetch(path, { method, headers: h, body: body !== undefined ? JSON.stringify(body) : undefined })
   if (raw) return res
