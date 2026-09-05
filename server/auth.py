@@ -129,8 +129,12 @@ def scope_clause(user: dict, alias: str = "", reporter_col: str | None = "report
     if s == "state":
         return "", ()
     if s == "district" and user.get("district_code"):
+        if reporter_col:
+            return f" AND ({p}district_code=? OR {p}{reporter_col}=?)", (user["district_code"], user["id"])
         return f" AND {p}district_code=?", (user["district_code"],)
     if s == "taluka" and user.get("taluka_code"):
+        if reporter_col:
+            return f" AND ({p}taluka_code=? OR {p}{reporter_col}=?)", (user["taluka_code"], user["id"])
         return f" AND {p}taluka_code=?", (user["taluka_code"],)
     if s == "lab":
         return "", ()  # lab visibility is applied per-query on lab_id
@@ -148,6 +152,8 @@ def can_access_row(user: dict, row: dict, owner_cols=("reporter_id", "owner_id",
     s = scope(user["role"])
     if s == "state":
         return True
+    if any(row.get(c) == user["id"] for c in owner_cols):
+        return True  # you can always see what you created / own
     if s == "district":
         return row.get("district_code") == user.get("district_code")
     if s == "taluka":

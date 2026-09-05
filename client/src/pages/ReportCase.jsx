@@ -114,6 +114,9 @@ export default function ReportCase() {
                 <option value="">Select village…</option>
                 {villages.map((v) => <option key={v.code} value={v.code}>{v.name} — {talukaOf(v)}, {districtOf(v)} (LGD {v.code})</option>)}
               </select>
+              {village && user.taluka_code && village.taluka_code !== user.taluka_code && !['acah','dcah','state','admin'].includes(user.role) && (
+                <p className="mt-1 text-[11px] text-amber-700">Outside your assigned taluka — the case will be routed to that taluka's LDO; you'll keep read access as reporter.</p>
+              )}
             </Field>
             <div className="flex items-end"><button type="button" onClick={locate} className="btn-secondary w-full">{gps === 'loading' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Crosshair className="h-4 w-4" />}Use GPS</button></div>
           </div>
