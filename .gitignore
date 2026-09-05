@@ -23,3 +23,7 @@ Thumbs.db
 # Secrets / local config
 .env
 *.local
+# Node
+node_modules/
+client/dist/
+client/dist-*/
