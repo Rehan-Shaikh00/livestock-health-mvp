@@ -81,3 +81,256 @@ def translate(key, lang=DEFAULT_LANG):
     """Look up key in lang, falling back to English then the raw key."""
     lang = normalise(lang)
     return TRANSLATIONS[lang].get(key) or TRANSLATIONS[DEFAULT_LANG].get(key) or key
+
+
+# ============================================================================
+# I18nEngine — end-to-end translation for API payloads, triage output, alerts.
+#
+# Beyond the login-screen UI labels above, downstream features carry dynamic
+# strings: case lifecycle states, medical symptom names, triage assessment
+# lines and public advisories. The engine hardcodes full en/mr/hi maps for
+# these domains and can walk an arbitrary API response, translating only the
+# values under known translatable keys (leaving ids/numbers/coordinates alone).
+# ============================================================================
+
+# Canonical case lifecycle states (see app.py STATE_TRANSITIONS). The spec's
+# shorthand (FIELD_INSPECTED, LAB_TRANSIT, PATHOGEN_CONFIRMED, RESOLVED) maps
+# onto these canonical codes.
+STATES = {
+    "en": {
+        "REPORTED": "Reported",
+        "FIELD_INSPECTED_BY_LDO": "Field Inspected",
+        "SAMPLE_COLLECTED": "Sample Collected",
+        "LAB_TRANSIT": "In Lab Transit",
+        "LAB_RECEIVED": "Received at Lab",
+        "PATHOGEN_CONFIRMED": "Pathogen Confirmed",
+        "PATHOGEN_REJECTED": "Pathogen Rejected",
+        "CASE_RESOLVED": "Resolved",
+    },
+    "mr": {
+        "REPORTED": "नोंदवले",
+        "FIELD_INSPECTED_BY_LDO": "क्षेत्र तपासणी झाली",
+        "SAMPLE_COLLECTED": "नमुना गोळा केला",
+        "LAB_TRANSIT": "प्रयोगशाळेकडे पाठवले",
+        "LAB_RECEIVED": "प्रयोगशाळेत प्राप्त",
+        "PATHOGEN_CONFIRMED": "रोगजंतू निश्चित",
+        "PATHOGEN_REJECTED": "रोगजंतू नाकारले",
+        "CASE_RESOLVED": "निराकरण झाले",
+    },
+    "hi": {
+        "REPORTED": "दर्ज किया गया",
+        "FIELD_INSPECTED_BY_LDO": "क्षेत्र निरीक्षण हुआ",
+        "SAMPLE_COLLECTED": "नमूना एकत्र किया",
+        "LAB_TRANSIT": "प्रयोगशाला भेजा गया",
+        "LAB_RECEIVED": "प्रयोगशाला में प्राप्त",
+        "PATHOGEN_CONFIRMED": "रोगाणु की पुष्टि",
+        "PATHOGEN_REJECTED": "रोगाणु अस्वीकृत",
+        "CASE_RESOLVED": "हल किया गया",
+    },
+}
+
+# Medical symptom names. Keys are normalised (lower, spaces or underscores) so
+# both "High Fever" and "high_fever" resolve.
+SYMPTOMS = {
+    "en": {
+        "high fever": "High Fever",
+        "skin nodules": "Skin Nodules",
+        "salivation": "Salivation",
+        "frothy salivation": "Frothy Salivation",
+        "lameness": "Lameness",
+        "foot lesions": "Foot Lesions",
+        "respiratory distress": "Respiratory Distress",
+        "sudden death": "Sudden Death",
+        "bloody discharge": "Bloody Discharge",
+        "nasal discharge": "Nasal Discharge",
+        "fever": "Fever",
+        "coughing": "Coughing",
+        "diarrhea": "Diarrhea",
+        "loss of appetite": "Loss of Appetite",
+        "weakness": "Weakness",
+        "difficulty breathing": "Difficulty Breathing",
+    },
+    "mr": {
+        "high fever": "तीव्र ताप",
+        "skin nodules": "त्वचेवरील गाठी",
+        "salivation": "लाळ गळणे",
+        "frothy salivation": "फेसाळ लाळ",
+        "lameness": "लंगडेपणा",
+        "foot lesions": "पायावरील जखमा",
+        "respiratory distress": "श्वसनाचा त्रास",
+        "sudden death": "अचानक मृत्यू",
+        "bloody discharge": "रक्तस्राव",
+        "nasal discharge": "नाकातून स्राव",
+        "fever": "ताप",
+        "coughing": "खोकला",
+        "diarrhea": "अतिसार",
+        "loss of appetite": "भूक मंदावणे",
+        "weakness": "अशक्तपणा",
+        "difficulty breathing": "श्वास घेण्यास त्रास",
+    },
+    "hi": {
+        "high fever": "तेज बुखार",
+        "skin nodules": "त्वचा की गांठें",
+        "salivation": "लार आना",
+        "frothy salivation": "झागदार लार",
+        "lameness": "लंगड़ापन",
+        "foot lesions": "पैर के घाव",
+        "respiratory distress": "श्वसन कष्ट",
+        "sudden death": "अचानक मृत्यु",
+        "bloody discharge": "रक्तस्राव",
+        "nasal discharge": "नाक से स्राव",
+        "fever": "बुखार",
+        "coughing": "खांसी",
+        "diarrhea": "दस्त",
+        "loss of appetite": "भूख न लगना",
+        "weakness": "कमजोरी",
+        "difficulty breathing": "सांस लेने में कठिनाई",
+    },
+}
+
+# Suspected-disease names emitted by the triage engine.
+DISEASES = {
+    "en": {
+        "lumpy skin disease": "Lumpy Skin Disease",
+        "foot and mouth disease": "Foot and Mouth Disease",
+        "haemorrhagic septicaemia": "Haemorrhagic Septicaemia",
+        "anthrax": "Anthrax",
+        "no specific pathogen signature": "No specific pathogen signature",
+    },
+    "mr": {
+        "lumpy skin disease": "लम्पी त्वचा रोग",
+        "foot and mouth disease": "लाळ्या खुरकूत रोग",
+        "haemorrhagic septicaemia": "घटसर्प",
+        "anthrax": "फाशी रोग",
+        "no specific pathogen signature": "विशिष्ट रोगजंतू आढळला नाही",
+    },
+    "hi": {
+        "lumpy skin disease": "लम्पी त्वचा रोग",
+        "foot and mouth disease": "खुरपका-मुंहपका रोग",
+        "haemorrhagic septicaemia": "गलघोंटू",
+        "anthrax": "एंथ्रेक्स",
+        "no specific pathogen signature": "कोई विशिष्ट रोगाणु संकेत नहीं",
+    },
+}
+
+# Triage risk levels + short advisory templates.
+ADVISORY = {
+    "en": {
+        "HIGH": "High Risk",
+        "MEDIUM": "Medium Risk",
+        "LOW": "Low Risk",
+        "advisory_high": "High-risk animal-health alert. Isolate affected animals and contact your Veterinary Officer immediately.",
+        "advisory_medium": "Monitor affected animals closely and report any worsening to your local para-vet.",
+        "advisory_low": "No immediate risk detected. Continue routine care and observation.",
+    },
+    "mr": {
+        "HIGH": "उच्च धोका",
+        "MEDIUM": "मध्यम धोका",
+        "LOW": "कमी धोका",
+        "advisory_high": "उच्च-धोका पशु आरोग्य सूचना. बाधित जनावरे वेगळी करा आणि तात्काळ पशुवैद्यकीय अधिकाऱ्यांशी संपर्क साधा.",
+        "advisory_medium": "बाधित जनावरांवर बारकाईने लक्ष ठेवा आणि त्रास वाढल्यास स्थानिक पॅरा-व्हेटला कळवा.",
+        "advisory_low": "तात्काळ धोका आढळला नाही. नियमित काळजी व निरीक्षण सुरू ठेवा.",
+    },
+    "hi": {
+        "HIGH": "उच्च जोखिम",
+        "MEDIUM": "मध्यम जोखिम",
+        "LOW": "कम जोखिम",
+        "advisory_high": "उच्च-जोखिम पशु स्वास्थ्य चेतावनी. प्रभावित पशुओं को अलग करें और तुरंत पशु चिकित्सा अधिकारी से संपर्क करें.",
+        "advisory_medium": "प्रभावित पशुओं पर बारीकी से नजर रखें और स्थिति बिगड़ने पर स्थानीय पैरा-वेट को सूचित करें.",
+        "advisory_low": "कोई तत्काल जोखिम नहीं मिला. नियमित देखभाल और निगरानी जारी रखें.",
+    },
+}
+
+
+def _norm_term(text):
+    return str(text or "").strip().lower().replace("_", " ")
+
+
+class I18nEngine:
+    """End-to-end translator for dynamic API payloads across en / mr / hi.
+
+    Resolves the caller's language from the request, translates individual
+    domain terms (states, symptoms, diseases, risk levels, advisories, UI
+    labels), and can recursively transform a whole response payload — touching
+    only values under known translatable keys, never ids/numbers/coordinates.
+    """
+
+    SUPPORTED = tuple(TRANSLATIONS.keys())
+
+    # Response keys whose *string value* should be translated in-place.
+    _SCALAR_KEYS = {"status", "risk_level", "level", "suspected_disease", "disease_name", "message", "advisory"}
+    # Response keys whose value is a *list of terms* to translate element-wise.
+    _LIST_KEYS = {"symptoms", "signals"}
+
+    def resolve_lang(self, req):
+        """Header-first language resolution: Accept-Language, then ?lang=, then default."""
+        header = ""
+        try:
+            header = req.headers.get("Accept-Language", "") or ""
+        except Exception:
+            header = ""
+        # Take the first tag's primary subtag, e.g. "mr-IN,mr;q=0.9" -> "mr".
+        primary = header.split(",")[0].split("-")[0].strip().lower() if header else ""
+        if primary in self.SUPPORTED:
+            return primary
+        try:
+            q = (req.args.get("lang") or req.values.get("lang") or "").strip().lower()
+        except Exception:
+            q = ""
+        return normalise(q)
+
+    def t(self, key, lang=DEFAULT_LANG):
+        """Layered lookup: UI labels -> states -> diseases -> advisory/levels -> English -> raw key."""
+        lang = normalise(lang)
+        for table in (TRANSLATIONS, STATES, DISEASES, ADVISORY):
+            hit = table.get(lang, {}).get(key)
+            if hit:
+                return hit
+        for table in (TRANSLATIONS, STATES, DISEASES, ADVISORY):
+            hit = table.get(DEFAULT_LANG, {}).get(key)
+            if hit:
+                return hit
+        return key
+
+    def term(self, value, lang=DEFAULT_LANG):
+        """Translate a single free-text domain term (symptom/disease/state/level)."""
+        lang = normalise(lang)
+        if not isinstance(value, str) or not value.strip():
+            return value
+        # States are upper-case codes; levels are HIGH/MEDIUM/LOW.
+        if value in STATES.get(lang, {}) or value in STATES.get(DEFAULT_LANG, {}):
+            return STATES[lang].get(value) or STATES[DEFAULT_LANG].get(value) or value
+        if value in ADVISORY.get(DEFAULT_LANG, {}):
+            return ADVISORY[lang].get(value) or ADVISORY[DEFAULT_LANG].get(value) or value
+        norm = _norm_term(value)
+        for table in (SYMPTOMS, DISEASES):
+            if norm in table.get(lang, {}) or norm in table.get(DEFAULT_LANG, {}):
+                return table[lang].get(norm) or table[DEFAULT_LANG].get(norm) or value
+        return value
+
+    def advisory_for(self, level, lang=DEFAULT_LANG):
+        """Public automated advisory text for a triage risk level."""
+        return self.t({"HIGH": "advisory_high", "MEDIUM": "advisory_medium"}.get(str(level).upper(), "advisory_low"), lang)
+
+    def translate_payload(self, obj, lang=DEFAULT_LANG):
+        """Recursively translate values under known translatable keys.
+
+        Leaves ids, numbers, coordinates and unknown keys untouched. Returns a
+        new structure (does not mutate the input)."""
+        lang = normalise(lang)
+        if isinstance(obj, dict):
+            out = {}
+            for k, v in obj.items():
+                if k in self._SCALAR_KEYS and isinstance(v, str):
+                    out[k] = self.term(v, lang)
+                elif k in self._LIST_KEYS and isinstance(v, list):
+                    out[k] = [self.term(x, lang) if isinstance(x, str) else self.translate_payload(x, lang) for x in v]
+                else:
+                    out[k] = self.translate_payload(v, lang)
+            return out
+        if isinstance(obj, list):
+            return [self.translate_payload(x, lang) for x in obj]
+        return obj
+
+
+engine = I18nEngine()

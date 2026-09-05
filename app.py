@@ -1,5 +1,5 @@
 """SIH26128 animal-health surveillance API. SQLite is the local offline MVP store."""
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from functools import wraps
 from pathlib import Path
 import base64, hashlib, hmac, json, os, re, sqlite3, uuid
@@ -9,7 +9,9 @@ from flask import Flask, Response, jsonify, redirect, render_template, request, 
 from geo_engine import vector_risk, weather_etl_stub, resolve_coordinates, cases_to_geojson, case_to_feature
 from notification_service import notifications, publish_priority_alert, queue_outbreak_notifications
 from triage_engine import assess_triage
-from i18n import translate, LANGUAGES, DEFAULT_LANG, normalise
+from spatial import nearest_clinics
+import access_control as ac
+from i18n import translate, LANGUAGES, DEFAULT_LANG, normalise, engine as i18n_engine
 
 BASE_DIR = Path(__file__).resolve().parent; DB_PATH = BASE_DIR / "data" / "surveillance.db"; EAR_TAG_RE = re.compile(r"^\d{12}$")
 DISEASE_DATA_PATH = BASE_DIR / "ml" / "data" / "livestock_disease_risk.csv"
@@ -32,10 +34,13 @@ except Exception: anthrax_df = pd.DataFrame()
 try: model = joblib.load(MODEL_PATH)
 except Exception: model = None
 def utcnow(): return datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+def _hours_ago_iso(hours): return (datetime.now(timezone.utc)-timedelta(hours=hours)).isoformat(timespec="milliseconds")
 def issue_token(u):
     """HS256 JWT for mobile/API clients; production should delegate to Gov OAuth2 IdP."""
     header = base64.urlsafe_b64encode(b'{"alg":"HS256","typ":"JWT"}').rstrip(b'=')
-    payload = base64.urlsafe_b64encode(json.dumps({"sub":u["id"],"role":u["role"],"exp":int(datetime.now().timestamp())+3600},separators=(',',':')).encode()).rstrip(b'=')
+    keys=u.keys() if hasattr(u,"keys") else ()
+    claims={"sub":u["id"],"role":u["role"],"district_code":u["district_code"] if "district_code" in keys else None,"village_code":u["village_code"] if "village_code" in keys else None,"taluka_code":u["taluka_code"] if "taluka_code" in keys else None,"exp":int(datetime.now().timestamp())+3600}
+    payload = base64.urlsafe_b64encode(json.dumps(claims,separators=(',',':')).encode()).rstrip(b'=')
     signature = base64.urlsafe_b64encode(hmac.new(app.config["SECRET_KEY"].encode(),header+b'.'+payload,hashlib.sha256).digest()).rstrip(b'=')
     return (header+b'.'+payload+b'.'+signature).decode()
 def token_subject():
@@ -58,19 +63,57 @@ def init_db():
         CREATE TABLE IF NOT EXISTS lab_referrals(id TEXT PRIMARY KEY,case_id TEXT NOT NULL REFERENCES cases(id),barcode_uid TEXT UNIQUE NOT NULL,sample_type TEXT NOT NULL,transport_media TEXT,cold_chain_ok INTEGER NOT NULL,lab_result TEXT,status TEXT NOT NULL,created_at TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS weather_telemetry(id TEXT PRIMARY KEY,village_code TEXT NOT NULL,humidity REAL,temperature_anomaly REAL,precipitation_mm REAL,observed_at TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS vaccinations(id TEXT PRIMARY KEY,livestock_id TEXT NOT NULL REFERENCES livestock_records(id),vaccine_name TEXT NOT NULL,administered_on TEXT NOT NULL,next_due_on TEXT,administered_by TEXT,created_at TEXT NOT NULL);
-        CREATE TABLE IF NOT EXISTS treatments(id TEXT PRIMARY KEY,livestock_id TEXT NOT NULL REFERENCES livestock_records(id),diagnosis TEXT,treatment TEXT NOT NULL,treated_at TEXT NOT NULL,clinician_id TEXT,created_at TEXT NOT NULL);""")
+        CREATE TABLE IF NOT EXISTS treatments(id TEXT PRIMARY KEY,livestock_id TEXT NOT NULL REFERENCES livestock_records(id),diagnosis TEXT,treatment TEXT NOT NULL,treated_at TEXT NOT NULL,clinician_id TEXT,created_at TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS veterinary_centers(id TEXT PRIMARY KEY,name TEXT NOT NULL,district_code TEXT,taluka_code TEXT,lat REAL NOT NULL,lng REAL NOT NULL,officer_phone TEXT);""")
+        # Lightweight forward-migration: add taluka_code to older DBs that predate it.
+        for table in ("users","cases"):
+            cols={r[1] for r in c.execute(f"PRAGMA table_info({table})")}
+            if "taluka_code" not in cols: c.execute(f"ALTER TABLE {table} ADD COLUMN taluka_code TEXT")
+        # Seed real Maharashtra veterinary centers (EPSG:4326) with officer contacts.
+        vet_centers=[
+            ("vc-pune","Pune District Veterinary Polyclinic","MH-PUNE","TAL-HAVELI",18.5204,73.8567,"+91-20-2612-3456"),
+            ("vc-haveli","Haveli Taluka Veterinary Dispensary","MH-PUNE","TAL-HAVELI",18.4636,73.8683,"+91-20-2695-1122"),
+            ("vc-mulshi","Mulshi Veterinary Clinic","MH-PUNE","TAL-MULSHI",18.5100,73.5100,"+91-20-2522-3344"),
+            ("vc-baramati","Baramati Veterinary Hospital","MH-PUNE","TAL-BARAMATI",18.1514,74.5772,"+91-2112-22-5566"),
+            ("vc-nagpur","Nagpur Regional Veterinary Hospital","MH-NAGPUR","TAL-NAGPUR",21.1458,79.0882,"+91-712-256-7788"),
+            ("vc-beed","Beed District Veterinary Center","MH-BEED","TAL-BEED",18.9891,75.7601,"+91-2442-22-3399"),
+            ("vc-jalna","Jalna Taluka Veterinary Dispensary","MH-JALNA","TAL-JALNA",19.8410,75.8864,"+91-2482-23-4455"),
+            ("vc-nashik","Nashik Veterinary Polyclinic","MH-NASHIK","TAL-NASHIK",19.9975,73.7898,"+91-253-257-9900"),
+        ]
+        c.executemany("INSERT OR IGNORE INTO veterinary_centers VALUES(?,?,?,?,?,?,?)",vet_centers)
         rows=[("u-farmer","farmer1","1234","farmer","271000100001","MH-PUNE","mr"),("u-sakhi","sakhi1","1234","pashu_sakhi","271000100001","MH-PUNE","mr"),("u-ldo","ldo1","1234","ldo","271000100001","MH-PUNE","en"),("u-acah","acah1","1234","acah",None,"MH-PUNE","en"),("u-admin","admin","1234","admin",None,None,"mr"),("u-paravet","paravet1","1234","paravet","271000100001","MH-PUNE","en"),("u-vet","vet1","1234","vet","271000100001","MH-PUNE","en"),("u-district","district1","1234","district",None,"MH-PUNE","en")]
-        c.executemany("INSERT OR IGNORE INTO users VALUES (?,?,?,?,?,?,?)",rows)
+        c.executemany("INSERT OR IGNORE INTO users(id,username,password,role,village_code,district_code,language) VALUES (?,?,?,?,?,?,?)",rows)
+        # Assign taluka jurisdiction to the demo field/authority users (LGD taluka codes).
+        c.executemany("UPDATE users SET taluka_code=? WHERE id=?",[("TAL-HAVELI","u-farmer"),("TAL-HAVELI","u-sakhi"),("TAL-HAVELI","u-ldo"),("TAL-HAVELI","u-paravet"),("TAL-HAVELI","u-vet")])
 def user():
     subject=session.get("user_id") or token_subject()
     if not subject: return None
     with db() as c: return c.execute("SELECT * FROM users WHERE id=?",(subject,)).fetchone()
 def wants_json(): return request.path.startswith(("/api/","/webhooks/")) or request.accept_mimetypes.best=="application/json"
 def current_language():
+    # API/mobile/IVR callers signal language per-request (Accept-Language or
+    # ?lang=); browser sessions carry it in the cookie / user profile.
+    if request.path.startswith(("/api/","/webhooks/")):
+        header=request.headers.get("Accept-Language",""); q=request.args.get("lang") or request.values.get("lang")
+        if header or q: return i18n_engine.resolve_lang(request)
     lang=session.get("lang")
     if not lang:
         u=user(); lang=(u["language"] if u and "language" in u.keys() else None) or DEFAULT_LANG
     return normalise(lang)
+@app.after_request
+def i18n_transform(response):
+    # Translate dynamic string values in JSON API/webhook payloads to the
+    # caller's language before they reach web/mobile/IVR/WhatsApp clients.
+    try:
+        if response.is_json and request.path.startswith(("/api/","/webhooks/")):
+            lang=current_language()
+            if lang!=DEFAULT_LANG:
+                data=response.get_json(silent=True)
+                if data is not None:
+                    response.set_data(json.dumps(i18n_engine.translate_payload(data,lang)))
+    except Exception:
+        pass  # never let translation break a response
+    return response
 @app.context_processor
 def inject_i18n():
     lang=current_language(); return {"t":lambda key:translate(key,lang),"current_lang":lang,"languages":LANGUAGES}
@@ -120,10 +163,19 @@ def save_case(p,channel,actor):
             # Last-write-wins: a stale offline replay loses. Decode triage so every
             # caller receives the same dict shape as the insert path below.
             stale=dict(old); stale["triage"]=json.loads(stale["triage"]); return stale,None
-        triage=assess_triage(p); values=(cid,actor["id"],p["village_code"],p.get("district_code",actor["district_code"]),channel,old["status"] if old else "REPORTED",json.dumps(p),json.dumps(triage),max(client,now),utcnow())
-        c.execute("INSERT INTO cases VALUES(?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload,triage=excluded.triage,updated_at=excluded.updated_at",values); case=dict(c.execute("SELECT * FROM cases WHERE id=?",(cid,)).fetchone())
+        # Layer B input: most recent local weather within 72h for this village.
+        wx=c.execute("SELECT humidity AS humidity_percent,temperature_anomaly AS temperature_c,observed_at FROM weather_telemetry WHERE village_code=? AND observed_at>=? ORDER BY observed_at DESC LIMIT 1",(p["village_code"],_hours_ago_iso(72))).fetchone()
+        triage=assess_triage(p,weather=dict(wx) if wx else None)
+        actor_keys=actor.keys() if hasattr(actor,"keys") else ()
+        taluka=p.get("taluka_code") or (actor["taluka_code"] if "taluka_code" in actor_keys else None)
+        values=(cid,actor["id"],p["village_code"],p.get("district_code",actor["district_code"]),channel,old["status"] if old else "REPORTED",json.dumps(p),json.dumps(triage),max(client,now),utcnow(),taluka)
+        c.execute("INSERT INTO cases(id,reporter_id,village_code,district_code,channel,status,payload,triage,updated_at,created_at,taluka_code) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload,triage=excluded.triage,updated_at=excluded.updated_at",values); case=dict(c.execute("SELECT * FROM cases WHERE id=?",(cid,)).fetchone())
     case["triage"]=triage
-    if triage["level"]=="HIGH":publish_priority_alert(case)
+    # Escalation: a HIGH / >=0.75 probability outbreak pushes an immediate SSE
+    # priority alert to the assigned local Veterinary Officer's clinic dashboard.
+    if triage["level"]=="HIGH":
+        publish_priority_alert(case)
+        notifications.publish({"type":"PRIORITY_ALERT","case_id":case["id"],"district_code":case["district_code"],"village_code":case["village_code"],"suspected_disease":triage.get("suspected_disease"),"probability":triage.get("probability"),"risk_level":triage["level"],"priority":"immediate","issued_at":utcnow()})
     return case,None
 def case_view(row):
     """Compatibility adapter for the existing Paravet/Vet/District dashboard JavaScript."""
@@ -415,12 +467,60 @@ def cases_geojson():
         coords=resolve_coordinates(village_code=row["village_code"],district_code=row["district_code"],district_name=cv.get("district"),lat=payload.get("lat",payload.get("latitude")),lng=payload.get("lng",payload.get("longitude")))
         features.append(case_to_feature(cv,coords))
     return jsonify(cases_to_geojson(features))
+@app.route("/api/v1/geo/nearest-clinic",methods=["GET","POST"])
+def nearest_clinic():
+    """Farmer-facing clinic locator. Accepts decimal latitude/longitude (query
+    params or JSON body) and returns the 3 nearest veterinary centers, nearest
+    first, each with real distance (km), coordinates and the officer's phone."""
+    body=request.get_json(silent=True) or {}
+    lat=body.get("latitude",body.get("lat",request.values.get("latitude",request.values.get("lat"))))
+    lng=body.get("longitude",body.get("lng",request.values.get("longitude",request.values.get("lng"))))
+    with db() as c:
+        results=nearest_clinics(c,lat,lng,k=3)
+    if results is None:
+        return jsonify(error="valid decimal latitude and longitude are required"),400
+    return jsonify(query={"lat":float(lat),"lng":float(lng)},count=len(results),clinics=results)
 @app.get("/api/v1/analytics/summary")
 def analytics_summary():
-    """Aggregate feed for the official dashboards' charts (village outbreak counts,
-    triage-level distribution, channel mix, weekly trend)."""
+    """Role-segregated analytics feed enforcing the Directorate's access tiers.
+
+    STATE   -> district-level aggregates ONLY (raw village/farm rows blocked).
+    DISTRICT-> taluka + village aggregates WITHIN their own district only.
+    LDO/VET -> granular chart feed for their taluka/village (the original
+               dashboard contract: village counts, triage mix, channel, trend).
+    """
     u=user()
     if not u:return jsonify(error="authentication required"),401
+    tier=ac.tier_for(u["role"])
+
+    # STATE: strictly district-aggregated. Any attempt to request a raw row
+    # (?scope=raw / ?village=... / ?case_id=...) is explicitly unauthorized.
+    if tier=="state":
+        if any(k in request.args for k in ("village","village_code","case_id")) or request.args.get("scope")=="raw":
+            return jsonify(error="forbidden: state directorate is limited to district-level aggregates",tier="state"),403
+        with db() as c:
+            sql,params=ac.state_aggregate_sql(); agg=[dict(r) for r in c.execute(sql,params)]
+        # Chart-compat fields, aggregated to DISTRICT granularity (never village).
+        by_level={"HIGH":sum(r["high_risk"] for r in agg),"MEDIUM":0,"LOW":0}
+        top=[{"village":r["district_code"],"cases":r["total_cases"]} for r in agg[:8]]
+        return jsonify(tier="state",aggregation="district",districts=agg,total_cases=sum(r["total_cases"] for r in agg),by_level=by_level,top_villages=top,by_channel={},trend=[])
+
+    # DISTRICT: locked to own district_code, aggregated to taluka/village.
+    if tier=="district":
+        if not u["district_code"]:
+            return jsonify(error="district authority has no assigned district_code",tier="district"),403
+        # A cross-district lookup is explicitly unauthorized.
+        req_district=request.args.get("district_code")
+        if req_district and req_district!=u["district_code"]:
+            return jsonify(error="forbidden: cross-district access is not authorized",tier="district",your_district=u["district_code"]),403
+        with db() as c:
+            sql,params=ac.district_aggregate_sql(u["district_code"]); agg=[dict(r) for r in c.execute(sql,params)]
+        # Chart-compat fields, aggregated to village granularity WITHIN this district.
+        by_level={"HIGH":sum(r["high_risk"] for r in agg),"MEDIUM":0,"LOW":0}
+        top=[{"village":(r["village_code"] or "Unknown"),"cases":r["total_cases"]} for r in agg[:8]]
+        return jsonify(tier="district",district_code=u["district_code"],aggregation="taluka+village",areas=agg,total_cases=sum(r["total_cases"] for r in agg),by_level=by_level,top_villages=top,by_channel={},trend=[])
+
+    # LDO/VET/field: granular chart feed (unchanged dashboard contract).
     rows=visible_rows(u)
     by_village,by_level,by_channel,by_day={}, {"HIGH":0,"MEDIUM":0,"LOW":0}, {}, {}
     for r in rows:
@@ -431,7 +531,16 @@ def analytics_summary():
         day=(r["created_at"] or "")[:10]; by_day[day]=by_day.get(day,0)+1
     top=sorted(by_village.items(),key=lambda kv:kv[1],reverse=True)[:8]
     trend=sorted(by_day.items())[-14:]
-    return jsonify(total_cases=len(rows),by_level=by_level,by_channel=by_channel,top_villages=[{"village":k,"cases":v} for k,v in top],trend=[{"date":k,"cases":v} for k,v in trend])
+    return jsonify(tier="ldo",total_cases=len(rows),by_level=by_level,by_channel=by_channel,top_villages=[{"village":k,"cases":v} for k,v in top],trend=[{"date":k,"cases":v} for k,v in trend])
+@app.get("/api/v1/ldo/ear-tags")
+@role_required("ldo","vet","paravet")
+def ldo_ear_tags():
+    """Granular Bharat Pashudhan 12-digit ear-tag registry for the officer's
+    village — used for daily site-visit planning."""
+    u=user()
+    with db() as c:
+        sql,params=ac.ldo_ear_tags_sql(u["village_code"]); tags=[dict(r) for r in c.execute(sql,params)]
+    return jsonify(village_code=u["village_code"],count=len(tags),animals=tags)
 @app.post("/api/v1/outbreaks/<case_id>/confirm")
 @role_required("dcah","admin")
 def confirm(case_id):

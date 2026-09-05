@@ -782,6 +782,32 @@
     </script>
     <!-- ===== /Surveillance Analytics ===== -->
 
+    <!-- ===== Real-time Priority Alerts (Server-Sent Events) ===== -->
+    <div id="sseToastWrap" style="position:fixed;top:18px;right:18px;z-index:9999;display:flex;flex-direction:column;gap:10px;max-width:340px"></div>
+    <script>
+    (function(){
+        if(typeof EventSource==='undefined')return; // graceful no-op on old browsers
+        function toast(ev){
+            var wrap=document.getElementById('sseToastWrap'); if(!wrap)return;
+            var d={}; try{d=JSON.parse(ev.data);}catch(e){return;}
+            var el=document.createElement('div');
+            el.style.cssText='background:#fff;border-left:5px solid #c0392b;border-radius:10px;padding:13px 15px;box-shadow:0 8px 26px rgba(0,0,0,.16);font-size:13px;color:#24352b;animation:sseIn .25s ease';
+            el.innerHTML='<div style="font-weight:700;color:#c0392b;margin-bottom:4px">⚠ Priority Outbreak Alert</div>'+
+                '<div><b>'+(d.suspected_disease||'Suspected outbreak')+'</b> · risk '+(d.risk_level||'HIGH')+
+                (d.probability?(' ('+Math.round(d.probability*100)+'%)'):'')+'</div>'+
+                '<div style="color:#59665f;margin-top:3px">Case '+(d.case_id||'')+' · '+(d.village_code||d.district_code||'')+'</div>';
+            wrap.appendChild(el);
+            setTimeout(function(){el.style.transition='opacity .4s';el.style.opacity='0';setTimeout(function(){el.remove();},400);},12000);
+        }
+        try{
+            var es=new EventSource('/api/v1/events');
+            es.addEventListener('priority_alert',toast);
+        }catch(e){}
+    })();
+    </script>
+    <style>@keyframes sseIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}</style>
+    <!-- ===== /Real-time Priority Alerts ===== -->
+
     <!-- ===== Live Surveillance Map (Leaflet + OpenStreetMap, real WGS84 GIS) ===== -->
     <div class="geo-map-panel">
         <div class="geo-map-head">
