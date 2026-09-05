@@ -21,6 +21,9 @@ case escalation, real-time SSE outbreak alerts, tri-lingual advisories (English 
 
 ## Quick start
 
+> Setting up on a fresh PC/laptop (Windows, macOS or Linux)? Follow the step-by-step guide in
+> **[SETUP.md](SETUP.md)** — it covers prerequisites, virtual-env activation per OS and troubleshooting.
+
 ```bash
 # 1. Backend (Python 3.11+)
 pip install -r requirements.txt
