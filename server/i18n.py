@@ -334,3 +334,53 @@ class I18nEngine:
 
 
 engine = I18nEngine()
+
+
+# ============================================================================
+# Advisory / alert message templates (en / mr / hi) used by the alert service.
+# ============================================================================
+MESSAGES = {
+    "alert_cluster": {
+        "en": "Suspected {disease} cluster: {n} reports and {deaths} deaths in this taluka within 7 days. Isolate sick animals, stop animal movement and await LDO inspection.",
+        "mr": "संशयित {disease} समूह: या तालुक्यात ७ दिवसांत {n} अहवाल व {deaths} मृत्यू. आजारी जनावरे वेगळी करा, जनावरांची ने-आण थांबवा आणि पशुधन विकास अधिकाऱ्यांच्या तपासणीची वाट पहा.",
+        "hi": "संदिग्ध {disease} समूह: इस तालुका में 7 दिनों में {n} रिपोर्ट और {deaths} मौतें. बीमार पशुओं को अलग करें, पशुओं की आवाजाही रोकें और एलडीओ निरीक्षण की प्रतीक्षा करें.",
+    },
+    "alert_high_triage": {
+        "en": "High-risk report ({disease}) in {village}. Isolate affected animals and contact your Veterinary Officer immediately.",
+        "mr": "{village} येथे उच्च-धोका अहवाल ({disease}). बाधित जनावरे वेगळी करा आणि तात्काळ पशुवैद्यकीय अधिकाऱ्यांशी संपर्क साधा.",
+        "hi": "{village} में उच्च-जोखिम रिपोर्ट ({disease}). प्रभावित पशुओं को अलग करें और तुरंत पशु चिकित्सा अधिकारी से संपर्क करें.",
+    },
+    "alert_outbreak_confirmed": {
+        "en": "Confirmed {disease} outbreak within {radius} km. Ring vaccination and movement restrictions are in force. Follow LDO guidance.",
+        "mr": "{radius} किमी परिसरात {disease} उद्रेकाची पुष्टी. रिंग लसीकरण व जनावरांच्या ने-आणीवर निर्बंध लागू. पशुधन विकास अधिकाऱ्यांच्या सूचनांचे पालन करा.",
+        "hi": "{radius} किमी के भीतर {disease} प्रकोप की पुष्टि. रिंग टीकाकरण और आवाजाही प्रतिबंध लागू. एलडीओ के निर्देशों का पालन करें.",
+    },
+    "alert_lab_confirmed": {
+        "en": "Laboratory confirmed {disease} for sample {barcode}. Case escalated for containment.",
+        "mr": "नमुना {barcode} साठी प्रयोगशाळेने {disease} निश्चित केले. प्रतिबंधासाठी प्रकरण वरिष्ठ स्तरावर पाठवले.",
+        "hi": "नमूना {barcode} के लिए प्रयोगशाला ने {disease} की पुष्टि की. नियंत्रण हेतु मामला आगे बढ़ाया गया.",
+    },
+    "alert_vaccination_due": {
+        "en": "{count} animals in {village} are due for {vaccine} vaccination this week. Contact your Pashu Sakhi to schedule.",
+        "mr": "{village} येथील {count} जनावरांचे {vaccine} लसीकरण या आठवड्यात देय आहे. वेळ ठरवण्यासाठी पशु सखीशी संपर्क साधा.",
+        "hi": "{village} में {count} पशुओं का {vaccine} टीकाकरण इस सप्ताह देय है. समय तय करने हेतु पशु सखी से संपर्क करें.",
+    },
+    "alert_weather": {
+        "en": "MAHAVEDH advisory: humidity {humidity}% and {temp}°C expected in {district}. Elevated vector activity — check animals for skin nodules and fever daily.",
+        "mr": "महावेध सूचना: {district} मध्ये आर्द्रता {humidity}% व {temp}°C अपेक्षित. कीटकवाहक क्रियाशीलता वाढली — जनावरांना त्वचेवर गाठी व ताप आहे का ते रोज तपासा.",
+        "hi": "महावेध परामर्श: {district} में आर्द्रता {humidity}% और {temp}°C अपेक्षित. वाहक गतिविधि बढ़ी — पशुओं में त्वचा की गांठें और बुखार रोज़ जांचें.",
+    },
+}
+
+
+def render(key, lang="en", **fmt):
+    lang = normalise(lang)
+    tpl = MESSAGES.get(key, {})
+    text = tpl.get(lang) or tpl.get("en") or key
+    # translate disease names inside the template
+    if "disease" in fmt and isinstance(fmt["disease"], str):
+        fmt = dict(fmt); fmt["disease"] = engine.term(fmt["disease"], lang)
+    try:
+        return text.format(**fmt)
+    except (KeyError, IndexError):
+        return text

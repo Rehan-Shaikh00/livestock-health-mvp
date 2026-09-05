@@ -1,147 +1,114 @@
-# Livestock Health MVP — Scalable Animal-Health Surveillance & Decision-Support
+# Pashu Arogya — Animal-Health Surveillance & Decision-Support (Maharashtra)
 
 **Smart India Hackathon · Problem Statement SH26128**
 
-A prototype platform for rapid field reporting of livestock symptoms and mortality,
-AI-assisted outbreak triage, geospatial + environmental risk integration, a health-records
-ledger, multi-lingual alerting with sample-collection → lab-referral escalation, an
-offline/low-connectivity capture mode, and role-based dashboards for government and
-veterinary officials.
+Full-stack platform for the Maharashtra Department of Animal Husbandry: multi-channel
+symptom/mortality capture (web, offline mobile sync, IVR, WhatsApp), dual-matrix triage
+(deterministic rules × MAHAVEDH climate sync), geospatial risk mapping, herd/animal EHR
+with Bharat Pashudhan ear-tag validation, Code-128 sample barcoding → lab referral →
+case escalation, real-time SSE outbreak alerts, tri-lingual advisories (English / मराठी /
+हिंदी), hierarchical role scoping, and a Random-Forest mortality-risk regressor.
+
+```
+┌──────────────┐   /api/v1 (JSON, SSE)   ┌──────────────────────────┐   SQLite (dev)
+│ client/      │ ───────────────────────▶ │ server/  Flask 3         │ ─▶ data/surveillance.db
+│ React 19 +   │ ◀─────────────────────── │ auth · triage · geo ·    │   PostGIS (prod, opt.)
+│ Vite · TW v4 │      Vite dev proxy      │ barcode · i18n · ML      │ ─▶ ml/*.pkl
+└──────────────┘                          └──────────────────────────┘
+```
 
 ---
 
 ## Quick start
 
 ```bash
-# 1. Create and populate a virtual environment
-python -m venv .venv
-.venv/Scripts/pip.exe install -r requirements.txt      # Windows
-# source .venv/bin/activate && pip install -r requirements.txt   # macOS/Linux
+# 1. Backend (Python 3.11+)
+pip install -r requirements.txt
+python3 -m server.app            # → http://localhost:5000  (seeds data/surveillance.db on first run)
 
-# 2. (Optional) retrain the ML model — a pre-trained model ships in ml/
-.venv/Scripts/python.exe ml/train_model.py
-
-# 3. Run the app (creates data/surveillance.db and seeds demo users on first run)
-.venv/Scripts/python.exe app.py
+# 2. Frontend (Node 20+), in a second terminal
+cd client && npm install && npm run dev   # → http://localhost:5173 (proxies /api → :5000)
 ```
 
-Then open <http://127.0.0.1:5000>.
+Production-style single process: `cd client && npm run build`, then `python3 -m server.app`
+serves the SPA from `client/dist/` on port 5000 (SPA fallback for deep links).
 
-### Demo credentials (password `1234` for all)
+Delete `data/` to reseed. Set `DATABASE_URL=postgres://…` to route nearest-clinic queries
+through PostGIS (`server/spatial.py`); otherwise the native Haversine engine is used.
 
-| Username    | Role         | Tier | Lands on dashboard |
-|-------------|--------------|------|--------------------|
-| `farmer1`   | farmer       | 1    | Farmer / reporting |
-| `sakhi1`    | pashu_sakhi  | 1    | Farmer / reporting |
-| `paravet1`  | paravet      | 2    | Paravet            |
-| `vet1`      | vet          | 2    | Vet                |
-| `ldo1`      | ldo          | 2    | Vet                |
-| `district1` | district     | 3    | District           |
-| `acah1`     | acah         | 3    | District           |
-| `admin`     | admin        | 4    | State / admin      |
+### Demo credentials (password `1234`)
+
+| Username   | Role                      | Tier | Scope                                  |
+|------------|---------------------------|------|----------------------------------------|
+| `farmer1`  | Farmer (Ramesh Patil)     | 1    | Own reports & animals (Wagholi 556325) |
+| `sakhi1`   | Pashu Sakhi               | 1    | Own village                            |
+| `paravet1` | Paravet                   | 2    | Assigned taluka                        |
+| `ldo1`     | LDO / Vet (Dr. Deshmukh)  | 2    | Assigned taluka                        |
+| `acah1`    | ACAH                      | 3    | District                               |
+| `dcah1`    | DCAH                      | 3    | District                               |
+| `state1`   | State Directorate, Pune   | 4    | All of Maharashtra                     |
+| `lab1`     | DIS Pune lab technician   | lab  | Referrals sent to their lab            |
+| `admin`    | System admin              | 5    | Everything + user management           |
+
+Every list/KPI query is filtered server-side by `server/access_control.scope_clause()`
+(village → taluka → district → state) so the same UI narrows automatically per login.
 
 ---
 
-## Architecture
+## What's inside
 
-Single-file Flask backend (`app.py`) + Jinja2/Bootstrap templates, backed by SQLite for the
-MVP. `schema.sql` is the production-target PostgreSQL + PostGIS reference schema for
-horizontal scale and geospatial querying.
+### Case intake channels
+| Channel | Entry point | Notes |
+|---|---|---|
+| Web form | `/report` (UI) → `POST /api/v1/reports/web` | live triage preview as symptoms change |
+| Offline mobile | `POST /api/v1/reports/mobile/sync` | queue in `localStorage`, last-write-wins on `updated_at` ms; results `applied / stale_ignored / rejected` |
+| IVR | `POST /api/v1/webhooks/ivr` | returns Marathi/Hindi TTS script + spoken case-id |
+| WhatsApp | `POST /api/v1/webhooks/whatsapp` | `REPORT <species> <village_lgd> <symptoms,...> deaths=N affected=N` |
 
-| Capability | Where |
-|---|---|
-| **Data capture** (multi-channel: web, mobile batch sync, IVR, WhatsApp) | `app.py` intake routes, `/api/v1/reports/*`, `/webhooks/*` |
-| **AI triage / rule engine** (explainable Low/Medium/High) | `triage_engine.py` |
-| **ML mortality-risk prediction** (RandomForest) | `ml/train_model.py`, `ml/predict.py`, `ml/livestock_risk_model.pkl` |
-| **Geospatial & environmental** (weather ETL, vector risk) | `geo_engine.py`, `/api/v1/weather/etl`, `/api/v1/risk-map/<village_code>` |
-| **Health-records ledger** (animals, vaccinations, treatments) | `/api/v1/livestock*` |
-| **Alerts & escalation** (multi-lingual, sample → lab referral) | `notification_service.py`, `/api/v1/cases/<id>/lab-referrals`, SSE `/api/v1/events` |
-| **Offline / low-connectivity** | `static/service-worker.js`, `static/js/offline-sync.js`, `static/manifest.webmanifest` |
-| **Admin dashboards** (village-level analytics) | `templates/dashboards/*`, `/api/v1/analytics/summary` |
+### Triage (`server/triage_engine.py`)
+Deterministic symptom×species rule matrix produces suspected disease + `LOW/MEDIUM/HIGH`;
+`server/services.py` then applies the climate matrix from the latest MAHAVEDH-style
+observation for the taluka (humidity/temperature/rainfall → vector-favourable uplift).
+Advisories are rendered in `en/mr/hi` by `server/i18n.py`.
 
-### Case lifecycle (canonical state machine)
+### Case lifecycle
+`REPORTED → FIELD_INSPECTED_BY_LDO → SAMPLE_COLLECTED → LAB_TRANSIT → LAB_RECEIVED →
+PATHOGEN_CONFIRMED | PATHOGEN_REJECTED → CASE_RESOLVED`, enforced per role via
+`/cases/<id>/transition`. Sample collection issues a referral with a Code-128 barcode
+(`MH-521-YYMMDD-XXXXXX`, HMAC-signed; `GET /lab-referrals/<id>/barcode.svg`, `/verify`).
 
-```
-REPORTED → FIELD_INSPECTED_BY_LDO → SAMPLE_COLLECTED → LAB_TRANSIT
-        → LAB_RECEIVED → PATHOGEN_CONFIRMED | PATHOGEN_REJECTED → CASE_RESOLVED
-```
+### Geospatial & environment
+`/geo/risk-map` scores talukas from 14-day case load, deaths and climate; `/geo/nearest-clinic`
+(Haversine or PostGIS); `/weather/etl` ingests observations; `/analytics/history` exposes
+seasonal and historical anthrax series; `/ml/predict` calls the Random-Forest regressor.
 
-Legacy dashboard status labels are mapped onto this machine via `LEGACY_TO_CANONICAL`
-in `app.py` so older UI actions still advance the workflow.
+### Real-time
+`GET /api/v1/events?token=` (SSE) pushes `case.created`, `outbreak.detected`, `alert.created`;
+the UI shows toasts and invalidates queries. `/outbreaks/detect` runs the cluster detector.
 
----
-
-## Key API endpoints
-
-| Method & path | Purpose |
-|---|---|
-| `POST /api/v1/auth/token` | Issue an HS256 JWT |
-| `POST /api/v1/reports/web` | Web symptom/mortality report |
-| `POST /api/v1/reports/mobile/sync` | Offline batch sync from field devices |
-| `POST /webhooks/ivr`, `POST /webhooks/whatsapp` | Low-connectivity intake channels |
-| `POST /api/v1/cases/<id>/transition` | Advance a case through the state machine |
-| `POST /api/v1/cases/<id>/lab-referrals` · `GET …` | Create / list lab referrals |
-| `POST /api/v1/lab-referrals/<id>/result` | Record a lab result |
-| `POST/GET /api/v1/livestock` · `GET /api/v1/livestock/<id>` | Health-records ledger (id or ear-tag) |
-| `POST /api/v1/livestock/<id>/vaccinations` · `…/treatments` | Append to an animal's history |
-| `POST /api/v1/weather/etl` | MAHAVEDH-style weather telemetry ingestion |
-| `GET /api/v1/risk-map/<village_code>` | Vector-risk layers for a village |
-| `GET /api/v1/analytics/summary` | Dashboard aggregates (levels, channels, top villages, trend) |
-| `GET /api/v1/events` | Server-Sent Events priority-alert stream |
+### Frontend (`client/`)
+React 19 · Vite 7 · Tailwind v4 · TanStack Query · React-Leaflet · Recharts · lucide.
+Pages: Dashboard, Report, Cases/Detail, Animals/Detail, Vaccination, Lab, Risk Map,
+Outbreaks, Alerts, Weather, Analytics, Channels, Vet Centers, Users, Settings.
+Sitewide language switch (`pa.lang`) drives both UI strings and API `X-Lang` responses.
 
 ---
 
-## Machine-learning model
+## Repository layout
 
-Trained on `ml/data/anthrax_2020_2023.csv` (district-year outbreak records).
+```
+server/        Flask API (app.py entrypoint) + engines: triage, geo, spatial, barcode,
+               access_control, i18n, seed, db
+client/        React SPA (src/pages, src/components, src/lib/{api,auth,i18n,toast})
+client/scripts/smoke.mjs   mounts every route in happy-dom against the live API (node scripts/smoke.mjs ldo1)
+ml/            train_model.py / predict.py, livestock_risk_model.pkl, historical CSVs
+legacy/        original Jinja prototype, kept for reference (see legacy/README.md)
+schema.sql     reference DDL
+```
 
-- **Features:** `Year`, `Outbreaks`, `Susceptible`, `Attacks`
-- **Target:** `Deaths`
-- **Model:** `RandomForestRegressor` (scikit-learn), persisted to `ml/livestock_risk_model.pkl`
+## Testing
 
 ```bash
-# Score a single observation
-.venv/Scripts/python.exe ml/predict.py --year 2023 --outbreaks 2 --susceptible 400 --attacks 30
+python3 -m server.app &                    # API on :5000
+cd client && node scripts/smoke.mjs farmer1   # renders all 17 routes, reports runtime errors
 ```
-
----
-
-## Project structure
-
-```
-livestock-health-mvp/
-├── app.py                     # Flask backend (routes, auth, SQLite, triage/ML wiring)
-├── triage_engine.py           # Explainable rule-based triage
-├── geo_engine.py              # Weather ETL + vector-risk boundary
-├── notification_service.py    # Multi-lingual alert queue (en / mr)
-├── schema.sql                 # Production-target PostgreSQL + PostGIS DDL
-├── requirements.txt
-├── ml/
-│   ├── train_model.py         # Trains + saves the RandomForest model
-│   ├── predict.py             # Inference helper + CLI
-│   ├── livestock_risk_model.pkl
-│   └── data/                  # Training CSVs (tracked)
-├── templates/
-│   ├── login.html, report.html, location.html, analysis.html, 403.html
-│   └── dashboards/            # farmer / paravet / vet / district / state
-├── static/
-│   ├── style.css
-│   ├── js/offline-sync.js
-│   ├── service-worker.js
-│   └── manifest.webmanifest
-└── data/                      # Runtime SQLite DB (git-ignored)
-```
-
----
-
-## Tech stack
-
-Python · Flask 3.1 · SQLite (dev) / PostgreSQL + PostGIS (prod target) · scikit-learn ·
-pandas · joblib · Jinja2 · Bootstrap 5 · Server-Sent Events · Service Workers.
-
-## Security note (prototype)
-
-Demo users store **plaintext passwords** and JWTs use a static dev secret. These are
-acceptable only for the hackathon prototype and **must** be replaced with hashed
-credentials (e.g. `werkzeug.security` / Argon2) and a rotated secret before any real
-deployment.

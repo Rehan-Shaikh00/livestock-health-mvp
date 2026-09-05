@@ -2,10 +2,17 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "flask-dev",
-      "runtimeExecutable": ".venv/Scripts/python.exe",
-      "runtimeArgs": ["app.py"],
+      "name": "api",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "server.app"],
       "port": 5000
+    },
+    {
+      "name": "web",
+      "cwd": "client",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 5173
     }
   ]
 }

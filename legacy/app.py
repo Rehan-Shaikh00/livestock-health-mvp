@@ -10,7 +10,7 @@ from geo_engine import vector_risk, weather_etl_stub, resolve_coordinates, cases
 from notification_service import notifications, publish_priority_alert, queue_outbreak_notifications
 from triage_engine import assess_triage
 from spatial import nearest_clinics
-import access_control as ac
+import sys; sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent / "server")); import access_control as ac
 from i18n import translate, LANGUAGES, DEFAULT_LANG, normalise, engine as i18n_engine
 
 BASE_DIR = Path(__file__).resolve().parent; DB_PATH = BASE_DIR / "data" / "surveillance.db"; EAR_TAG_RE = re.compile(r"^\d{12}$")
